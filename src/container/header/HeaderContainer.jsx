@@ -1,0 +1,75 @@
+import clsx from "clsx";
+import s from "./headerContainer.module.scss";
+import React from "react";
+import SearchBar from "../../component/search/SearchBar";
+import { Badge, IconButton } from "@mui/material";
+import EmailIcon from "@mui/icons-material/Email";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import SmsIcon from "@mui/icons-material/Sms";
+import theme from "../../style/theme";
+const badgeStyle = {
+   badge: {
+      "& .MuiBadge-badge": { fontSize: 16, height: 25, minWidth: 25 },
+   },
+   icon: {
+      fontSize: "4rem",
+      "&:hover": {
+         cursor: "pointer",
+      },
+   },
+};
+export default function HeaderContainer() {
+   return (
+      <>
+         <div className={clsx(s.container, "box-shadow")}>
+            <div className={s.right}>
+               <div className={s.logo}>
+                  <img
+                     src="https://bird-trading-platform.s3.ap-southeast-1.amazonaws.com/assetImage/asset/logo%3Dlight.svg"
+                     alt=""
+                  />
+               </div>
+               <div className={s.shopName}>Bird Land 2nd</div>
+            </div>
+            <div className={s.left}>
+               <div style={{marginRight: '1rem'}}>
+                  <SearchBar />
+               </div>
+               <div className={s.iconContainer}>
+                  <IconButton>
+                     <Badge
+                        badgeContent={4}
+                        color="primary"
+                        sx={badgeStyle.badge}
+                     >
+                        <EmailIcon sx={badgeStyle.icon} color="template6" />
+                     </Badge>
+                  </IconButton>
+                  <IconButton>
+                     <Badge
+                        badgeContent={4}
+                        color="primary"
+                        sx={badgeStyle.badge}
+                     >
+                        <NotificationsIcon
+                           sx={badgeStyle.icon}
+                           color="template6"
+                        />
+                     </Badge>
+                  </IconButton>
+                  <IconButton>
+                     <Badge
+                        badgeContent={4}
+                        color="primary"
+                        sx={badgeStyle.badge}
+                     >
+                        <SmsIcon sx={badgeStyle.icon} color="template6" />
+                     </Badge>
+                  </IconButton>
+               </div>
+            </div>
+         </div>
+         <div className={clsx(s.gap)}></div>
+      </>
+   );
+}

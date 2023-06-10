@@ -1,0 +1,8 @@
+
+@use '../../style/scss/' as c;
+
+.rightContent {
+   display: flex;
+   flex-direction: column;
+   min-height: 100vh;
+}

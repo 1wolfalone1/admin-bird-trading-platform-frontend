@@ -1,0 +1,29 @@
+.container {
+   display: flex;
+   justify-content: flex-start !important;
+   align-items: center;
+   gap: 0.8rem;
+   text-transform: none !important;
+   
+   .icon {
+   }
+   .title {
+      span {
+         font-family: "SeoulHangang";
+         font-style: normal;
+         font-weight: 400;
+         font-size: 24px;
+         line-height: 24px;
+         /* identical to box height */
+
+         /* f/1 */
+
+         color: #cdffa6;
+      }
+   }
+}
+
+.active {
+   background-color: rgb(23, 23, 23) !important;
+   pointer-events: none;
+}

@@ -1,0 +1,99 @@
+@use "../../style/scss/" as c;
+
+.container {
+   background-color: c.$template5;
+   border-radius: 10px;
+   min-height: calc(100vh - 2rem);
+   position: fixed;
+   left: 1rem;
+   width: calc(15%);
+   .adminInfo {
+      display: flex;
+      height: 9rem;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      gap: 1rem;
+      .image {
+         flex-shrink: 0;
+         width: 72px;
+         height: 72px;
+         img {
+            width: 100%;
+            border-radius: 100%;
+         }
+      }
+      .name {
+         font-family: "SeoulHangang";
+         font-style: normal;
+         font-weight: 400;
+         font-size: 24px;
+         line-height: 24px;
+         display:-webkit-box;
+         -webkit-line-clamp:2;
+         -webkit-box-orient: vertical;
+         overflow: hidden;
+         text-overflow: ellipsis;
+         word-break: break-word;
+         /* identical to box height */
+
+         /* f/1 */
+
+         color: #cdffa6;
+      }
+      &::after {
+         content: "";
+         position: absolute;
+         right: 1.6rem;
+         left: 1.6rem;
+         bottom: 0px;
+         height: 0.2rem;
+         background-color: #000208;
+      }
+   }
+   .controls {
+      padding: 1.4rem;
+      .controlTasks {
+         position: relative;
+         padding: 2rem 0;
+         &::after {
+            content: "";
+            right: 1rem;
+            left: 1rem;
+            bottom: 0;
+            height: 0.2rem;
+            background-color: #000000;
+            position: absolute;
+         }
+      }
+      .controlSetting {
+         position: relative;
+
+         padding: 2rem 0;
+
+         &::after {
+            content: "";
+            right: 1rem;
+            left: 1rem;
+            bottom: 0;
+            height: 0.2rem;
+            background-color: #000000;
+            position: absolute;
+         }
+      }
+      .controlAccount {
+         position: relative;
+
+         padding: 2rem 0;
+         &::after {
+            content: "";
+            right: 1rem;
+            left: 1rem;
+            bottom: 0;
+            height: 0.2rem;
+            background-color: #000000;
+            position: absolute;
+         }
+      }
+   }
+}

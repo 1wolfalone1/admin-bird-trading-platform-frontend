@@ -1,0 +1,234 @@
+@use './style/scss/' as c;
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: c.$template4;
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+html {
+  font-size: 10px;
+  @include c.m-Responsive(XXL) {
+    font-size: 8px;
+  }
+}
+
+// -------------------------------------------------
+.MuiList-root.MuiList-padding.MuiMenu-list {
+  /* From https://css.glass */
+  background: rgba(36, 36, 36, 0.65) !important;
+  /* From https://css.glass */
+  background: rgba(0, 83, 70, 0.47);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(6.7px);
+  -webkit-backdrop-filter: blur(6.7px);
+  border: 1px solid rgba(0, 83, 70, 0.49);
+}
+.MuiPaper-root.MuiMenu-paper.MuiPopover-paper {
+  color: c.$template3 !important;
+}
+.MuiButtonBase-root.MuiMenuItem-root:hover {
+  background-color: rgba(55, 57, 78, 0.456) !important;
+}
+.MuiMenuItem-root.Mui-selected {
+  background-color: rgba(42, 69, 58, 0.542) !important;
+
+}
+.MuiPaper-root.MuiMenu-paper.MuiPopover-paper{ 
+  background-color: #55555500 !important;
+}
+// -----------------------------------
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+// button {
+//   position: relative;
+//   overflow: hidden;
+//   transition: background 400ms;
+//   color: #fff;
+//   background-color: #6200ee;
+//   padding: 1rem 2rem;
+//   font-family: 'Roboto', sans-serif;
+//   font-size: 1.5rem;
+//   outline: 0;
+//   border: 0;
+//   border-radius: 0.25rem;
+//   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3); /* black with 30% opacity */
+//   cursor: pointer;
+
+//   span.ripple {
+//     position: absolute;
+//     border-radius: 50%;
+//     transform: scale(0);
+//     animation: ripple 600ms linear;
+//     background-color: rgba(255, 255, 255, 0.7);
+//   }
+// }
+
+// @keyframes ripple {
+//   to {
+//     transform: scale(4);
+//     opacity: 0;
+//   }
+// }
+
+.ripple {
+  background-position: center;
+  transition: background 0.8s;
+}
+.ripple:hover {
+  background: #0080605a radial-gradient(circle, transparent 1%, #0080605a 1%)
+    center/15000%;
+  cursor: pointer;
+}
+.ripple:active:hover {
+  background-color: #0080605a;
+  background-size: 100%;
+  transition: background 0s;
+}
+
+button {
+  padding: 0;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+* {
+  caret-color: transparent;
+}
+
+input {
+  caret-color: c.$template1;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  transition: background-color 600000s 0s, color 600000s 0s !important;
+}
+
+input[data-autocompleted] {
+  background-color: transparent !important;
+}
+
+input {
+  border-style: none;
+  background: transparent;
+  outline: none;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: c.$template2;
+  border-radius: 1rem;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: c.$template1;
+  border-radius: 1rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+a {
+  text-decoration: none;
+}
+
+.box-shadow {
+  box-shadow: 5px 5px 10px rgba(23, 23, 23, 0.601);
+}
+.ripple {
+  background-position: center;
+  transition: background 0.8s;
+}
+.ripple:hover {
+  background: #0080605a radial-gradient(circle, transparent 1%, #0080605a 1%)
+    center/15000%;
+  cursor: pointer;
+}
+.ripple:active:hover {
+  background-color: #0080605a;
+  background-size: 100%;
+  transition: background 0s;
+}
+
+button {
+  padding: 0;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+* {
+  caret-color: transparent;
+}
+
+input {
+  caret-color: c.$templateConstrast4;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  transition: background-color 600000s 0s, color 600000s 0s !important;
+}
+
+input[data-autocompleted] {
+  background-color: transparent !important;
+}
+
+input {
+  border-style: none;
+  background: transparent;
+  outline: none;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: c.$template4;
+  border-radius: 1rem;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: c.$template2;
+  border-radius: 1rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+a {
+  text-decoration: none;
+}
