@@ -1,5 +1,4 @@
 import React from "react";
-import { data, data2 } from "./mock";
 import { ResponsiveBump } from "@nivo/bump";
 import { ResponsiveLine } from "@nivo/line";
 const legends = [
@@ -73,52 +72,58 @@ const themes = {
       },
    },
 };
-export default function StaticsTrendingProductsBumpChart() {
+export default function StaticsTrendingProductsBumpChart({ data }) {
    console.log(data);
    return (
-      <ResponsiveLine
-         data={data2}
-         theme={themes}
-         labelTextColor="#ffffff"
-         pointLabelColor="#4dfec9"
-         legends={legends}
-         margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-         xScale={{ type: "point" }}
-         yScale={{
-            type: "linear",
-            min: "auto",
-            max: "auto",
-            stacked: true,
-            reverse: false,
-         }}
-         yFormat=" >-.2f"
-         curve="catmullRom"
-         axisTop={null}
-         axisRight={null}
-         axisBottom={{
-            tickSize: 5,
-            tickPadding: 5,
-            tickRotation: 0,
-            legend: "transportation",
-            legendOffset: 36,
-            legendPosition: "middle",
-         }}
-         axisLeft={{
-            tickSize: 5,
-            tickPadding: 5,
-            tickRotation: 0,
-            legend: "count",
-            legendOffset: -40,
-            legendPosition: "middle",
-         }}
-         colors={{ scheme: "paired" }}
-         pointSize={10}
-         pointColor={{ theme: "background" }}
-         pointBorderWidth={2}
-         pointBorderColor={{ from: "serieColor" }}
-         enablePointLabel={true}
-         pointLabelYOffset={-12}
-         useMesh={true}
-      />
+      <>
+         {data ? (
+            <ResponsiveLine
+               data={data}
+               theme={themes}
+               labelTextColor="#ffffff"
+               pointLabelColor="#4dfec9"
+               legends={legends}
+               margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+               xScale={{ type: "point" }}
+               yScale={{
+                  type: "linear",
+                  min: "auto",
+                  max: "auto",
+                  stacked: true,
+                  reverse: false,
+               }}
+               yFormat=" >-.2f"
+               curve="catmullRom"
+               axisTop={null}
+               axisRight={null}
+               axisBottom={{
+                  tickSize: 5,
+                  tickPadding: 5,
+                  tickRotation: 0,
+                  legend: "transportation",
+                  legendOffset: 36,
+                  legendPosition: "middle",
+               }}
+               axisLeft={{
+                  tickSize: 5,
+                  tickPadding: 5,
+                  tickRotation: 0,
+                  legend: "count",
+                  legendOffset: -40,
+                  legendPosition: "middle",
+               }}
+               colors={{ scheme: "paired" }}
+               pointSize={10}
+               pointColor={{ theme: "background" }}
+               pointBorderWidth={2}
+               pointBorderColor={{ from: "serieColor" }}
+               enablePointLabel={true}
+               pointLabelYOffset={-12}
+               useMesh={true}
+            />
+         ) : (
+            ""
+         )}
+      </>
    );
 }
