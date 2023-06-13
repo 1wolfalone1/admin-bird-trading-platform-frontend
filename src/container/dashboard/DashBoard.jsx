@@ -22,7 +22,6 @@ const breadCrumbPath = [
 
 export default function DashBoard() {
    useBreadCrumb(breadCrumbPath);
-
    return (
       <div className={s.container}>
          <div className={s.summaryTotal}>
@@ -39,7 +38,7 @@ export default function DashBoard() {
             </Grid2>
          </div>
          <div className={s.chart}>
-            <Grid2 container spacing={"3rem"}  padding={0}>
+            <Grid2 container spacing={"3rem"} fullWidth>
                <Grid2 xs={7} >
                   <StaticsTrendingProducts />
                </Grid2>
