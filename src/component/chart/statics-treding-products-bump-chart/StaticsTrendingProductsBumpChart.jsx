@@ -28,6 +28,7 @@ const legends = [
    },
 ];
 const themes = {
+   height: "100%",
    axis: {
       fontSize: "14px",
       text: {
