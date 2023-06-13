@@ -4,5 +4,13 @@
 .rightContent {
    display: flex;
    flex-direction: column;
-   min-height: 100vh;
+   flex: 1;
+   height: 100%;
+}
+
+
+.content {
+   display: flex;
+   height: 100%;
+
 }

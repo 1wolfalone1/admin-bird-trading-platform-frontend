@@ -5,14 +5,16 @@ import { Button } from "@mui/material";
 import clsx from "clsx";
 import sideBarSlice, { getCurrentActiveSelector } from "../../redux/sideBarSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 
 export default function MenuItem({ children, type }) {
    const currentActive = useSelector(getCurrentActiveSelector);
    const dispatch = useDispatch();
-
+   const navigate = useNavigate();
    const handleOnClick = () => {
       dispatch(sideBarSlice.actions.changeCurrentActive(type.id));
+      navigate(type.url);
    }
    return (
       <>

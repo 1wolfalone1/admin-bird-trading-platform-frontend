@@ -5,8 +5,8 @@ const theme = createTheme({
       mode: 'dark',
       primary: {
          // light: will be calculated from palette.primary.main,
-         main: '#1d1e2c',
-         contrastText: '#cdffa6',
+         main: '#cdffa6',
+         contrastText: '#151515',
          // dark: will be calculated from palette.primary.main,
          // contrastText: will be calculated to contrast with palette.primary.main
        },
@@ -39,6 +39,9 @@ const theme = createTheme({
         main: '#91daff',
         contrastText: '#0e0017',
       }
-   }
+   },
+   typography: {
+    fontSize: 20
+  },
 })
 export default theme ;

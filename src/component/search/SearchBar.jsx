@@ -35,12 +35,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
    "& .MuiInputBase-input": {
       zIndex: '1',
       padding: theme.spacing(1, 1, 1, 0),
-      fontSize: "3rem",
+      fontSize: "2rem",
       // vertical padding + font size from searchIcon
       paddingLeft: `calc(1em + ${theme.spacing(4)})`,
       transition: theme.transitions.create("width"),
       width: "",
-      color: theme.palette.primary.contrastText,
+      color: theme.palette.template5.contrastText,
       [theme.breakpoints.up("sm")]: {
          width: "12ch",
          "&:focus": {
@@ -54,7 +54,7 @@ export default function SearchBar() {
    return (
       <Search>
          <SearchIconWrapper className={clsx(s.icon)}>
-            <SearchIcon sx={{ fontSize: "3rem" }} />
+            <SearchIcon sx={{ fontSize: "2rem" }} />
          </SearchIconWrapper>
          <StyledInputBase
             placeholder="Search…"

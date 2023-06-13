@@ -18,7 +18,7 @@ body {
   background-repeat: no-repeat;
   min-height: 100vh;
   box-sizing: border-box;
-  min-height: 100vh;
+  overflow-x: hidden;
 }
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
@@ -44,6 +44,9 @@ html {
 }
 .MuiPaper-root.MuiMenu-paper.MuiPopover-paper {
   color: c.$template3 !important;
+  li {
+    color: c.$templateConstrast4;
+  }
 }
 .MuiButtonBase-root.MuiMenuItem-root:hover {
   background-color: rgba(55, 57, 78, 0.456) !important;
