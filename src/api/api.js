@@ -20,7 +20,7 @@ api.interceptors.request.use(
             // config.headers.Authorization = `Bearer ${token.accessToken}`;
          }
       }
-
+      console.log(config);
       return config;
    },
    (error) => Promise.reject(error)
