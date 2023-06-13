@@ -8,24 +8,25 @@ import { Outlet } from "react-router-dom";
 import { ThemeProvider } from "@emotion/react";
 import theme from "../../style/theme";
 import clsx from "clsx";
+import MyBreadCrumb from "../../component/breadcrumb/MyBreadCrumb";
 
 export default function LayoutContainer() {
    return (
       <ThemeProvider theme={theme}>
-         <div style={{ backgroundColor: theme.palette.template5 }}>
+         <div style={{ backgroundColor: theme.palette.template5, minHeight: '100vh', display: 'flex' }}>
             <Grid
                container
-               p={"1rem 0.5rem"}
+               p={"1rem 0rem"}
                spacing={'2.4rem'}
-               sx={{ boxSizing: "border-box", width: "100%" }}
+               sx={{ boxSizing: "border-box", width: "100%", display: 'flex'}}
             >
                <Grid xs={2}>
                   <SideBar />
                </Grid>
-               <Grid xs={10}>
+               <Grid xs={10} padding={'1rem 0 1rem 1.6rem'}>
                   <Stack className={clsx(s.rightContent)}>
                      <HeaderContainer />
-                     <Breadcrumbs/>
+                     <MyBreadCrumb />
                      <div className={s.content}>
                         <Outlet />
                      </div>

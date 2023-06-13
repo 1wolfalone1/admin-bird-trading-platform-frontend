@@ -6,18 +6,19 @@
    min-height: calc(100vh - 2rem);
    position: fixed;
    left: 1rem;
+   top: 1rem;
    width: calc(15%);
    .adminInfo {
       display: flex;
-      height: 9rem;
+      height: c.$h-header;
       justify-content: center;
       align-items: center;
       position: relative;
       gap: 1rem;
       .image {
          flex-shrink: 0;
-         width: 72px;
-         height: 72px;
+         width: 5.6rem;
+         height: 5.6rem;
          img {
             width: 100%;
             border-radius: 100%;
@@ -27,7 +28,7 @@
          font-family: "SeoulHangang";
          font-style: normal;
          font-weight: 400;
-         font-size: 24px;
+         font-size: 2rem;
          line-height: 24px;
          display:-webkit-box;
          -webkit-line-clamp:2;

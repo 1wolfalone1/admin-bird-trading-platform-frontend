@@ -5,15 +5,24 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./redux/store";
-import './fontLoader.scss'
+import "./fontLoader.scss";
+import persistStore from "redux-persist/es/persistStore";
+import { PersistGate } from "redux-persist/integration/react";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
+let persistor = persistStore(store);
 root.render(
    <React.StrictMode>
-         <Provider store={store}>
-    
-      <BrowserRouter>
-         <App />
-      </BrowserRouter>
+      <Provider store={store}>
+         <PersistGate persistor={persistor}>
+         <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <BrowserRouter>
+               <App />
+            </BrowserRouter>
+            </LocalizationProvider>
+         </PersistGate>
       </Provider>
    </React.StrictMode>
 );

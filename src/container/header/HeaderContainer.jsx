@@ -9,10 +9,10 @@ import SmsIcon from "@mui/icons-material/Sms";
 import theme from "../../style/theme";
 const badgeStyle = {
    badge: {
-      "& .MuiBadge-badge": { fontSize: 16, height: 25, minWidth: 25 },
+      "& .MuiBadge-badge": { fontSize: '1.2rem', height: '1.6rem', minWidth: '1.6rem' },
    },
    icon: {
-      fontSize: "4rem",
+      fontSize: "3rem",
       "&:hover": {
          cursor: "pointer",
       },
