@@ -1,13 +1,13 @@
-
-@use '../../style/scss/' as c;
-
+@use "../../style/scss/" as c;
 
 .container {
    background-color: c.$template5;
-   height: 69rem;
+   flex: 1;
    border-radius: 10px;
    display: flex;
    flex-direction: column;
+   height: 95%;
+   justify-content: space-around;
    .title {
       padding: 1rem 3rem;
       flex-shrink: 0;
@@ -21,7 +21,6 @@
       }
    }
    .chart {
-    height: 1px;
-      flex: 1;
+      height: 50rem;
    }
 }

@@ -39,8 +39,8 @@ export default function DashBoard() {
             </Grid2>
          </div>
          <div className={s.chart}>
-            <Grid2 container spacing={"3rem"}>
-               <Grid2 xs={7}>
+            <Grid2 container spacing={"3rem"}  padding={0}>
+               <Grid2 xs={7} >
                   <StaticsTrendingProducts />
                </Grid2>
                <Grid2 xs={5}>
