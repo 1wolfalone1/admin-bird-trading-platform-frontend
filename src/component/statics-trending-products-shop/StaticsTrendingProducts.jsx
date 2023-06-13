@@ -4,8 +4,25 @@ import { clsx } from "clsx";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import StaticsTrendingProductsBumpChart from "../chart/statics-treding-products-bump-chart/StaticsTrendingProductsBumpChart";
 import { motion } from 'framer-motion';
+import { useEffect } from "react";
+import { useState } from "react";
+import { api } from "../../api/api";
 
 export default function StaticsTrendingProducts() {
+   const [staticsTrending, setStaticTreding] =  useState(null);
+   useEffect(() => {
+      getStaticTrending();
+   }, []);
+   const getStaticTrending = async () => {
+      try {
+         const response = await api.get('/shop-owner');
+         const data = await response.data;
+         console.log(data);
+         setStaticTreding(data);
+      } catch (err) {
+         console.error(err);
+      }
+   }
    const animation = {
       init: {
          opacity: 0,
@@ -34,7 +51,7 @@ export default function StaticsTrendingProducts() {
             <span className={s.span}> to now</span>
          </div>
          <div className={s.chart}>
-            <StaticsTrendingProductsBumpChart />
+            <StaticsTrendingProductsBumpChart data={staticsTrending}/>
          </div>
       </motion.div>
    );

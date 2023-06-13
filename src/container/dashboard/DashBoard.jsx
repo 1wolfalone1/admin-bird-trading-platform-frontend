@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import MenuItem, { typeMenu } from "../../component/menu-item/MenuItem";
 import { breadCrumbs } from "../../config/constant";
 import s from "./dashBoard.module.scss";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import sideBarSlice from "../../redux/sideBarSlice";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { createFakeServer, useDemoData } from "@mui/x-data-grid-generator";
@@ -12,6 +12,7 @@ import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import SummaryTotalShop from "../../component/summary-total-shop/SummaryTotalShop";
 import StaticsTrendingProducts from "../../component/statics-trending-products-shop/StaticsTrendingProducts";
 import StaticsPriceByCategory from "../../component/statics-price-category-pie-chart-shop/StaticsPriceByCategory";
+import { api } from "../../api/api";
 
 const breadCrumbPath = [
    breadCrumbs.DASH_BOARD,
@@ -22,6 +23,7 @@ const breadCrumbPath = [
 
 export default function DashBoard() {
    useBreadCrumb(breadCrumbPath);
+  
    return (
       <div className={s.container}>
          <div className={s.summaryTotal}>
@@ -38,7 +40,7 @@ export default function DashBoard() {
             </Grid2>
          </div>
          <div className={s.chart}>
-            <Grid2 container spacing={"3rem"} fullWidth>
+            <Grid2 container   padding={0} spacing={"3rem"}>
                <Grid2 xs={7} >
                   <StaticsTrendingProducts />
                </Grid2>
