@@ -2,7 +2,7 @@ import { breadCrumbs } from "../../config/constant";
 import s from "./products.module.scss";
 import React from "react";
 import useBreadCrumb from "../../custom-hook/useBreadCrumb";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, gridExpandedSortedRowIdsSelector, gridVisibleColumnDefinitionsSelector, useGridApiRef } from "@mui/x-data-grid";
 import { createFakeServer, useDemoData } from "@mui/x-data-grid-generator";
 const breadCrumbPath = [breadCrumbs.PRODUCTS];
 const rows = [
@@ -27,11 +27,11 @@ const { useQuery, ...data } = createFakeServer({}, SERVER_OPTIONS);
 
 export default function Products() {
    useBreadCrumb(breadCrumbPath);
-
+   const apiRef = useGridApiRef();
    const { data } = useDemoData({
       dataSet: "Commodity",
-      rowLength: 200,
-      maxColumns: 15,
+      rowLength: 100,
+      maxColumns: 20,
       editable: true,
    });
 
@@ -48,19 +48,30 @@ export default function Products() {
    const [rowCountState, setRowCountState] = React.useState(
       pageInfo?.totalRowCount || 0
    );
-
+   const [coordinates, setCoordinates] = React.useState({
+      rowIndex: 0,
+      colIndex: 0,
+    });
    React.useEffect(() => {
       setRowCountState((prevRowCountState) =>
          pageInfo?.totalRowCount !== undefined
             ? pageInfo?.totalRowCount
             : prevRowCountState
       );
-   }, [pageInfo?.totalRowCount, setRowCountState]);
 
+   }, [pageInfo?.totalRowCount, setRowCountState]);
+   React.useEffect(() => {
+      const { rowIndex, colIndex } = coordinates;
+      apiRef.current.scrollToIndexes(coordinates);
+      const id = gridExpandedSortedRowIdsSelector(apiRef)[rowIndex];
+      const column = gridVisibleColumnDefinitionsSelector(apiRef)[colIndex];
+      apiRef.current.setCellFocus(id, column.field);
+    }, [apiRef, coordinates]);
    return (
       <div className={s.container}>
          <div style={{ height: 400, width: "100%" }}>
             <DataGrid
+             apiRef={apiRef}
                {...data}
                initialState={{
                   ...data.initialState,

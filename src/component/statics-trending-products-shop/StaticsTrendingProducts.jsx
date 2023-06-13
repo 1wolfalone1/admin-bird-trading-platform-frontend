@@ -15,7 +15,8 @@ export default function StaticsTrendingProducts() {
    }, []);
    const getStaticTrending = async () => {
       try {
-         const response = await api.get('/shop-owner');
+         const response = await api.get('/shop-owner/line-chart');
+         console.log(response)
          const data = await response.data;
          console.log(data);
          setStaticTreding(data);

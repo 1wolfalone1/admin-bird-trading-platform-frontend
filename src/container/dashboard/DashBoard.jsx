@@ -27,7 +27,7 @@ export default function DashBoard() {
    return (
       <div className={s.container}>
          <div className={s.summaryTotal}>
-            <Grid2 container padding={0} spacing={"3rem"}>
+            <Grid2 container padding={0} spacing={"3rem"} >
                <Grid2 xs={4}>
                   <SummaryTotalShop />
                </Grid2>
@@ -40,7 +40,7 @@ export default function DashBoard() {
             </Grid2>
          </div>
          <div className={s.chart}>
-            <Grid2 container   padding={0} spacing={"3rem"}>
+            <Grid2 container   padding={0} spacing={"3rem"} height={'100%'}>
                <Grid2 xs={7} >
                   <StaticsTrendingProducts />
                </Grid2>
