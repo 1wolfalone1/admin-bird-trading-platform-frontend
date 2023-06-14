@@ -2,10 +2,11 @@ import clsx from "clsx";
 import s from "./summaryTotalShop.module.scss";
 import React from "react";
 import TrendingDownIcon from "@mui/icons-material/TrendingDown";
+import MovingIcon from "@mui/icons-material/Moving";
 import SummaryChartShop from "../chart/summary-chart/SummaryChartShop";
 import { motion } from "framer-motion";
 import { useId } from "react";
-export default function SummaryTotalShop() {
+export default function SummaryTotalShop({ data }) {
    const id = useId();
    const animation = {
       init: {
@@ -27,16 +28,30 @@ export default function SummaryTotalShop() {
          className={clsx(s.container, "box-shadow")}
          key={id}
       >
-         <div className={s.metric}>
-            <h4>Total order</h4>
-            <span>432</span>
-            <span>
-               13% <TrendingDownIcon />
-            </span>
-         </div>
-         <div className={s.chart}>
-            <SummaryChartShop />
-         </div>
+         {data ? (
+            <>
+               <div className={s.metric}>
+                  <h4>Total order</h4>
+                  <span>{data.total}</span>
+                  <span>
+                     {data.percent >= 0 ? (
+                        <>
+                           {data.percent}% <MovingIcon />
+                        </>
+                     ) : (
+                        <>
+                           {data.percent}% <TrendingDownIcon />
+                        </>
+                     )}
+                  </span>
+               </div>
+               <div className={s.chart}>
+                  <SummaryChartShop data={data.barChartDtoList} />
+               </div>
+            </>
+         ) : (
+            ""
+         )}
       </motion.div>
    );
 }

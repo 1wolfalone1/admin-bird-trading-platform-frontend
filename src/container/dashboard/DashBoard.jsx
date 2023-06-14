@@ -13,6 +13,7 @@ import SummaryTotalShop from "../../component/summary-total-shop/SummaryTotalSho
 import StaticsTrendingProducts from "../../component/statics-trending-products-shop/StaticsTrendingProducts";
 import StaticsPriceByCategory from "../../component/statics-price-category-pie-chart-shop/StaticsPriceByCategory";
 import { api } from "../../api/api";
+import { data } from './../../component/chart/summary-chart/mock';
 
 const breadCrumbPath = [
    breadCrumbs.DASH_BOARD,
@@ -23,19 +24,36 @@ const breadCrumbPath = [
 
 export default function DashBoard() {
    useBreadCrumb(breadCrumbPath);
-  
+   const [priceBarDataShop, setPriceBarDataShop] = useState();
+   const [orderBarDataShop, setOrderBarDataShop] = useState();
+   useEffect(() => {
+      getBarData();
+   }, []);
+   const getBarData = async () => {
+      try {
+         const res = await api.get('/shop-owner/bar-chart/price');
+         const res2 = await api.get('/shop-owner/bar-chart/order');
+         const data2 = await res2.data;
+         const data = await res.data;
+         console.log(data);
+         setPriceBarDataShop(data)
+         setOrderBarDataShop(data2);
+      }catch(e) {
+         console.error(e);
+      }
+   }
    return (
       <div className={s.container}>
          <div className={s.summaryTotal}>
             <Grid2 container padding={0} spacing={"3rem"} >
                <Grid2 xs={4}>
-                  <SummaryTotalShop />
+                  <SummaryTotalShop data={orderBarDataShop} type='order'/>
                </Grid2>
                <Grid2 xs={4}>
-                  <SummaryTotalShop />
+                  <SummaryTotalShop data={priceBarDataShop} type='price'/>
                </Grid2>
                <Grid2 xs={4}>
-                  <SummaryTotalShop />
+                  <SummaryTotalShop data={orderBarDataShop} type='review'/>
                </Grid2>
             </Grid2>
          </div>

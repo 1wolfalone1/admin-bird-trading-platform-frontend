@@ -1,89 +1,84 @@
 import { breadCrumbs } from "../../config/constant";
 import s from "./products.module.scss";
-import React from "react";
+import React, { useEffect } from "react";
 import useBreadCrumb from "../../custom-hook/useBreadCrumb";
-import { DataGrid, gridExpandedSortedRowIdsSelector, gridVisibleColumnDefinitionsSelector, useGridApiRef } from "@mui/x-data-grid";
-import { createFakeServer, useDemoData } from "@mui/x-data-grid-generator";
+
+import ProductsDataGridShop from "../../component/data-grid/products-data-grid-shop/ProductsDataGridShop";
+import {
+   Button,
+   FormControl,
+   FormControlLabel,
+   InputLabel,
+   MenuItem,
+   OutlinedInput,
+   Select,
+} from "@mui/material";
+import clsx from "clsx";
+import { useDispatch } from "react-redux";
+import sideBarSlice, { typeMenu } from "../../redux/sideBarSlice";
+import { useNavigate } from "react-router-dom";
 const breadCrumbPath = [breadCrumbs.PRODUCTS];
-const rows = [
-  { id: 1, col1: "Hello", col2: "World" },
-  { id: 2, col1: "DataGridPro", col2: "is Awesome" },
-  { id: 3, col1: "MUI", col2: "is Amazing" },
-];
-const columns = [
-  {
-     field: "col1",
-     headerName: "Column 1",
-     type: "number",
-     flex: 1,
-     editable: true,
-  },
-  { field: "col2", headerName: "Column 2", width: 500, editable: true },
-];
-const SERVER_OPTIONS = {
-  useCursorPagination: false,
+const MenuProps = {
+   disableScrollLock: true,
+   PaperProps: {
+      style: {
+         maxHeight: "19rem",
+         color: "red",
+         fontSize: "3rem",
+      },
+   },
 };
-const { useQuery, ...data } = createFakeServer({}, SERVER_OPTIONS);
+
+const selectStyle = {
+   fontSize: "1.6rem",
+};
 
 export default function Products() {
+   const navigate = useNavigate();
    useBreadCrumb(breadCrumbPath);
-   const apiRef = useGridApiRef();
-   const { data } = useDemoData({
-      dataSet: "Commodity",
-      rowLength: 100,
-      maxColumns: 20,
-      editable: true,
-   });
-
-
-   const [paginationModel, setPaginationModel] = React.useState({
-      page: 0,
-      pageSize: 5,
-   });
-
-   const { isLoading, rows, pageInfo } = useQuery(paginationModel);
-
-   // Some API clients return undefined while loading
-   // Following lines are here to prevent `rowCountState` from being undefined during the loading
-   const [rowCountState, setRowCountState] = React.useState(
-      pageInfo?.totalRowCount || 0
-   );
-   const [coordinates, setCoordinates] = React.useState({
-      rowIndex: 0,
-      colIndex: 0,
-    });
-   React.useEffect(() => {
-      setRowCountState((prevRowCountState) =>
-         pageInfo?.totalRowCount !== undefined
-            ? pageInfo?.totalRowCount
-            : prevRowCountState
-      );
-
-   }, [pageInfo?.totalRowCount, setRowCountState]);
-   React.useEffect(() => {
-      const { rowIndex, colIndex } = coordinates;
-      apiRef.current.scrollToIndexes(coordinates);
-      const id = gridExpandedSortedRowIdsSelector(apiRef)[rowIndex];
-      const column = gridVisibleColumnDefinitionsSelector(apiRef)[colIndex];
-      apiRef.current.setCellFocus(id, column.field);
-    }, [apiRef, coordinates]);
+   const dispatch = useDispatch();
+   useEffect(() => {
+      dispatch(sideBarSlice.actions.changeCurrentActive(typeMenu.PRODUCTS.id));
+   }, []);
    return (
       <div className={s.container}>
-         <div style={{ height: 400, width: "100%" }}>
-            <DataGrid
-             apiRef={apiRef}
-               {...data}
-               initialState={{
-                  ...data.initialState,
-                  pagination: { paginationModel: { pageSize: 5 } },
-               }}
-               pageSizeOptions={[5, 10, 25]}
-               rowCount={rowCountState}
-               loading={isLoading}
-               paginationModel={paginationModel}
-               paginationMode="server"
-               onPaginationModelChange={setPaginationModel}
-            />
+         <div className={s.headerTable}>
+            <h2>Product mananger</h2>
+            <div className={clsx(s.controller, "box-shadow")}>
+               <div className={s.right}></div>
+               <div className={s.left}>
+                  <FormControl color="primary" fullWidth>
+                     <InputLabel
+                        id="demo-multiple-checkbox-label"
+                        sx={{ fontSize: "1.6rem" }}
+                     >
+                        Categories
+                     </InputLabel>
+                     <Select
+                        input={<OutlinedInput label="Categories" />}
+                        renderValue={(selected) => {
+                           const renderValue = selected.join(", ");
+                           return renderValue;
+                        }}
+                        MenuProps={MenuProps}
+                        fullWidth={true}
+                        sx={selectStyle}
+                     >
+                        <MenuItem>dsfasf</MenuItem>
+                     </Select>
+                  </FormControl>
+                  <Button
+                     variant="outlined"
+                     sx={{ width: "200px", height: "50px" }}
+                     onClick={() => navigate(breadCrumbs.CREATE_PRODUCTS.url)}
+                  >
+                     <span>Create products +</span>
+                  </Button>
+               </div>
+            </div>
+         </div>
+         <div style={{ height: "60rem", width: "100%" }}>
+            <ProductsDataGridShop />
          </div>
       </div>
    );

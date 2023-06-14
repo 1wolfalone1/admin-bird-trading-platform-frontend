@@ -25,6 +25,7 @@
     "dayjs": "^1.11.8",
     "formik": "^2.4.1",
     "framer-motion": "^10.12.11",
+    "moment": "^2.29.4",
     "qs": "^6.11.2",
     "react": "^18.2.0",
     "react-cookie": "^4.1.1",
@@ -42,7 +43,7 @@
     "yup": "^1.2.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "set PORT=3001 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

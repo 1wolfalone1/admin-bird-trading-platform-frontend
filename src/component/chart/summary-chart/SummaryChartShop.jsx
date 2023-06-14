@@ -1,6 +1,5 @@
 import { ResponsiveBar } from "@nivo/bar";
-import { data } from "./mock.js";
-
+import {data } from './mock'
 import React from "react";
 import theme from "../../../style/theme.js";
 const legends = [
@@ -29,8 +28,9 @@ const legends = [
    },
 ];
 const themes = {
+   fontSize: '8px',
    axis: {
-      fontSize: "14px",
+      fontSize: "10px",
       tickColor: "#eee",
       ticks: {
          line: {
@@ -62,83 +62,89 @@ const themes = {
       },
    },
 };
-export default function SummaryChartShop() {
+export default function SummaryChartShop({data}) {
+   console.log(data, '------data------------------------------------');
    return (
-      <ResponsiveBar
-         data={data}
-         theme={themes}
-         legends={legends}
-         keys={["hot dog", "burger", "sandwich", "kebab", "fries", "donut"]}
-         indexBy="country"
-         margin={{ top: 10, right: 80, bottom: 30, left: 50 }}
-         padding={0.3}
-         valueScale={{ type: "linear" }}
-         indexScale={{ type: "band", round: true }}
-         colors={{ scheme: "red_yellow_green" }}
-         defs={[
-            {
-               id: "dots",
-               type: "patternDots",
-               background: "inherit",
-               color: "#38bcb2",
-               size: 4,
-               padding: 1,
-               stagger: true,
-            },
-            {
-               id: "lines",
-               type: "patternLines",
-               background: "inherit",
-               color: "#eed312",
-               rotation: -45,
-               lineWidth: 6,
-               spacing: 10,
-            },
-         ]}
-         fill={[
-            {
-               match: {
-                  id: "fries",
-               },
-               id: "dots",
-            },
-            {
-               match: {
-                  id: "sandwich",
-               },
-               id: "lines",
-            },
-         ]}
-         borderColor={{
-            from: "color",
-            modifiers: [["darker", 1.6]],
-         }}
-         axisTop={null}
-         axisRight={null}
-         axisBottom={{
-            tickSize: 5,
-            tickPadding: 5,
-            tickRotation: 0,
-            legend: "country",
-            legendPosition: "middle",
-            legendOffset: 32,
-         }}
-         axisLeft={{
-            tickSize: 5,
-            tickPadding: 5,
-            tickRotation: 0,
-            legend: "food",
-            legendPosition: "middle",
-            legendOffset: -40,
-         }}
-         labelSkipWidth={12}
-         labelSkipHeight={12}
-         labelTextColor="#ffffff"
-         role="application"
-         ariaLabel="Nivo bar chart demo"
-         barAriaLabel={(e) =>
-            e.id + ": " + e.formattedValue + " in country: " + e.indexValue
-         }
-      />
+     <>
+      {data ? (
+          <ResponsiveBar
+          data={data}
+          theme={themes}
+          legends={legends}
+          keys={['birds', 'foods', 'accessories']}
+          indexBy="date"
+          margin={{ top: 10, right: 80, bottom: 30, left: 50 }}
+          padding={0.3}
+          valueScale={{ type: "linear" }}
+          indexScale={{ type: "band", round: true }}
+          colors={{ scheme: "nivo" }}
+          
+          defs={[
+             {
+                id: "dots",
+                type: "patternDots",
+                background: "inherit",
+                color: "#38bcb2",
+                size: 4,
+                padding: 1,
+                stagger: true,
+             },
+             {
+                id: "lines",
+                type: "patternLines",
+                background: "inherit",
+                color: "#eed312",
+                rotation: -45,
+                lineWidth: 6,
+                spacing: 10,
+             },
+          ]}
+          fill={[
+             {
+                match: {
+                   id: "fries",
+                },
+                id: "dots",
+             },
+             {
+                match: {
+                   id: "sandwich",
+                },
+                id: "lines",
+             },
+          ]}
+          borderColor={{
+             from: "color",
+             modifiers: [["darker", 1.6]],
+          }}
+          axisTop={null}
+          axisRight={null}
+          axisBottom={{
+             tickSize: 5,
+             tickPadding: 5,
+             tickRotation: 0,
+             legend: "day in week",
+             legendPosition: "middle",
+             legendOffset: 32,
+          }}
+          axisLeft={{
+             tickSize: 5,
+             tickPadding: 5,
+             tickRotation: 0,
+             legend: "category",
+             legendPosition: "middle",
+             legendOffset: -40,
+          }}
+          labelSkipWidth={12}
+          labelSkipHeight={12}
+          labelTextColor="#000000"
+          role="application"
+          ariaLabel="Nivo bar chart demo"
+          barAriaLabel={(e) =>
+             e.id + ": " + e.formattedValue + " in country: " + e.indexValue
+          }
+       />
+      ) : ''}
+     </>
    );
 }
