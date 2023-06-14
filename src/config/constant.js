@@ -1,53 +1,54 @@
-
-
-
 export const breadCrumbs = {
    DASH_BOARD: {
-      name: 'Dashboard',
-      url: ''
+      name: "Dashboard",
+      url: "",
    },
-   SUMMARY_ORDERS :{
-      name: 'Summary order',
-      url: 'dashboard/summary-order'
+   SUMMARY_ORDERS: {
+      name: "Summary order",
+      url: "dashboard/summary-order",
    },
    ORDER: {
-      name: 'Dashboard',
-      url: 'dashboard'
+      name: "Dashboard",
+      url: "dashboard",
    },
    PRODUCTS: {
-      name: 'Products',
-      url: 'products'
+      name: "Products",
+      url: "products",
    },
+   CREATE_PRODUCTS: {
+      name: "Create product",
+      url: "/create-product",
+   }, 
    BIRDS: {
-      name: 'Birds',
-      url: '/birds'
+      name: "Birds",
+      url: "/birds",
    },
    ACCESSORIES: {
-      name: 'Accessories',
-      url: '/accessories'
+      name: "Accessories",
+      url: "/accessories",
    },
    FOOD: {
-      name: 'Food',
-      url: '/food'
+      name: "Food",
+      url: "/food",
    },
    STAFF: {
-      name: 'Staff',
-      url: '/staff'
+      name: "Staff",
+      url: "/staff",
    },
    REVIEWS: {
-      name: 'Reviews',
-      url: '/reviews'
+      name: "Reviews",
+      url: "/reviews",
    },
    REPORTS: {
-      name: 'Reports',
-      url: '/reports'
+      name: "Reports",
+      url: "/reports",
    },
    SUPPORT: {
-      name: 'Support',
-      url: '/support'
+      name: "Support",
+      url: "/support",
    },
    SETTINGS: {
-      name: 'Settings',
-      url: '/settings'
+      name: "Settings",
+      url: "/settings",
    },
-}
+};
