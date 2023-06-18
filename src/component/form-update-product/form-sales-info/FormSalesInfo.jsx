@@ -23,11 +23,13 @@ const validationSchema = yup.object().shape({
       .number()
       .typeError("Price must be a number")
       .positive("Price must be a positive number")
+      .max(1000000,"Maximum price is 1000000$")
       .required("Price is required"),
    quantity: yup
       .number()
       .typeError("Quantity must be a number")
       .positive("Quantity must be a positive number")
+      .max(1000,"Maximum weight is 1000")
       .required("Quantity is required"),
 });
 export default function FormSalesInfo() {

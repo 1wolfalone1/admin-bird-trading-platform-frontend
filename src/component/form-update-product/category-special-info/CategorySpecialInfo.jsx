@@ -21,6 +21,7 @@ const validationSchemaBirds = yup.object({
       .number()
       .typeError("Age must be a number")
       .positive("Age must be a positive number")
+      .max(100, "Maximum age is 100")
       .required("Age is required"),
    color: yup.string().required("Color is required"),
 });
@@ -30,6 +31,7 @@ const validationSchemaFood = yup.object({
       .number()
       .typeError("Weight must be a number")
       .positive("Weight must be a positive number")
+      .max(10000, "Maximum weight is 10000g")
       .required("Weight is required"),
 });
 
