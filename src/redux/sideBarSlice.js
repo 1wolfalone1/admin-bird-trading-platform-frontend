@@ -89,7 +89,6 @@ const sideBarSlice = createSlice({
          state.currentActive = action.payload;
       },
       changeBreadCrumb: (state, action) => {
-         console.log(action.payload);
          state.breadCrumb = action.payload
          
       }

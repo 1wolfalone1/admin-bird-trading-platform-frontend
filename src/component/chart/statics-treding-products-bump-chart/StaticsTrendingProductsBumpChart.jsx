@@ -14,7 +14,7 @@ const legends = [
       itemHeight: 20,
       itemDirection: "left-to-right",
       itemOpacity: 0.85,
-      itemTextColor: "#ffffff",
+      itemTextColor: "#010101",
       symbolSize: 20,
       effects: [
          {
@@ -31,7 +31,7 @@ const themes = {
    axis: {
       fontSize: "14px",
       text: {
-         fill: "#97ff57",
+         fill: "#0b1d00",
       },
       tickColor: "#eee",
       ticks: {
@@ -39,7 +39,7 @@ const themes = {
             stroke: "#ffdfdf",
          },
          text: {
-            fill: "#97ff57",
+            fill: "#0b1c00",
          },
       },
       legend: {
@@ -54,21 +54,21 @@ const themes = {
       },
       keys: {
          text: {
-            fill: "#ffffff",
+            fill: "#0c0000",
          },
       },
    },
    dots: {
       text: {
-         fill: "#44d5e2",
+         fill: "#281a29",
       },
    },
    grid: {
       line: {
-         stroke: "#483737",
+         stroke: "#7f7f7f",
       },
       text: {
-         fill: "#ffffff",
+         fill: "#0a0a0a",
       },
    },
 };
@@ -92,7 +92,7 @@ export default function StaticsTrendingProductsBumpChart({ data }) {
                   stacked: true,
                   reverse: false,
                }}
-               yFormat=" >-.2f"
+               yFormat=" >-.1f"
                curve="catmullRom"
                axisTop={null}
                axisRight={null}
@@ -112,12 +112,11 @@ export default function StaticsTrendingProductsBumpChart({ data }) {
                   legendOffset: -40,
                   legendPosition: "middle",
                }}
-               colors={{ scheme: "paired" }}
+               colors={{ scheme: "dark2" }}
                pointSize={10}
                pointColor={{ theme: "background" }}
                pointBorderWidth={2}
                pointBorderColor={{ from: "serieColor" }}
-               enablePointLabel={true}
                pointLabelYOffset={-12}
                useMesh={true}
             />

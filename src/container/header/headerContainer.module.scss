@@ -2,7 +2,7 @@
 
 .container {
    height: c.$h-header;
-   background-color: c.$template5;
+   background-color: c.$templateConstrast4;
    position: fixed;
    z-index: 1000;
    top: 1rem;
@@ -34,7 +34,7 @@
          font-weight: 300;
          font-size: 4rem;
          /* f/1 */
-         color: c.$templateConstrast4;
+         color: c.$template5;
       }
    }
    .left {

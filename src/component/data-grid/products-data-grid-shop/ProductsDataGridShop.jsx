@@ -8,6 +8,8 @@ import { MenuItem, Select, TableSortLabel } from "@mui/material";
 import { TableBar } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductTableAndPaging, productTableSelector } from "../../../redux/productsShopSlice";
+import theme from "../../../style/theme";
+import clsx from "clsx";
 const CustomHeader = ({
    field,
    headerName,
@@ -191,7 +193,7 @@ export default function ProductsDataGridShop() {
    const apiRef = useGridApiRef();
 
    return (
-      <div className={s.container}>
+      <div className={clsx(s.container, 'box-shadow')}>
          {tableData ? (
             <DataGrid
                autoPageSize
@@ -217,6 +219,15 @@ export default function ProductsDataGridShop() {
                // paginationModel={paginationModel}
                // paginationMode="server"
                // onPaginationModelChange={setPaginationModel}
+               sx={{
+                  boxShadow: 2,
+                  border: 2,
+                  color: 'hsl(0, 0%, 1%)',
+                  borderColor: 'hsla(74, 100%, 95%, 0)',
+                  '& .MuiDataGrid-cell:hover': {
+                    color: 'primary.main',
+                  },
+                }}
             />
          ) : (
             ""

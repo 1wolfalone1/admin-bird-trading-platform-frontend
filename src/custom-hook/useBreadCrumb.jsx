@@ -9,8 +9,13 @@ import sideBarSlice from "../redux/sideBarSlice";
 
 export default function useBreadCrumb(breadCrumbsPath) {
    const dispatch = useDispatch();
-   console.log(breadCrumbsPath);
    useEffect(() => {
       dispatch(sideBarSlice.actions.changeBreadCrumb(breadCrumbsPath));
+      if (breadCrumbsPath) {
+         const firstBreadCrumb = breadCrumbsPath[0];
+         dispatch(
+            sideBarSlice.actions.changeCurrentActive(firstBreadCrumb?.id)
+         );
+      }
    }, []);
 }

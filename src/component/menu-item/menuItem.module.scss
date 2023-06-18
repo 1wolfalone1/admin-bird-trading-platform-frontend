@@ -1,3 +1,4 @@
+@use '../../style/scss' as c;
 .container {
    display: flex;
    justify-content: flex-start !important;
@@ -18,12 +19,12 @@
 
          /* f/1 */
 
-         color: #cdffa6;
+         color: c.$template5;
       }
    }
 }
 
 .active {
-   background-color: rgb(23, 23, 23) !important;
+   background-color: rgba(95, 95, 95, 0.349) !important;
    pointer-events: none;
 }
