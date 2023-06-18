@@ -33,7 +33,7 @@ import { useRef } from "react";
 
 // Custom CSS for the Quill editor
 const validationSchema = yup.object().shape({
-   type: yup.number().notOneOf([0], "Type must not be equal to 0"),
+   type: yup.number().notOneOf([0], "Type is required!"),
    tag: yup.array().min(1, "Please select at least one tag"),
    description: yup
       .string()
@@ -86,7 +86,7 @@ export default function FormDetailsInfo() {
       validationSchema: validationSchema,
       validateOnChange: true,
       validateOnBlur: true,
-      validationOnMount: true
+      validationOnMount: true,
    });
    useEffect(() => {
       dispatch(
@@ -94,7 +94,7 @@ export default function FormDetailsInfo() {
             form.values
          )
       );
-      form.validateForm(form.values)
+      form.validateForm(form.values);
       dispatch(productDetailsValidateSlice.actions.setDetailsForm(form));
    }, [getForm]);
 
@@ -105,9 +105,9 @@ export default function FormDetailsInfo() {
       dispatch(getListTypes(category));
    }, []);
    useEffect(() => {
-      form.setValues(form.initialValues, false)
+      form.setValues(form.initialValues, false);
    }, [category]);
-
+   console.log(form);
    return (
       <form className={s.container}>
          <h2>Details information</h2>
@@ -151,6 +151,9 @@ export default function FormDetailsInfo() {
                            </MenuItem>
                         ))}
                   </Select>
+                  {form.touched.type && form.errors.type && (
+                     <FormHelperText error>{form.errors.type}</FormHelperText>
+                  )}
                </FieldCustom>
                <FieldCustom
                   title={"Tags of " + getCategoryName(category)}

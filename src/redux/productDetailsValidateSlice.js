@@ -37,7 +37,7 @@ const productDetailsValidateSlice = createSlice({
             voucher: [],
          },
       },
-      getForm: false,
+      getForm: 0,
       imageState: {
          status: true,
          msg: "Need images to create products!",
@@ -78,7 +78,7 @@ const productDetailsValidateSlice = createSlice({
          state.feature.form = action.payload;
       },
       getForm: (state, action) => {
-         state.getForm = !state.getForm;
+         state.getForm = state.getForm + 1;
       },
       setImagesState: (state, action) => {
          state.imageState.status = action.payload;
