@@ -21,6 +21,7 @@ const validationSchemaBirds = yup.object({
       .number()
       .typeError("Age must be a number")
       .positive("Age must be a positive number")
+      .max(100, "Maximum age is 100")
       .required("Age is required"),
    color: yup.string().required("Color is required"),
 });
@@ -30,6 +31,7 @@ const validationSchemaFood = yup.object({
       .number()
       .typeError("Weight must be a number")
       .positive("Weight must be a positive number")
+      .max(10000, "Maximum weight is 10000g")
       .required("Weight is required"),
 });
 
@@ -96,9 +98,19 @@ export default function CategorySpecialInfo({ category }) {
    }, [getForm]);
 
    useEffect(() => {
-      form.setValues(form.initialValues, false);
+      onCategoryChange(category);
+      console.log(category);
    }, [category]);
 
+   const onCategoryChange = async (category) => {
+      const newInitialValue = initialValue(category);
+
+      await form.setValues(newInitialValue); // Update form values with newInitialValue
+     
+      await dispatch(
+         productDetailsValidateSlice.actions.setFeatureCategory(form)
+      );
+   };
    return (
       <>
          {category === 1 && (
@@ -109,8 +121,8 @@ export default function CategorySpecialInfo({ category }) {
                      id="age"
                      name="age"
                      variant="outlined"
-                     value={form.values.age}
-                     onChange={(e) => form.setFieldValue("age", e.target.value)}
+                     value={form.values.age ? form.values.age : ''}
+                     onChange={form.handleChange}
                      onBlur={form.handleBlur}
                      error={form.touched.age && Boolean(form.errors.age)}
                      helperText={form.touched.age && form.errors.age}
@@ -124,10 +136,8 @@ export default function CategorySpecialInfo({ category }) {
                      id="color"
                      name="color"
                      variant="outlined"
-                     value={form.values.color}
-                     onChange={(e) =>
-                        form.setFieldValue("color", e.target.value)
-                     }
+                     value={form.values.color ? form.values.color : ''}
+                     onChange={form.handleChange}
                      onBlur={form.handleBlur}
                      error={form.touched.color && Boolean(form.errors.color)}
                      helperText={form.touched.color && form.errors.color}
@@ -141,7 +151,7 @@ export default function CategorySpecialInfo({ category }) {
                      name="gender"
                      aria-labelledby="demo-radio-buttons-group-label"
                      defaultValue="FEMALE"
-                     value={form.values.gender}
+                     value={form.values.gender ? form.values.gender : ''}
                      onChange={(e) => {
                         form.setFieldValue("gender", e.target.value);
                      }}
@@ -174,10 +184,8 @@ export default function CategorySpecialInfo({ category }) {
                      id="weight"
                      name="weight"
                      variant="outlined"
-                     value={form.values.weight}
-                     onChange={(e) =>
-                        form.setFieldValue("weight", e.target.value)
-                     }
+                     value={form.values.weight? form.values.weight : ''}
+                     onChange={form.handleChange}
                      onBlur={form.handleBlur}
                      error={form.touched.weight && Boolean(form.errors.weight)}
                      helperText={form.touched.weight && form.errors.weight}
@@ -200,10 +208,8 @@ export default function CategorySpecialInfo({ category }) {
                      id="origin"
                      name="origin"
                      variant="outlined"
-                     value={form.values.origin}
-                     onChange={(e) =>
-                        form.setFieldValue("origin", e.target.value)
-                     }
+                     value={form.values.origin?form.values.origin: ''}
+                     onChange={form.handleChange}
                      onBlur={form.handleBlur}
                      error={form.touched.origin && Boolean(form.errors.origin)}
                      helperText={form.touched.origin && form.errors.origin}

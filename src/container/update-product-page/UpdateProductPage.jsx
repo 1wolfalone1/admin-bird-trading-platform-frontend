@@ -60,9 +60,9 @@ export default function UpdateProductPage() {
 
       await detailsForm?.setTouched(setAllValuesToTrue(detailsForm.values));
       await detailsForm?.validateForm(detailsForm.values);
-
+      console.log(feature, '2313123123213');
       await feature?.setTouched(setAllValuesToTrue(feature.values));
-      await feature?.validateForm(detailsForm.values);
+      await feature?.validateForm(feature.values);
 
       await salesForm?.setTouched(setAllValuesToTrue(salesForm.values));
       await salesForm?.validateForm(salesForm.values);
