@@ -30,34 +30,36 @@ html {
     font-size: 8px;
   }
 }
-
+.ql-editor {
+  font-size: 20px;
+}
 // -------------------------------------------------
-.MuiList-root.MuiList-padding.MuiMenu-list {
-  /* From https://css.glass */
-  background: rgba(36, 36, 36, 0.65) !important;
-  /* From https://css.glass */
-  background: rgba(0, 83, 70, 0.47);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(6.7px);
-  -webkit-backdrop-filter: blur(6.7px);
-  border: 1px solid rgba(0, 83, 70, 0.49);
-}
-.MuiPaper-root.MuiMenu-paper.MuiPopover-paper {
-  color: c.$template3 !important;
-  li {
-    color: c.$templateConstrast4;
-  }
-}
-.MuiButtonBase-root.MuiMenuItem-root:hover {
-  background-color: rgba(55, 57, 78, 0.456) !important;
-}
-.MuiMenuItem-root.Mui-selected {
-  background-color: rgba(42, 69, 58, 0.542) !important;
+// .MuiList-root.MuiList-padding.MuiMenu-list {
+//   /* From https://css.glass */
+//   background: rgba(36, 36, 36, 0.65) !important;
+//   /* From https://css.glass */
+//   background: rgba(0, 83, 70, 0.47);
+//   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+//   backdrop-filter: blur(6.7px);
+//   -webkit-backdrop-filter: blur(6.7px);
+//   border: 1px solid rgba(0, 83, 70, 0.49);
+// }
+// .MuiPaper-root.MuiMenu-paper.MuiPopover-paper {
+//   color: c.$template3 !important;
+//   li {
+//     color: c.$templateConstrast4;
+//   }
+// }
+// .MuiButtonBase-root.MuiMenuItem-root:hover {
+//   background-color: rgba(55, 57, 78, 0.456) !important;
+// }
+// .MuiMenuItem-root.Mui-selected {
+//   background-color: rgba(42, 69, 58, 0.542) !important;
 
-}
-.MuiPaper-root.MuiMenu-paper.MuiPopover-paper{ 
-  background-color: #55555500 !important;
-}
+// }
+// .MuiPaper-root.MuiMenu-paper.MuiPopover-paper{ 
+//   background-color: #55555500 !important;
+// }
 // -----------------------------------
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
@@ -117,13 +119,7 @@ button {
   outline: none;
 }
 
-* {
-  caret-color: transparent;
-}
 
-input {
-  caret-color: c.$template1;
-}
 input:-webkit-autofill,
 input:-webkit-autofill:focus {
   transition: background-color 600000s 0s, color 600000s 0s !important;
@@ -165,14 +161,14 @@ a {
 }
 
 .box-shadow {
-  box-shadow: 5px 5px 10px rgba(23, 23, 23, 0.601);
+  box-shadow: 5px 5px 10px rgba(121, 121, 121, 0.398);
 }
 .ripple {
   background-position: center;
   transition: background 0.8s;
 }
 .ripple:hover {
-  background: #0080605a radial-gradient(circle, transparent 1%, #0080605a 1%)
+  background: #64646442 radial-gradient(circle, transparent 1%, #7070705a 1%)
     center/15000%;
   cursor: pointer;
 }
@@ -189,13 +185,6 @@ button {
   outline: none;
 }
 
-* {
-  caret-color: transparent;
-}
-
-input {
-  caret-color: c.$templateConstrast4;
-}
 input:-webkit-autofill,
 input:-webkit-autofill:focus {
   transition: background-color 600000s 0s, color 600000s 0s !important;
@@ -242,4 +231,8 @@ a {
   color: c.$templateConstrast4;
   font-weight: 1000;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.cropper-crop-box {
+  width: 100% ;
 }

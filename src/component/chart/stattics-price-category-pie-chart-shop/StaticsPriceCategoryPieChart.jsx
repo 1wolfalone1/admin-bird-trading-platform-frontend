@@ -4,17 +4,17 @@ import React from "react";
 const legends = [
    {
       dataFrom: "keys",
-      anchor: "bottom-right",
-      direction: "column",
+      anchor: "bottom",
+      direction: "row",
       justify: false,
-      translateX: 120,
-      translateY: 0,
-      itemsSpacing: 2,
+      translateX: 0,
+      translateY: 50,
+      itemsSpacing: 10,
       itemWidth: 100,
       itemHeight: 20,
       itemDirection: "left-to-right",
       itemOpacity: 0.85,
-      itemTextColor: "#ffffff",
+      itemTextColor: "#000000",
       symbolSize: 20,
       effects: [
          {
@@ -33,15 +33,15 @@ const themes = {
       tickColor: "#eee",
       ticks: {
          line: {
-            stroke: "#ababab",
+            stroke: "#f2f1f1",
          },
          text: {
-            fill: "#97ff57",
+            fill: "#ffffff",
          },
       },
       legend: {
          text: {
-            fill: "#ffffff",
+            fill: "#260000",
          },
       },
       domain: {
@@ -57,7 +57,7 @@ const themes = {
    },
    grid: {
       line: {
-         stroke: "#d8d8d8",
+         stroke: "#120000",
       },
    },
 };
@@ -69,7 +69,7 @@ export default function StaticsPriceCategoryPieChart({ data }) {
                data={data}
                theme={themes}
                legends={legends}
-               margin={{ top: 40, right: 90, bottom: 80, left: 100 }}
+               margin={{ top: 40, right: 100, bottom: 80, left: 120 }}
                innerRadius={0.5}
                padAngle={0.7}
                cornerRadius={3}
@@ -79,8 +79,9 @@ export default function StaticsPriceCategoryPieChart({ data }) {
                   from: "color",
                   modifiers: [["darker", 0.2]],
                }}
+               colors={{ scheme: "dark2" }}
                arcLinkLabelsSkipAngle={10}
-               arcLinkLabelsTextColor="#c3c3c3"
+               arcLinkLabelsTextColor="#000000"
                arcLinkLabelsThickness={2}
                arcLinkLabelsColor={{ from: "color" }}
                arcLabelsSkipAngle={10}

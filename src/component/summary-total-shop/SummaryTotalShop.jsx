@@ -6,7 +6,7 @@ import MovingIcon from "@mui/icons-material/Moving";
 import SummaryChartShop from "../chart/summary-chart/SummaryChartShop";
 import { motion } from "framer-motion";
 import { useId } from "react";
-export default function SummaryTotalShop({ data }) {
+export default function SummaryTotalShop({ data, type }) {
    const id = useId();
    const animation = {
       init: {
@@ -31,7 +31,7 @@ export default function SummaryTotalShop({ data }) {
          {data ? (
             <>
                <div className={s.metric}>
-                  <h4>Total order</h4>
+                  <h4>Total {type}</h4>
                   <span>{data.total}</span>
                   <span>
                      {data.percent >= 0 ? (
