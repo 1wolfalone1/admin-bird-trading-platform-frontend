@@ -3,20 +3,21 @@ import s from "./sideBar.module.scss";
 import React from "react";
 import clsx from "clsx";
 import MenuItem from "../../component/menu-item/MenuItem";
-import { typeMenu } from './../../redux/sideBarSlice';
+import { typeMenu } from "./../../redux/sideBarSlice";
+import { useSelector } from "react-redux";
+import { userInfoSliceSelector } from "../../redux/userInfoSlice";
 
 export default function SideBar() {
+   const userInfo = useSelector(userInfoSliceSelector);
+   console.log(userInfo);
    return (
       <div className={clsx(s.container, "box-shadow")}>
          <div className={s.adminInfo}>
             <div className={s.image}>
-               <img
-                  src="https://th.bing.com/th/id/OIP.p9591Rzm4uDVLBW-HTHXEgHaHa?pid=ImgDet&rs=1"
-                  alt=""
-               />
+               <img src={userInfo.info?.avatarImgUrl} alt="" />
             </div>
             <div className={s.name}>
-               <span>Cao Nhat Thien</span>
+               <span>{userInfo.info?.shopName}</span>
             </div>
          </div>
          <div className={s.controls}>

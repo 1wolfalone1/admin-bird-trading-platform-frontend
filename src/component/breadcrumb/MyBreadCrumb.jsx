@@ -7,14 +7,17 @@ import { Breadcrumbs } from '@mui/material';
 import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
 import { v4 } from "uuid";
-const CustomBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
+let CustomBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
    // Add your desired styles here]
    '& .MuiBreadcrumbs-separator': {
      fontSize: '1.6rem', // Adjust the font size as per your requirement
    },
  }));
 export default function MyBreadCrumb() {
-   const breadCrumbs = useSelector(getBreadCrumbSelector);
+   console.log('--------------------------------------------------------q1')
+   
+   let breadCrumbs = useSelector(getBreadCrumbSelector);
+   console.log('--------------------------------------------------------q2')
    return <div className={s.container}>
       <CustomBreadcrumbs>
          {breadCrumbs ? breadCrumbs?.map((breadCrumb, i) => (

@@ -40,10 +40,7 @@ const CustomHeader = ({
 export default function ProductsDataGridShop() {
    const tableData = useSelector(productTableSelector);
    const dispatch = useDispatch();
-   useEffect(() => {
-      console.log(tableData)
-      dispatch(getProductTableAndPaging(1))
-   }, []);
+ 
    const columns = [
       {
          field: "id",
@@ -57,35 +54,7 @@ export default function ProductsDataGridShop() {
          headerClassName: "super-app-theme--header",
          headerAlign: "center",
          headerName: "Name",
-         width: 150,
-      },
-      {
-         field: "category",
-         headerClassName: "super-app-theme--header",
-         headerAlign: "center",
-         headerName: "Category",
-         width: 150,
-         renderCell: (params) => {
-            const categoryId = params.value;
-            let categoryText = "";
-
-            switch (categoryId) {
-               case 1:
-                  categoryText = "Birds";
-                  break;
-               case 2:
-                  categoryText = "Food";
-                  break;
-               case 3:
-                  categoryText = "Accessories";
-                  break;
-               default:
-                  categoryText = "";
-                  break;
-            }
-
-            return categoryText;
-         },
+         width: 300,
       },
       {
          field: "price",
@@ -93,34 +62,6 @@ export default function ProductsDataGridShop() {
          headerAlign: "center",
          headerName: "Price",
          width: 80,
-      },
-
-      {
-         field: "listTag",
-         headerName: "List Tag",
-         headerClassName: "super-app-theme--header",
-         headerAlign: "center",
-         width: "200",
-         renderCell: (params) => {
-            return (
-               <>
-                  {params.value ? (
-                     <Select
-                        value={params.value[0]?.id}
-                        sx={{ width: "21rem" }}
-                     >
-                        {params.value.map((option, i) => (
-                           <MenuItem value={option.id} key={option.id}>
-                              {option.name}
-                           </MenuItem>
-                        ))}
-                     </Select>
-                  ) : (
-                     "Not defined"
-                  )}
-               </>
-            );
-         },
       },
       {
          field: "quantity",
@@ -152,7 +93,6 @@ export default function ProductsDataGridShop() {
          headerClassName: "super-app-theme--header",
          headerAlign: "center",
          type: "number",
-         width: 80,
       },
       {
          field: "star",
@@ -160,7 +100,6 @@ export default function ProductsDataGridShop() {
          headerClassName: "super-app-theme--header",
          headerAlign: "center",
          type: "number",
-         width: 80,
       },
       {
          field: "totalReviews",
@@ -168,7 +107,7 @@ export default function ProductsDataGridShop() {
          headerClassName: "super-app-theme--header",
          headerAlign: "center",
          type: "number",
-         width: 80,
+         width: 150
       },
       {
          field: "createDate",
