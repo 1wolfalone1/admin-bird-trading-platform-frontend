@@ -86,7 +86,7 @@ export const category = {
    },
    FOODS: {
       id: 2,
-      name: "Food",
+      name: "Food",  
       url: "foods",
    },
    ACCESSORIES: {

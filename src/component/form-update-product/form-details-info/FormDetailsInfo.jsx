@@ -30,6 +30,7 @@ import {
 } from "../../../redux/productDetailsSlice";
 import { getListTypes } from "./../../../redux/productDetailsSlice";
 import { useRef } from "react";
+import { api } from "../../../api/api";
 
 // Custom CSS for the Quill editor
 const validationSchema = yup.object().shape({
@@ -98,7 +99,19 @@ export default function FormDetailsInfo() {
       dispatch(productDetailsValidateSlice.actions.setDetailsForm(form));
    }, [getForm]);
 
-   const handleNewTag = () => {};
+   const handleNewTag = async () => {
+      if(newTag) {
+         try {
+            const res = await api.post('shop-owner/tag', {
+               name: newTag
+            }) 
+            const data = await res.data;
+            console.log(data);
+         } catch (e) {
+            console.error(e);
+         }
+      }
+   };
 
    useEffect(() => {
       dispatch(getListTags());
@@ -205,17 +218,20 @@ export default function FormDetailsInfo() {
                   <Box sx={{ display: "flex", gap: "1rem" }}>
                      <TextField
                         id="newTag"
-                        label="New Tag"
                         value={newTag}
                         onChange={(e) => {
                            const value = e.target.value.replace(/[\s\n]/g, ""); // Remove spaces and new lines
                            setNewTag(value);
                         }}
+                        sx={{
+                           input: {
+                              padding: 1
+                           }
+                        }}
                      />
                      <Button
                         onClick={handleNewTag}
                         variant="outlined"
-                        sx={{ fontSize: "2rem" }}
                      >
                         Add+
                      </Button>

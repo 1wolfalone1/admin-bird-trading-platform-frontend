@@ -21,6 +21,12 @@ const productDetailsSlice = createSlice({
    reducers: {
       changeFormRef: (state, action) => {
          state.formRef = action.payload;
+      },
+      addNewtag: (state, action) => {
+         const isExist = state.listTags.some(tag => tag.id === action.payload);
+         if(!isExist) {
+            state.listTags.push(action.payload);
+         }
       }
    },
    // extraReducers: (builder) =>
@@ -76,11 +82,11 @@ export const getListTypes = createAsyncThunk(
       try {
          let res;
          if (type === 1) {
-            res = await api.get("/shop-owner/types/birds");
+            res = await api.get("/types/birds");
          } else if (type === 2) {
-            res = await api.get("/shop-owner/types/food");
+            res = await api.get("/types/food");
          } else {
-            res = await api.get("/shop-owner/types/accessories");
+            res = await api.get("/types/accessories");
          }
          const data = res.data;
          return data;
