@@ -23,9 +23,7 @@ export default function Products() {
    useBreadCrumb(breadCrumbPath);
    const dispatch = useDispatch();
    useEffect(() => {
-      dispatch(getProductTableAndPaging({
-         type: category.BIRDS.url, page: 1
-      }))
+      dispatch(getProductTableAndPaging(1))
    }, []);
    return (
       <div className={s.container}>

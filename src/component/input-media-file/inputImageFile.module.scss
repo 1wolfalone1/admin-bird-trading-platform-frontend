@@ -99,8 +99,9 @@
          justify-content: space-between;
          text-align: center;
          .imagePreview {
-            height: 200px;
-            width: 200px;
+            overflow: hidden;
+            height: 400px;
+            width: 400px;
             border: 1px solid red;
          }
          span {
