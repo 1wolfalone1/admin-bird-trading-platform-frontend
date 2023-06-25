@@ -23,15 +23,36 @@ export const styleFormUpdate = {
 
 export default function FormUpdateProduct() {
    const dispatch = useDispatch();
-   const basicFormRef = useRef()
-   const detailsFormRef = useRef()
-   const salesFormRef = useRef()
+   const basicFormRef = useRef();
+   const detailsFormRef = useRef();
+   const salesFormRef = useRef();
    useEffect(() => {
-      dispatch(productDetailsSlice.actions.changeFormRef({
-            basicRef: basicFormRef,
-            detailsRef: detailsFormRef,
-            salesRef: salesFormRef,
-      }))
+      let isMounted = true;
+
+      if (
+         isMounted &&
+         basicFormRef.current &&
+         detailsFormRef.current &&
+         salesFormRef.current
+      ) {
+         dispatch(
+            productDetailsSlice.actions.changeFormRef({
+               basicRef: basicFormRef.current,
+               detailsRef: detailsFormRef.current,
+               salesRef: salesFormRef.current,
+            })
+         );
+      }
+
+      return () => {
+         dispatch(
+            productDetailsSlice.actions.changeFormRef({
+               basicRef: null,
+               detailsRef:null,
+               salesRef:null,
+            })
+         );// Set isMounted to false during cleanup to prevent further updates
+      };
    }, []);
    return (
       <div className={clsx(s.container)}>
@@ -44,7 +65,6 @@ export default function FormUpdateProduct() {
          <div ref={salesFormRef} className={clsx(s.form, "box-shadow")}>
             <FormSalesInfo />
          </div>
-         
       </div>
    );
 }

@@ -8,6 +8,7 @@ import Products from "./container/product-layout/Products";
 import TestPage from "./container/test-page/TestPage";
 import UpdateProductPage from "./container/update-product-page/UpdateProductPage";
 import "cropperjs/dist/cropper.css";
+import GetToken from "./component/get-token/GetToken";
 
 function App() {
  
@@ -18,6 +19,7 @@ function App() {
             <Route path={breadCrumbs.PRODUCTS.url} element={<Products />} />
             <Route path="create-product" element={<UpdateProductPage />} />
             <Route path="logout" element={<TestPage />} />
+            <Route path="/get-token" element={<GetToken />} />
          </Route>
       </Routes>
    );

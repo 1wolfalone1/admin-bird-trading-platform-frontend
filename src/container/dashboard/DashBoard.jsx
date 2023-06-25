@@ -15,7 +15,7 @@ import StaticsPriceByCategory from "../../component/statics-price-category-pie-c
 import { api } from "../../api/api";
 import { data } from "./../../component/chart/summary-chart/mock";
 
-const breadCrumbPath = [
+let breadCrumbPath = [
    breadCrumbs.DASH_BOARD,
    breadCrumbs.FOOD,
    breadCrumbs.BIRDS,

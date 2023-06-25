@@ -9,6 +9,9 @@ const productShopSlice = createSlice({
          page: 1,
          isLoading: true,
          totalPages: 0,
+         filter: {
+            
+         }
       },
    },
    reducers: {},
@@ -22,6 +25,9 @@ const productShopSlice = createSlice({
 
          .addCase(getProductTableAndPaging.pending, (state, action) => {
             state.productsTable.isLoading = true;
+         })
+         .addCase(getProductTableAndPaging.rejected, (state, action) => {
+            console.log('errrrroorrrrrrrrrrrrrrrrrr')
          }),
 });
 
@@ -29,15 +35,15 @@ export default productShopSlice;
 
 export const getProductTableAndPaging = createAsyncThunk(
    "productShop/getProductTableAndPaging",
-   async (page) => {
-      console.log(page);
+   async (payload ) => {
       try {
-         const res = await api.get("/shop-owner/products/" + page);
+         const res = await api.get(`shop-owner/${payload.type}/pages/${payload.page}`);
          const data = res.data;
          console.log(data);
          return data;
       } catch (err) {
          console.log(err);
+         throw err;
       }
    }
 );
