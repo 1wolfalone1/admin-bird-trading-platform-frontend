@@ -57,7 +57,7 @@ export default function HeaderContainer() {
                         />
                      </Badge>
                   </IconButton>
-                  <IconButton>
+                  {/* <IconButton>
                      <Badge
                         badgeContent={4}
                         color="primary"
@@ -65,7 +65,8 @@ export default function HeaderContainer() {
                      >
                         <SmsIcon sx={badgeStyle.icon} color="template6" />
                      </Badge>
-                  </IconButton>
+                  </IconButton> */}
+                  
                </div>
             </div>
          </div>

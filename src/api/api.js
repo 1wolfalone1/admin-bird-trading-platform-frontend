@@ -4,7 +4,7 @@ import qs  from "qs";
 import { BASE_URL } from "./url_config";
 
 export const api = axios.create({
-   baseURL: `${BASE_URL}`,
+   baseURL: `${process.env.REACT_APP_BASE_URL}`,
    withCredentials: true,
    headers: {
       "Access-Control-Allow-Origin": "*",
