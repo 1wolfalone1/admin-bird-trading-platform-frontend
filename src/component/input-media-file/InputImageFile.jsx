@@ -15,6 +15,7 @@ import { current } from "@reduxjs/toolkit";
 import { v4 } from "uuid";
 import { useEffect } from "react";
 import { dataAsyncUrlToFile } from "../../utils/myUtils";
+import globalConfigSlice from "../../redux/globalConfigSlice";
 export default function InputImageFile({ quantity }) {
    const hiddenFileInput = React.useRef(null);
    const dispatch = useDispatch();
@@ -39,13 +40,17 @@ export default function InputImageFile({ quantity }) {
          );
          cropperRef.isInput = true;
       };
-      if (files[0]) reader?.readAsDataURL(files[0]);
+      if (files[0]) {
+         reader?.readAsDataURL(files[0]);
+      } else {
+      }
    };
    const handleClick = (event) => {
       hiddenFileInput.current.click();
    };
    const ready = (currentEdit) => {
       return async (currentEdit2) => {
+         dispatch(globalConfigSlice.actions.changeBackDropState(true));
          if (typeof cropperRef.current?.cropper !== "undefined") {
             //  cropperRef.current?.cropper.setCanvasData({
             //     top: 0,
@@ -78,11 +83,12 @@ export default function InputImageFile({ quantity }) {
                   })
                );
                cropperRef.isInput = false;
+               dispatch(globalConfigSlice.actions.changeBackDropState(false));
             }
          }
       };
    };
-   
+
    const handleCrop = async () => {
       const dataBase64 = cropperRef.current?.cropper
          ?.getCroppedCanvas()

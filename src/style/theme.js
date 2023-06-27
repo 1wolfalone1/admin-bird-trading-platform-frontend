@@ -15,7 +15,7 @@ const theme = createTheme({
       },
       template5: {
          contrastText: "#24263a",
-         main: "#cdffd8",
+         main: "rgb(253, 255, 236)",
       },
       template1: {
          contrastText: "#ffebeb",
