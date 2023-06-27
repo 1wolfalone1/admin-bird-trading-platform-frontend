@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import { api } from "../api/api";
 
 const productDetailsSlice = createSlice({
@@ -16,18 +16,16 @@ const productDetailsSlice = createSlice({
          basicRef: null,
          detailsRef: null,
          salesRef: null,
-      }
+      },
    },
    reducers: {
       changeFormRef: (state, action) => {
          state.formRef = action.payload;
       },
-      addNewtag: (state, action) => {
-         const isExist = state.listTags.some(tag => tag.id === action.payload);
-         if(!isExist) {
-            state.listTags.push(action.payload);
-         }
-      }
+      addNewTag: (state, action) => {
+         console.log(current(state), action.payload);
+         state.listTags.push(action.payload);
+      },
    },
    // extraReducers: (builder) =>
    //    builder
@@ -58,6 +56,7 @@ export const getListVouchers = createAsyncThunk(
       try {
          const res = await api.get("/shop-owner/promotion-shop");
          const data = res.data;
+         console.log(data, "promotionnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
          return data;
       } catch (err) {
          console.log(err);
@@ -106,4 +105,4 @@ export const getListTagsSelector = (state) =>
    state.productDetailsSlice.listTags;
 export const getListTypesSelector = (state) =>
    state.productDetailsSlice.listTypes;
-export const getFormRefSelector = (state) => state.productDetailsSlice.formRef
+export const getFormRefSelector = (state) => state.productDetailsSlice.formRef;

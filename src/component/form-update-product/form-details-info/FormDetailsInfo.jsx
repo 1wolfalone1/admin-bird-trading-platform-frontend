@@ -23,7 +23,7 @@ import { styleFormUpdate } from "../FormUpdateProduct";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import CategorySpecialInfo from "../category-special-info/CategorySpecialInfo";
-import {
+import productDetailsSlice, {
    getListTags,
    getListTagsSelector,
    getListTypesSelector,
@@ -60,12 +60,14 @@ const QuillWrapper = ({ field, form, ...props }) => {
 };
 
 export default function FormDetailsInfo() {
-   const [newTag, setNewTag] = useState();
+   const [newTag, setNewTag] = useState("");
+   const [responseTag, setResponseTag] = useState();
    const listTags = useSelector(getListTagsSelector);
    const listTypes = useSelector(getListTypesSelector);
    const dispatch = useDispatch();
    const category = useSelector(getCategoryInForm);
    const getForm = useSelector(getFormSelector);
+   const [errorAddTag, setErrorAddTag] = useState("");
    const getCategoryName = (category) => {
       if (category === 1) {
          return "bird";
@@ -100,19 +102,32 @@ export default function FormDetailsInfo() {
    }, [getForm]);
 
    const handleNewTag = async () => {
-      if(newTag) {
+      if (newTag) {
          try {
-            const res = await api.post('shop-owner/tag', {
-               name: newTag
-            }) 
+            const res = await api.post("shop-owner/tag", {
+               name: newTag,
+            });
             const data = await res.data;
-            console.log(data);
+            setResponseTag(data);
+            dispatch(productDetailsSlice.actions.addNewTag(data));
          } catch (e) {
-            console.error(e);
+            if (e?.response?.status === 409) {
+               setErrorAddTag("Tag already exists!");
+            }
          }
       }
    };
-
+   useEffect(() => {
+      const newTagg = responseTag;
+ 
+      if (listTags) {
+         const isExist = listTags.find((tag) => tag.id === responseTag?.id);
+         if (isExist) {
+            form.setFieldValue("tag", [...form.values.tag, responseTag]);
+            setResponseTag("");
+         }
+      }
+   }, [responseTag, JSON.stringify(listTags)]);
    useEffect(() => {
       dispatch(getListTags());
       dispatch(getListTypes(category));
@@ -120,7 +135,11 @@ export default function FormDetailsInfo() {
    useEffect(() => {
       form.setValues(form.initialValues, false);
    }, [category]);
-   console.log(form);
+   const isOptionEqualToValue = (option, value) => {
+      // Customize the equality test based on your data structure
+      return option.id === value.id;
+    };
+    
    return (
       <form className={s.container}>
          <h2>Details information</h2>
@@ -177,6 +196,7 @@ export default function FormDetailsInfo() {
                         <Autocomplete
                            id="tag"
                            multiple
+                           isOptionEqualToValue={isOptionEqualToValue}
                            value={form.values.tag}
                            onBlur={form.handleBlur("tag")}
                            onChange={(event, value) =>
@@ -207,6 +227,7 @@ export default function FormDetailsInfo() {
                               )
                            }
                         />
+
                         {form.touched.tag && form.errors.tag && (
                            <FormHelperText error>
                               {form.errors.tag}
@@ -221,21 +242,23 @@ export default function FormDetailsInfo() {
                         value={newTag}
                         onChange={(e) => {
                            const value = e.target.value.replace(/[\s\n]/g, ""); // Remove spaces and new lines
+                           setErrorAddTag("");
                            setNewTag(value);
                         }}
                         sx={{
                            input: {
-                              padding: 1
-                           }
+                              padding: 1,
+                           },
                         }}
                      />
-                     <Button
-                        onClick={handleNewTag}
-                        variant="outlined"
-                     >
+
+                     <Button onClick={handleNewTag} variant="outlined">
                         Add+
                      </Button>
                   </Box>
+                  <FormHelperText error={errorAddTag ? true : false}>
+                     {errorAddTag}
+                  </FormHelperText>
                   <FormHelperText
                      error={
                         form.touched.category && Boolean(form.errors.category)

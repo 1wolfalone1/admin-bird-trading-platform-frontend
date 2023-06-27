@@ -15,7 +15,7 @@ import {
    TextField,
 } from "@mui/material";
 import { styleFormUpdate } from "../FormUpdateProduct";
-import { getListVoucherSelector } from "../../../redux/productDetailsSlice";
+import { getListVoucherSelector, getListVouchers } from "../../../redux/productDetailsSlice";
 import { useEffect } from "react";
 
 const validationSchema = yup.object().shape({
@@ -68,7 +68,10 @@ export default function FormSalesInfo() {
       form.validateForm(form.values)
       dispatch(productDetailsValidateSlice.actions.setSalesForm(form));
    }, [getForm]);
-
+   useEffect(() => {
+      dispatch(getListVouchers());
+      console.log(listVouchers);
+   }, []);
    return (
       <form className={s.container}>
          <h2>Sales information</h2>
@@ -131,7 +134,7 @@ export default function FormSalesInfo() {
                            renderOption={(props, option, { selected }) => (
                               <li {...props}>
                                  <Checkbox sx={{ mr: 1 }} checked={selected} />
-                                 {option.name}
+                                 {option.name} - {option.discountRate}%
                               </li>
                            )}
                            sx={{ width: "90%" }}
@@ -143,7 +146,7 @@ export default function FormSalesInfo() {
                               />
                            )}
                            options={listVouchers}
-                           getOptionLabel={(option) => option.name}
+                           getOptionLabel={(option) =>  `${option.name} - ${option.discountRate}%`}
                            filterOptions={(options, state) =>
                               options.filter((option) =>
                                  option.name

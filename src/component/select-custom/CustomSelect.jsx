@@ -12,22 +12,22 @@ const MenuProps = {
 
    PaperProps: {
       style: {
-         maxHeight: "19rem",
+         maxHeight: "15rem",
          color: "red",
-         fontSize: "3rem",
+         fontSize: "2rem",
       },
    },
 };
 
 const selectStyle = {
-   fontSize: "1.6rem",
+   fontSize: "1.3rem",
 };
 export default function CustomSelect() {
    return (
       <FormControl color="primary" fullWidth >
          <InputLabel
             id="demo-multiple-checkbox-label"
-            sx={{ fontSize: "1.6rem",  }}
+            sx={{ fontSize: "1.3rem",  }}
          >
             Categories
          </InputLabel>
