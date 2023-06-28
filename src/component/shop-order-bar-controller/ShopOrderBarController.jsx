@@ -14,9 +14,7 @@ export default function ShopOrderBarController() {
    const { tab } = useSelector(getShopOrderSelector);
    const dispatch = useDispatch();
    const navigate = useNavigate();
-   const handleTabValueChange = (e, value) => {
-      dispatch(shopOrderSlice.actions.changeTab(value));
-   };
+
    return (
       <Grid2
          container
@@ -32,7 +30,6 @@ export default function ShopOrderBarController() {
          <Grid2 xs={6} sx={{ display: "flex", alignItems: "center" }}>
             <Tabs
                value={tab}
-               onChange={handleTabValueChange}
                aria-label="basic tabs example"
             >
                <Tab
@@ -47,7 +44,7 @@ export default function ShopOrderBarController() {
                />
             </Tabs>
          </Grid2>
-         <Grid2 sx={6}></Grid2>
+         <Grid2 xs={6}></Grid2>
       </Grid2>
    );
 }

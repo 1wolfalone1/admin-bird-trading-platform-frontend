@@ -1,14 +1,11 @@
 import {
    DataGrid,
-   TableHeader,
    useGridApiRef,
    GridToolbar,
-   GridRowModes,
    useGridApiContext,
 } from "@mui/x-data-grid";
 import s from "./productsDataGridShop.module.scss";
 import React, { useEffect, useState } from "react";
-import { createFakeServer, useDemoData } from "@mui/x-data-grid-generator";
 import { api } from "../../../api/api";
 import moment from "moment/moment";
 import {
@@ -16,62 +13,17 @@ import {
    Input,
    MenuItem,
    Select,
-   TableSortLabel,
-   TextField,
    Tooltip,
    Typography,
 } from "@mui/material";
-import { ConstructionOutlined, TableBar } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import productShopSlice, {
    getProductTableAndPaging,
-   productShopFilterSelector,
    productTableSelector,
 } from "../../../redux/productsShopSlice";
-import theme from "../../../style/theme";
 import clsx from "clsx";
-import { GridEditInputCell } from "@mui/x-data-grid";
-import { category } from "./../../../config/constant";
-const CustomHeader = ({
-   field,
-   headerName,
-   sortable,
-   sortDirection,
-   sortOnClick,
-}) => {
-   return (
-      <TableBar>
-         {sortable ? (
-            <TableSortLabel
-               active={sortDirection !== null}
-               direction={sortDirection}
-               onClick={sortOnClick}
-            >
-               <span style={{ fontSize: "16px", color: "blue" }}>
-                  {headerName}
-               </span>
-            </TableSortLabel>
-         ) : (
-            <span style={{ fontSize: "16px", color: "blue" }}>
-               {headerName}
-            </span>
-         )}
-      </TableBar>
-   );
-};
-const CustomFilter = ({ value, onChange }) => {
-   const handleFilterChange = (event) => {
-      onChange(event.target.value);
-   };
 
-   return (
-      <TextField
-         placeholder="Filter..."
-         value={value}
-         onChange={handleFilterChange}
-      />
-   );
-};
+
 
 export default function ProductsDataGridShop() {
    const tableData = useSelector(productTableSelector);
@@ -187,7 +139,7 @@ export default function ProductsDataGridShop() {
                   columns={columns}
                   rowCount={tableData.totalProduct}
                   rowsPerPageOptions={10}
-                  page={tableData?.page}
+                  page={tableData?.currentPage}
                   rows={tableData?.data}
                   // editMode={isEditingEnabled ? "row" : "none"}
                   slots={{
@@ -197,11 +149,9 @@ export default function ProductsDataGridShop() {
                   loading={tableData?.isLoading}
                   paginationModel={paginationModel}
                   paginationMode="server"
+                  disableColumnMenu
                   onPaginationModelChange={(newPaginationModel) => {
-                     console.log(
-                        newPaginationModel,
-                        "asdfasdjfkhasdkfjhasdkjfaskdf"
-                     );
+               
                      setPaginationModel({
                         ...newPaginationModel,
                         pageSize: 10,

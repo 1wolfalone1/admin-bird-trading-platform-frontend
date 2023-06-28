@@ -14,6 +14,7 @@ export default function ShopStaffPage() {
             <h2>Staff manager</h2>
             <ShopStaffBarController />
          </div>
+         
          <div style={{ height: "60rem", width: "100%" }}>
             <Outlet />
          </div>
