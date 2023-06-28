@@ -25,11 +25,13 @@ import { ConstructionOutlined, TableBar } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import productShopSlice, {
    getProductTableAndPaging,
+   productShopFilterSelector,
    productTableSelector,
 } from "../../../redux/productsShopSlice";
 import theme from "../../../style/theme";
 import clsx from "clsx";
 import { GridEditInputCell } from "@mui/x-data-grid";
+import { category } from "./../../../config/constant";
 const CustomHeader = ({
    field,
    headerName,
@@ -82,6 +84,21 @@ export default function ProductsDataGridShop() {
    const onFilterChange = (filterModel) => {
       // Here you save the data you need from the filter model
       console.log(filterModel, "filter model");
+      let filterObject = filterModel.items[0];
+      console.log(filterObject, "filter object");
+      if (
+         !filterObject ||
+         filterObject.value === undefined ||
+         filterObject.value === ""
+      ) {
+         filterObject = {
+            field: "",
+            value: "",
+            operator: "",
+         };
+      }
+      dispatch(productShopSlice.actions.changeProductSearchInfo(filterObject));
+      dispatch(getProductTableAndPaging(1));
    };
    const handlePageChange = (page) => {
       setPaginationModel((prevPaginationModel) => ({
@@ -95,7 +112,18 @@ export default function ProductsDataGridShop() {
    }, [paginationModel]);
    const handleSortModelChange = React.useCallback((sortModel) => {
       // Here you save the data you need from the sort model
-      console.log(sortModel);
+      if (sortModel[0]) {
+         dispatch(productShopSlice.actions.changeSortDirection(sortModel[0]));
+         dispatch(getProductTableAndPaging(1));
+      } else {
+         dispatch(
+            productShopSlice.actions.changeSortDirection({
+               field: "",
+               sort: "",
+            })
+         );
+         dispatch(getProductTableAndPaging(1));
+      }
    }, []);
    const handleRowChange = (row, id, a, b) => {
       console.log(row, id, a, b);
@@ -110,17 +138,18 @@ export default function ProductsDataGridShop() {
    const handleProcessRowUpdate = async (newRow, oldRow) => {
       // Make the HTTP request to save in the backend
       try {
-         const response = await api.put('/shop-owner/products/quantity', [{
-            id: newRow.id,
-            quantity: newRow.quantity
-         }])
+         const response = await api.put("/shop-owner/products/quantity", [
+            {
+               id: newRow.id,
+               quantity: newRow.quantity,
+            },
+         ]);
          const data = await response.data;
          console.log(data);
-      } catch(e) {
+      } catch (e) {
          console.log(e);
       }
       return newRow;
-
    };
    const handleProcessRowUpdateError = (newRow, oldRow) => {
       console.log(newRow, oldRow);
@@ -173,7 +202,10 @@ export default function ProductsDataGridShop() {
                         newPaginationModel,
                         "asdfasdjfkhasdkfjhasdkjfaskdf"
                      );
-                     setPaginationModel({...newPaginationModel, pageSize: 10});
+                     setPaginationModel({
+                        ...newPaginationModel,
+                        pageSize: 10,
+                     });
                   }}
                   sx={{
                      boxShadow: 2,
@@ -189,59 +221,10 @@ export default function ProductsDataGridShop() {
                ""
             )}
          </div>
-         <div className={clsx(s.container, "box-shadow")}>
-            {/* ...your existing code... */}
-         </div>
       </>
    );
 }
-const CustomFiltera = ({ applyValue, item }) => {
-   const handleFilterChange = (event) => {
-      console.log(event.target.value, item, applyValue);
-      item.value = event.target.value;
-      applyValue(item);
-   };
 
-   return (
-      <Box>
-         <Typography
-            sx={{ padding: "0", fontSize: "1.6rem", lineHeight: "1.6rem" }}
-         >
-            sdf
-         </Typography>
-         <Input
-            placeholder="Filter..."
-            value={item.value}
-            onChange={handleFilterChange}
-         />
-      </Box>
-   );
-};
-const exceptThisSymbols = ["e", "E", "+", "-", "."];
-const operator = {
-   label: "From",
-   value: "from",
-   InputComponent: CustomFiltera,
-   getValueAsString: (value) => value,
-};
-function NameEditInputCell(props) {
-   const { error } = props;
-
-   return (
-      <Tooltip
-         open={!!error}
-         title={"Invalid quantity! Quantity need above 0 and less than 100000"}
-      >
-         <GridEditInputCell
-            {...props}
-            inputProps={{
-               max: 10,
-               min: 0,
-            }}
-         />
-      </Tooltip>
-   );
-}
 function CustomEditComponent(props) {
    const { id, value: valueProp, field, error } = props;
    const [value, setValue] = React.useState(valueProp);
@@ -287,6 +270,87 @@ function CustomEditComponent(props) {
 const renderRatingEditInputCell = (params) => {
    return <CustomEditComponent {...params} />;
 };
+const CustomFiltera = ({ applyValue, item }) => {
+   const handleFilterChange = (event) => {
+      console.log(event.target.value, item, applyValue);
+      let newItem = { ...item, value: event.target.value };
+      applyValue(newItem);
+   };
+
+   return (
+      <Box>
+         <Typography
+            sx={{ padding: "0", fontSize: "1.6rem", lineHeight: "1.6rem" }}
+         >
+            value
+         </Typography>
+         <Input
+            placeholder="Filter..."
+            value={item.value}
+            onChange={handleFilterChange}
+         />
+      </Box>
+   );
+};
+const CustomFilteraStatus = ({ applyValue, item }) => {
+   const handleFilterChange = (event) => {
+      console.log(event.target.value, item, applyValue);
+      let newItem = { ...item, value: event.target.value };
+      applyValue(newItem);
+   };
+
+   return (
+      <Box>
+         <Typography
+            sx={{ padding: "0", fontSize: "1.6rem", lineHeight: "1.6rem" }}
+         >
+            value
+         </Typography>
+         <Select
+            defaultValue={""}
+            value={item.value}
+            onChange={handleFilterChange}
+            sx={{ width: "100%" }}
+            MenuProps={{ disableScrollLock: true }}
+         >
+            <MenuItem value={9}>All</MenuItem>
+            <MenuItem value={1}>Active</MenuItem>
+            <MenuItem value={0}>Inactive</MenuItem>
+            <MenuItem value={-2}>Banned</MenuItem>
+         </Select>
+      </Box>
+   );
+};
+const operatorSelect = {
+   label: "select",
+   value: "=",
+   InputComponent: CustomFilteraStatus,
+   getValueAsString: (value) => value,
+};
+const operatorPriceFrom = {
+   label: ">=",
+   value: ">=",
+   InputComponent: CustomFiltera,
+   getValueAsString: (value) => value,
+};
+const operatorNameContain = {
+   label: "Contain",
+   value: "Contain",
+   InputComponent: CustomFiltera,
+   getValueAsString: (value) => value,
+};
+const operatorTypeContain = {
+   label: "Contain",
+   value: "Contain",
+   InputComponent: CustomFiltera,
+   getValueAsString: (value) => value,
+};
+const operatorIDEqual = {
+   label: "=",
+   value: "=",
+   InputComponent: CustomFiltera,
+   getValueAsString: (value) => value,
+};
 const columns = [
    {
       field: "id",
@@ -294,14 +358,17 @@ const columns = [
       headerAlign: "center",
       headerName: "ID",
       width: 100,
-      filterable: false,
+      filterable: true,
+      filterOperators: [operatorIDEqual],
    },
    {
       field: "name",
       headerClassName: "super-app-theme--header",
       headerAlign: "center",
       headerName: "Name",
-      width: 300,
+      width: 200,
+      filterable: true,
+      filterOperators: [operatorNameContain],
    },
    {
       field: "price",
@@ -310,7 +377,16 @@ const columns = [
       headerName: "Price",
       width: 80,
       filterable: true,
-      filterOperators: [operator],
+      filterOperators: [operatorPriceFrom],
+   },
+   {
+      field: "discountedPrice",
+      headerClassName: "super-app-theme--header",
+      headerAlign: "center",
+      headerName: "Discounted price",
+      width: 120,
+      filterable: true,
+      filterOperators: [operatorPriceFrom],
    },
    {
       field: "quantity",
@@ -335,6 +411,8 @@ const columns = [
       headerName: "Type",
       width: 150,
       renderCell: (params) => params.value?.name || "",
+      filterable: true,
+      filterOperators: [operatorTypeContain],
    },
    {
       field: "status",
@@ -342,14 +420,17 @@ const columns = [
       headerClassName: "super-app-theme--header",
       headerAlign: "center",
       width: 120,
+      filterable: true,
+      sortable: false,
+      filterOperators: [operatorSelect],
       renderCell: (params) => {
-         let statusString = 'Active';
-         if(params.value === 0){
-            statusString = 'Inactive';
-         } else if(params.value === 2){
-            statusString = 'Banned';
+         let statusString = "Active";
+         if (params.value === 0) {
+            statusString = "Inactive";
+         } else if (params.value === 2) {
+            statusString = "Banned";
          }
-         return statusString
+         return statusString;
       },
    },
    {
@@ -358,6 +439,7 @@ const columns = [
       headerClassName: "super-app-theme--header",
       headerAlign: "center",
       type: "number",
+      filterable: false,
    },
    {
       field: "star",
@@ -365,6 +447,7 @@ const columns = [
       headerClassName: "super-app-theme--header",
       headerAlign: "center",
       type: "number",
+      filterable: false,
    },
    {
       field: "totalReviews",
@@ -373,7 +456,7 @@ const columns = [
       headerAlign: "center",
       type: "number",
       width: 150,
-      sortable: false,
+      filterable: false,
    },
    {
       field: "createDate",
@@ -381,7 +464,8 @@ const columns = [
       headerClassName: "super-app-theme--header",
       headerAlign: "center",
       width: 180,
-      sortable: false,
+      filterable: false,
+
       valueFormatter: (params) =>
          moment.utc(params.value).format("DD/MM/YY HH:mm"),
    },
@@ -391,6 +475,7 @@ const columns = [
       headerClassName: "super-app-theme--header",
       headerAlign: "center",
       width: 180,
+      filterable: false,
       valueFormatter: (params) =>
          moment.utc(params.value).format("DD/MM/YY HH:mm"),
    },
