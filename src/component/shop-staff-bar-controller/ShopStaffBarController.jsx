@@ -8,15 +8,14 @@ import shopOrderSlice, {
    getShopOrderSelector,
 } from "../../redux/shopOrderSlice";
 import { useNavigate } from "react-router-dom";
+import { getShopStaffSelector } from "../../redux/shopStaffSlice";
 
 export default function ShopStaffBarController() {
    const theme = useTheme();
-   const { tab } = useSelector(getShopOrderSelector);
+   const { tab } = useSelector(getShopStaffSelector);
    const dispatch = useDispatch();
    const navigate = useNavigate();
-   const handleTabValueChange = (e, value) => {
-      dispatch(shopOrderSlice.actions.changeTab(value));
-   };
+
    return (
       <Grid2
          container
@@ -30,11 +29,7 @@ export default function ShopStaffBarController() {
          }}
       >
          <Grid2 xs={6} sx={{ display: "flex", alignItems: "center" }}>
-            <Tabs
-               value={tab}
-               onChange={handleTabValueChange}
-               aria-label="basic tabs example"
-            >
+            <Tabs value={tab} aria-label="basic tabs example">
                <Tab
                   label={"Staffs"}
                   value={1}
@@ -47,7 +42,7 @@ export default function ShopStaffBarController() {
                />
             </Tabs>
          </Grid2>
-         <Grid2 sx={6}></Grid2>
+         <Grid2 xs={6}></Grid2>
       </Grid2>
    );
 }

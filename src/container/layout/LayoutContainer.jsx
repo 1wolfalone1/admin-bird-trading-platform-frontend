@@ -2,20 +2,31 @@ import Grid from "@mui/material/Unstable_Grid2";
 import s from "./layoutContainer.module.scss";
 import React from "react";
 import SideBar from "../side-bar/SideBar";
-import { Backdrop, Breadcrumbs, CircularProgress, Stack } from "@mui/material";
+import {
+   Alert,
+   AlertTitle,
+   Backdrop,
+   Breadcrumbs,
+   CircularProgress,
+   Collapse,
+   Snackbar,
+   Stack,
+} from "@mui/material";
 import HeaderContainer from "../header/HeaderContainer";
 import { Outlet } from "react-router-dom";
 import { ThemeProvider } from "@emotion/react";
 import theme from "../../style/theme";
 import clsx from "clsx";
 import MyBreadCrumb from "../../component/breadcrumb/MyBreadCrumb";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import globalConfigSlice, {
    globalSliceSelector,
 } from "../../redux/globalConfigSlice";
 
 export default function LayoutContainer() {
    const { openBackDrop } = useSelector(globalSliceSelector);
+   const { snackBar } = useSelector(globalSliceSelector);
+   const dispatch = useDispatch();
    return (
       <ThemeProvider theme={theme}>
          <div
@@ -54,6 +65,33 @@ export default function LayoutContainer() {
          >
             <CircularProgress color="inherit" />
          </Backdrop>
+         <Snackbar
+            open={snackBar?.open}
+            autoHideDuration={3000}
+            onClose={() =>
+               dispatch(
+                  globalConfigSlice.actions.changeSnackBarState({ open: false })
+               )
+            }
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+         >
+            <Collapse in={snackBar?.open}>
+               <Alert
+                  onClose={() =>
+                     dispatch(
+                        globalConfigSlice.actions.changeSnackBarState({
+                           open: false,
+                        })
+                     )
+                  }
+                  severity={snackBar.typeStatus}
+                  variant="filled"
+               >
+                  <AlertTitle>{snackBar.title}</AlertTitle>
+                  {snackBar.message}
+               </Alert>
+            </Collapse>
+         </Snackbar>
       </ThemeProvider>
    );
 }

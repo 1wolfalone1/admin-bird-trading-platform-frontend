@@ -55,7 +55,7 @@ const productShopSlice = createSlice({
             const { data, page } = action.payload;
             state.productsTable.data = data.lists;
             state.productsTable.pageNumber = data.pageNumber;
-            state.productsTable.totalProduct = data.totalProduct;
+            state.productsTable.totalProduct = data.totalElement;
             state.productsTable.isLoading = false;
             state.productsTable.currentPage = page;
          })

@@ -34,7 +34,7 @@ function App() {
             <Route path="get-token" element={<GetToken />} />
             <Route path={breadCrumbs.STAFF.url} element={<ShopStaffPage />} >
                <Route index element={<ShopStaffDataGrid/>}/>
-               <Route path={''} element={<CreateShopStaff/>}/>
+               <Route path={'create-staff'} element={<CreateShopStaff/>}/>
             </Route>
          </Route>
       </Routes>
