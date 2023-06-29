@@ -116,19 +116,19 @@ export default function CategorySpecialInfo({ category }) {
          {category === 1 && (
             <>
                <FieldCustom title={"Age of bird"} isRequired>
-                  <TextField
-                     key={"age"}
-                     id="age"
-                     name="age"
-                     variant="outlined"
-                     value={form.values.age ? form.values.age : ''}
-                     onChange={form.handleChange}
-                     onBlur={form.handleBlur}
-                     error={form.touched.age && Boolean(form.errors.age)}
-                     helperText={form.touched.age && form.errors.age}
-                     color="template7"
-                     sx={styleFormUpdate.textField}
-                  />
+                     <TextField
+                        key={"age"}
+                        id="age"
+                        name="age"
+                        variant="outlined"
+                        value={form.values.age ? form.values.age : ''}
+                        onChange={form.handleChange}
+                        onBlur={form.handleBlur}
+                        error={form.touched.age && Boolean(form.errors.age)}
+                        helperText={form.touched.age && form.errors.age}
+                        color="template7"
+                        sx={styleFormUpdate.textField}
+                     />
                </FieldCustom>
                <FieldCustom title={"Color of bird"} isRequired>
                   <TextField

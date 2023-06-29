@@ -20,10 +20,11 @@ import {
 } from "../../redux/fileControlSlice";
 import ReactPlayer from "react-player";
 import { useState } from "react";
-import { Button } from "@mui/material";
+import { Alert, AlertTitle, Button, Collapse, Snackbar } from "@mui/material";
 import { objectToBlob } from "../../utils/myUtils";
 import axios from "axios";
 import { api } from "../../api/api";
+import globalConfigSlice from "../../redux/globalConfigSlice";
 let breadCrumbPath = [breadCrumbs.PRODUCTS, breadCrumbs.CREATE_PRODUCTS];
 
 export default function UpdateProductPage() {
@@ -35,7 +36,11 @@ export default function UpdateProductPage() {
    const feature = useSelector(getFeatureSelector);
    const salesForm = useSelector(getSalesFormSelector);
    const [getForm, setGetForm] = useState(0);
-
+   const [createStatus, setCreateStatus] = useState({
+      isOpen: false,
+      status: false,
+      message: "",
+   });
    const dispatch = useDispatch();
    const handleSubmit = async () => {
       await dispatch(productDetailsValidateSlice.actions.getForm());
@@ -60,24 +65,18 @@ export default function UpdateProductPage() {
 
       await detailsForm?.setTouched(setAllValuesToTrue(detailsForm.values));
       await detailsForm?.validateForm(detailsForm.values);
-      console.log(feature, '2313123123213');
+
       await feature?.setTouched(setAllValuesToTrue(feature.values));
       await feature?.validateForm(feature.values);
 
       await salesForm?.setTouched(setAllValuesToTrue(salesForm.values));
       await salesForm?.validateForm(salesForm.values);
 
-      console.log(basicForm?.isValid, "1");
-      console.log(detailsForm?.isValid, 2);
-      console.log(feature?.isValid, 3);
-      console.log(salesForm?.isValid, 4);
       const formData = new FormData();
       let count = 0;
       let productData = {};
       if (listImages !== undefined && listImages.length > 0) {
-         console.log(listImages, "listtttttttt");
          listImages.forEach((image) => {
-            console.log(image, "listttttttimageaegasgeagseag");
             formData.append("image", image.file);
          });
          dispatch(productDetailsValidateSlice.actions.setImagesState(true));
@@ -141,31 +140,31 @@ export default function UpdateProductPage() {
          );
       }
       if (salesForm?.isValid) {
+         const listVoucherId = salesForm.values.voucher?.map(
+            (voucher) => voucher.id
+         );
          productData = {
             ...productData,
             price: salesForm.values.price,
             quantity: salesForm.values.quantity,
-            promotionShopId: salesForm.values.voucher,
+            promotionShopId: listVoucherId,
          };
          dispatch(productDetailsValidateSlice.actions.changeErrorFormSales(1));
       } else {
          count++;
          dispatch(productDetailsValidateSlice.actions.changeErrorFormSales(-1));
       }
+      console.log(productData);
       formData.append("data", objectToBlob(productData));
       console.log(JSON.stringify(productData), count);
       if (count === 0) {
-         console.log(formData.getAll("image"));
-         console.log(formData.getAll("video"));
-         console.log(formData.getAll("data"));
          handleCreateProduct(formData);
       }
    };
+
    const handleCreateProduct = async (formData) => {
-      console.log(formData.getAll("image"));
-      console.log(formData.getAll("video"));
-      console.log(formData.getAll("data"));
       try {
+         dispatch(globalConfigSlice.actions.changeBackDropState(true));
          const res = await api.post("/shop-owner/products", formData, {
             headers: {
                "Content-type": "multipart/form-data",
@@ -173,9 +172,23 @@ export default function UpdateProductPage() {
          });
          const data = await res.data;
          console.log(data);
+         dispatch(globalConfigSlice.actions.changeBackDropState(false));
+         setCreateStatus({
+            isOpen: true,
+            status: true,
+            message: "Successfully created product!",
+         });
       } catch (e) {
          console.log(e);
+         setCreateStatus({
+            isOpen: true,
+            status: false,
+            message:
+               "Something went wrong that can't add new product! Try again",
+         });
+         dispatch(globalConfigSlice.actions.changeBackDropState(false));
       }
+      dispatch(globalConfigSlice.actions.changeBackDropState(false));
    };
    return (
       <div className={s.container}>
@@ -204,6 +217,33 @@ export default function UpdateProductPage() {
                Save
             </Button>
          </div>
+         <Snackbar
+            open={createStatus.isOpen}
+            autoHideDuration={3000}
+            onClose={() =>
+               setCreateStatus((state) => {
+                  return { ...state, isOpen: false };
+               })
+            }
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+         >
+            <Collapse in={createStatus.isOpen}>
+               <Alert
+                  onClose={() =>
+                     setCreateStatus((state) => {
+                        return { ...state, isOpen: false };
+                     })
+                  }
+                  severity={createStatus.status ? "success" : "error"}
+                  variant="filled"
+               >
+                  <AlertTitle>
+                     {createStatus.status ? "Success" : "Error"}
+                  </AlertTitle>
+                  {createStatus.message}
+               </Alert>
+            </Collapse>
+         </Snackbar>
       </div>
    );
 }

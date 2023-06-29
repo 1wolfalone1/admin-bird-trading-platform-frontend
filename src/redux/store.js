@@ -10,6 +10,8 @@ import productDetailsValidateSlice from "./productDetailsValidateSlice";
 import messageSlice from './messageSlice';
 
 import globalConfigSlice from "./globalConfigSlice";
+import shopOrderSlice from "./shopOrderSlice";
+import shopStaffSlice from "./shopStaffSlice";
 const persistConfig = {
    key: "root",
    version: 1,
@@ -20,7 +22,10 @@ const persistConfig = {
       "productShopSlice",
       "fileControlSlice",
       "productDetailsValidateSlice",
-      'productDetailsSlice',
+      "productDetailsSlice",
+      "globalConfigSlice",
+      "shopOrderSlice",
+      "shopStaffSlice"
    ],
 };
 const reducer = combineReducers({
@@ -32,7 +37,9 @@ const reducer = combineReducers({
    fileControlSlice: fileControlSlice.reducer,
    productDetailsValidateSlice: productDetailsValidateSlice.reducer,
    messageSlice: messageSlice.reducer,
-   globalConfigSlice: globalConfigSlice.reducer
+   globalConfigSlice: globalConfigSlice.reducer,
+   shopOrderSlice: shopOrderSlice.reducer,
+   shopStaffSlice: shopStaffSlice.reducer,
 });
 // this ensures your redux state is saved to persisted storage whenever it changes
 // we pass this to the store

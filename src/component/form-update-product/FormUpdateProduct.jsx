@@ -10,8 +10,10 @@ import productDetailsSlice from "../../redux/productDetailsSlice";
 export const styleFormUpdate = {
    textField: {
       width: "90%",
+    
       input: {
-         padding: "1rem",
+      },
+      label: {
       },
    },
    select: {
@@ -48,10 +50,10 @@ export default function FormUpdateProduct() {
          dispatch(
             productDetailsSlice.actions.changeFormRef({
                basicRef: null,
-               detailsRef:null,
-               salesRef:null,
+               detailsRef: null,
+               salesRef: null,
             })
-         );// Set isMounted to false during cleanup to prevent further updates
+         ); // Set isMounted to false during cleanup to prevent further updates
       };
    }, []);
    return (

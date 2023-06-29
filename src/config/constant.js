@@ -65,7 +65,7 @@ export const CATEGORY = [
    {
       id: 1,
       name: "Birds",
-      url: 'birds'
+      url: 'birds',
    },
    {
       id: 2,
@@ -114,3 +114,13 @@ export const userRole = {
       code: 4
    }
 }
+
+
+export const modelStyle = {
+   position: 'absolute',
+   top: '50%',
+   left: '50%',
+   transform: 'translate(-50%, -50%)',
+   width: 'fit-content',
+ };
+ 
