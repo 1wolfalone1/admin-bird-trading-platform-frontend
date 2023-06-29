@@ -45,7 +45,7 @@ export default function UpdateProductsStepper() {
       const headerHeight = 100; // Adjust this value based on your header height
 
       // Calculate the target element's position relative to the document
-      const targetElement = targetRef?.current;
+      const targetElement = targetRef;
       const targetPosition =
          targetElement?.getBoundingClientRect().top + window.pageYOffset;
 

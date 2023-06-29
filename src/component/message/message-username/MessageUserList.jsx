@@ -39,6 +39,7 @@ const MessageUserList = () => {
       setActiveBgColor(id)
   }
   console.log('here is an userList', userList)
+
   return (
     <div  className={clsx(s.container)}>
       <DialogContent sx={{padding:  "0px", overflow: "hidden"}}>
@@ -47,10 +48,12 @@ const MessageUserList = () => {
           </DialogContentText>
           <ul className={clsx(s.memberList)}>
             {userList?.map((item) => (
-              <li  key={item.id} className={clsx(s.memberItem, {[s.activeMemberUser]: item.id === activeBgColor})} onClick={() => getMessage(item.id)} >
+              <li  key={item.userId} 
+                className={clsx(s.memberItem, {[s.activeMemberUser]: item.userId === activeBgColor})} 
+                onClick={() => getMessage(item.userId)} >
                 <div className={clsx(s.member)}>
-                  <img src={item.imgUrl} className={clsx(s.avatarShop)}/>
-                  <span className={clsx(s.shopName)}>{item.shopName}</span>
+                  <img src={item.userAvatar} className={clsx(s.avatarShop)}/>
+                  <span className={clsx(s.shopName)}>{item.userName}</span>
                 </div>
                 {
                   <StyledBadge color="primary" badgeContent={item.unread} className={clsx(s.unread)} sx={item.unread === 0 ? {visibility: 'hidden'} : null}>

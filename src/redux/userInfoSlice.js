@@ -1,19 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-
-
-
+import { userRole } from "../config/constant";
 
 const userInfoSlice = createSlice({
    name: 'userInfoSlice',
    initialState: {
-      userInfor: '',
+      info: {
+
+      }, 
+      role: 0,
    },
    reducers :{
-
+      changeUserInfo: (state, actions) => {
+         return actions.payload;
+      }
    }
 })
 
 export default userInfoSlice;
 
-export const userInfoSelector = (state) =>  state.userInfoSlice.userInfor;
+
+export const userInfoSliceSelector = state => state.userInfoSlice;

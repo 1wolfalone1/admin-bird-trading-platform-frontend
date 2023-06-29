@@ -2,37 +2,39 @@ import React, { useEffect, useRef } from "react";
 import NavigationIcon from "@mui/icons-material/Navigation";
 import MessageContent from "./message-content/MessageContent";
 import MessageUserList from "./message-username/MessageUserList";
-import {
-  Badge,
-  Box,
-  Button,
-  Dialog,
-  Fab,
-  Grid,
-  IconButton,
-  Paper,
-  Popover,
-  ThemeProvider,
-  Typography,
-  createTheme,
-} from "@mui/material";
 import { useState } from "react";
 import s from "./popupmessage.module.scss";
 import clsx from "clsx";
-import { Cancel, Message, Pages } from "@mui/icons-material";
-import styled from "@emotion/styled";
+import { Cancel, Message, Pages, Sms } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import { userInfoSelector } from "../../redux/userInfoSlice";
+import {  userInfoSliceSelector } from "../../redux/userInfoSlice";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
-import messageSlice, { getListUser, messageSelector } from "./messageSlice";
+import messageSlice, { getListUser, messageSelector } from "../../redux/messageSlice";
 import moment from "moment";
+import { userRole } from "../../config/constant";
+import { Badge, Grid, IconButton, Popover } from "@mui/material";
+
+
+const badgeStyle = {
+  badge: {
+     "& .MuiBadge-badge": { fontSize: '1.2rem', height: '1.6rem', minWidth: '1.6rem' },
+  },
+  icon: {
+     fontSize: "3rem",
+     "&:hover": {
+        cursor: "pointer",
+     },
+  },
+};
 
 var stompClient = null;
 const PopupMessage = () => {
+
   const dispatch = useDispatch();
 
-  const { status, info } = useSelector(userInfoSelector);
+  const { role, info } = useSelector(userInfoSliceSelector);
+
   const [anchorEl, setAnchorEl] = useState(null);
 
   const audioRef = useRef(null);
@@ -53,9 +55,9 @@ const PopupMessage = () => {
   const [message, setMessage] = useState();
 
   useEffect(() => {
-    connect(status);
+    connect(role);
     refreshUnread();
-  }, [status]);
+  }, [role]);
 
   useEffect(() => {
     handleReadMessage();
@@ -72,21 +74,22 @@ const PopupMessage = () => {
   }, [isOpen]);
 
   //socket js
-  const connect = (status) => {
+  const connect = (role) => {
     const url = process.env.REACT_APP_URL_WEBSOCKET;
-    if (status === 1) {
+    if (role === userRole.SHOP_OWNER.code || role === userRole.SHOP_STAFF.code) {
       let Sock = new SockJS(`${url}`);
 
       stompClient = over(Sock);
       stompClient.connect({}, onConnected, onError);
     }
   };
-  console.log("status", status);
+  console.log("role ", role);
+  console.log("Here is an infor", info);
 
   const onConnected = () => {
     try {
       stompClient.subscribe(
-        `/chatroom/${info.id}/user`,
+        `/chatroom/${info.id}/shop`,
         onPrivateMessage,
         onError
       );
@@ -108,8 +111,8 @@ const PopupMessage = () => {
   // end socket
 
   const refreshUnread = async () => {
-    if (status === 1) {
-      const data = await dispatch(getListUser());
+    if (role === userRole.SHOP_OWNER.code || role === userRole.SHOP_STAFF.code) {
+      const data = await dispatch(getListUser()); 
       console.log("hereh in status");
       if (data?.payload) {
         const numUnread =
@@ -131,7 +134,7 @@ const PopupMessage = () => {
   const handleClick = (event) => {
     // setAnchorEl(event.currentTarget);
     setOpen(true);
-    dispatch(getListUser());
+    dispatch(getListUser());  
   };
 
   const handleClose = () => {
@@ -139,14 +142,21 @@ const PopupMessage = () => {
     setOpen(false);
     dispatch(messageSlice.actions.setOpenPopup({ isOpen: false }));
   };
-
   //This function use to handle message when user get an message
   const handleMessageArrive = (message, open, currentShopIDSelect) => {
     const updateMessage = {
       ...message,
-      date: moment(message?.date, "YYYY-MM-DD[T]HH:mm:ss.SSS"),
+      date: moment(message?.date).format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
     };
+    
     if (open) {
+      const user = {
+        userId: message.userID,
+        channelId: 1,
+        userName: message.senderName,
+        userAvatar: message.userAvatar,
+        unread: 1,
+      }
       // also need update the out side
       setUnread(numberUnread);
       // update unread in user list
@@ -157,6 +167,7 @@ const PopupMessage = () => {
           currentShopIDSelect: currentShopIDSelect,
         })
       );
+      dispatch(messageSlice.actions.addUserIntoUserList({user: user}));
       console.log("here is an curent shop id select", currentShopIDSelect);
     } else {
       console.log("open ne", open);
@@ -215,18 +226,18 @@ const PopupMessage = () => {
 
   return (
     <>
-      {status == 1 && (
+      {(role === userRole.SHOP_OWNER.code || role === userRole.SHOP_STAFF.code) && (
         <div className={clsx(s.container)}>
           <IconButton
             onClick={handleClick}
-            className={clsx(s.btnchat)}
+            sx={badgeStyle.badge}
           >
               <Badge
                 badgeContent={unread}
                 color="primary"
                 sx={badgeStyle.badge}
               >
-                <SmsIcon sx={badgeStyle.icon} color="template6" />
+                <Sms sx={badgeStyle.icon} color="template6" />
               </Badge>
           </IconButton>
           <Popover

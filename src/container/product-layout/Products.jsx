@@ -1,4 +1,4 @@
-import { breadCrumbs } from "../../config/constant";
+import { breadCrumbs, category } from "../../config/constant";
 import s from "./products.module.scss";
 import React, { useEffect } from "react";
 import useBreadCrumb from "../../custom-hook/useBreadCrumb";
@@ -13,20 +13,17 @@ import {
    OutlinedInput,
    Select,
 } from "@mui/material";
-import clsx from "clsx";
-import { useDispatch } from "react-redux";
-import sideBarSlice, { typeMenu } from "../../redux/sideBarSlice";
-import { useNavigate } from "react-router-dom";
 import ProductShopPageController from "../../component/products-shop-page-controller/ProductShopPageController";
-const breadCrumbPath = [breadCrumbs.PRODUCTS];
+import { useDispatch } from "react-redux";
+import { getProductTableAndPaging } from "../../redux/productsShopSlice";
+let breadCrumbPath = [breadCrumbs.PRODUCTS];
 
 
 export default function Products() {
-   const navigate = useNavigate();
    useBreadCrumb(breadCrumbPath);
    const dispatch = useDispatch();
    useEffect(() => {
-      dispatch(sideBarSlice.actions.changeCurrentActive(typeMenu.PRODUCTS.id));
+      dispatch(getProductTableAndPaging(1))
    }, []);
    return (
       <div className={s.container}>

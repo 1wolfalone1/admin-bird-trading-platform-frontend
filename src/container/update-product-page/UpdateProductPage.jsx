@@ -24,7 +24,7 @@ import { Button } from "@mui/material";
 import { objectToBlob } from "../../utils/myUtils";
 import axios from "axios";
 import { api } from "../../api/api";
-const breadCrumbPath = [breadCrumbs.PRODUCTS, breadCrumbs.CREATE_PRODUCTS];
+let breadCrumbPath = [breadCrumbs.PRODUCTS, breadCrumbs.CREATE_PRODUCTS];
 
 export default function UpdateProductPage() {
    useBreadCrumb(breadCrumbPath);

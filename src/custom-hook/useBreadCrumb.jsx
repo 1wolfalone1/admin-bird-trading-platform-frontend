@@ -10,6 +10,7 @@ import sideBarSlice from "../redux/sideBarSlice";
 export default function useBreadCrumb(breadCrumbsPath) {
    const dispatch = useDispatch();
    useEffect(() => {
+      
       dispatch(sideBarSlice.actions.changeBreadCrumb(breadCrumbsPath));
       if (breadCrumbsPath) {
          const firstBreadCrumb = breadCrumbsPath[0];

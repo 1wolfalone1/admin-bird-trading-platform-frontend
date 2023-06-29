@@ -1,4 +1,4 @@
-@use "../../style/" as c;
+@use "../../../style/scss/" as c;
 
 .container {   
     display: flex;
@@ -38,7 +38,6 @@
     .memberItem {
         display: flex;
         align-items: center;
-        justify-content: center;
         &:hover {
             background-color: #dcdada;
         }
@@ -59,7 +58,8 @@
             max-height: 30%;
             max-width: 80%;
             .avatarShop {
-                max-width: 30%;
+                // max-width: 30%;
+                width: 50px;
                 border-radius: 50%;
             }
     

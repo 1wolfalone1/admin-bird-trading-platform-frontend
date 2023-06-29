@@ -65,13 +65,52 @@ export const CATEGORY = [
    {
       id: 1,
       name: "Birds",
+      url: 'birds'
    },
    {
       id: 2,
       name: "Food",
+      url: 'foods'
    },
    {
       id: 3,
       name: "Accessories",
+      url: 'accessories'
    },
 ];
+export const category = {
+   BIRDS: {
+      id: 1,
+      name: "Birds",
+      url: "birds",
+   },
+   FOODS: {
+      id: 2,
+      name: "Food",  
+      url: "foods",
+   },
+   ACCESSORIES: {
+      id: 3,
+      name: "Accessories",
+      url: "accessories",
+   },
+};
+
+export const userRole = {
+   GUEST: {
+      code: 0,
+   },
+   USER: {
+      code: 1
+   },
+   SHOP_STAFF: {
+      code: 2,
+
+   },
+   SHOP_OWNER: {
+      code: 3
+   },
+   ADMIN: {
+      code: 4
+   }
+}

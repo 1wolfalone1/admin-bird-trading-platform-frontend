@@ -5,7 +5,7 @@ import React, { useEffect, useRef } from 'react'
 import s from './messageContent.module.scss'
 import { useDispatch, useSelector } from 'react-redux'
 import messageSlice, { messageSelector, sendMessage } from '../../../redux/messageSlice';
-import { userInfoSelector } from '../../../redux/global/userInfoSlice'
+import { userInfoSliceSelector } from '../../../redux/userInfoSlice';
 import moment from 'moment';
 import { Form, Formik, useFormik } from 'formik'
 import * as Yup from 'yup';
@@ -27,7 +27,7 @@ const MessageContent = () => {
 
   const {messageList, currentShopIDSelect, userList, unread} = useSelector(messageSelector)
 
-  const {info} = useSelector(userInfoSelector)
+  const {info} = useSelector(userInfoSliceSelector)
 
   const currentDate = moment().format('YYYY-MM-DD');
 
@@ -70,7 +70,7 @@ const MessageContent = () => {
       ...values,
       id: uni,
       date: moment().format('YYYY-MM-DD[T]HH:mm:ss.SSSZ'),
-      shopID: currentShopIDSelect,
+      userID: currentShopIDSelect,
     }; 
     resetForm();
     dispatch(messageSlice.actions.addMessage({  message: updatedValues }));
@@ -86,7 +86,7 @@ const MessageContent = () => {
         .required("Need to be write some thing")
   });
 
-  console.log(currentShopIDSelect, "day la shop is")
+  console.log(messageList.messageListData, "day la shop is")
   return (
     <div className={clsx(s.container)}>
         <span className={clsx(s.shopName)}>
@@ -97,7 +97,7 @@ const MessageContent = () => {
             <ul className={clsx(s.messageList)} ref={containerRef}>
                 <div className={clsx(s.messagecontainer)}>
                   {messageList.messageListData?.map(item => (
-                  <li className={item.userID != info.id ? clsx(s.messageItem) : clsx(s.messageItemSelf)} key={item.id}>
+                  <li className={item.shopID != info.id ? clsx(s.messageItem) : clsx(s.messageItemSelf)} key={item.id}>
                     <div className={clsx(s.messageData)}>                    
                       {item.content}
                       <span className={clsx(s.messageTime)}>
@@ -115,9 +115,9 @@ const MessageContent = () => {
         {/* <div > */}
         <Formik initialValues={{
           date: 0,
-          senderName: SENDER_NAME.USER,
-          shopID: currentShopIDSelect,
-          userID: info.id,
+          senderName: SENDER_NAME.SHOP,
+          shopID: info.id,
+          userID: currentShopIDSelect,
           status: MESSAGE_SATUS.SEND,
           content: '',
           id: 0,

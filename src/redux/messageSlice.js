@@ -16,6 +16,7 @@ const messageSlice = createSlice({
             messageList: {
                 messageListData: [],
                 pageNumber: 1,
+                currentPageNumber:0,
             }
         }
     },
@@ -35,7 +36,7 @@ const messageSlice = createSlice({
           , action.payload.id)
           var numberRead = 0;
             const updatedUserList = action.payload.userList.map(item => {
-                if (item.id === action.payload.id) {
+                if (item.userId === action.payload.id) {
                   //get number unread
                   numberRead = item.unread;
                   console.log('have jum in here number read', numberRead);
@@ -81,11 +82,10 @@ const messageSlice = createSlice({
         },
         updateMessagePopoverOpenUser: (state, action) => {
           const message = action.payload.message;
-        
           // Update the unread message count for each user in userList
           if (state.message.messageList.messageListData?.length === 0) {
             const updatedUserList = action.payload.userList.map((item) => {
-              if (item.id === message.shopID) {
+              if (item.userId === message.userID) {
                 // Update the unread count
                 const unread = item.unread + 1;
                 return {
@@ -108,11 +108,11 @@ const messageSlice = createSlice({
             // ...
             //Handle message arrive is have the same shop id with shop id
             const currentShopID = action.payload.currentShopIDSelect;   
-            if(currentShopID === message.shopID) {
+            if(currentShopID === message.userID) {
               const updatedMessageListData = [...state.message.messageList.messageListData, message];
 
               const updatedUserList = action.payload.userList.map((item) => {
-                if (item.id === currentShopID) {
+                if (item.userId === currentShopID) {
                   // Update the unread count
                   const unread = item.unread + 1;
                   return {
@@ -138,7 +138,7 @@ const messageSlice = createSlice({
             }else {
               //Handle message arrive is not have the same shop id with shop id
               const updatedUserList = action.payload.userList.map((item) => {
-                if (item.id === message.shopID) {
+                if (item.userId === message.userID) {
                   // Update the unread count
                   const unread = item.unread + 1;
                   return {
@@ -159,17 +159,19 @@ const messageSlice = createSlice({
             }
           }
         },
-        addShopIntoUserList: (state, action) => {
-          const { shop,  } = action.payload;
-          console.log(shop, "shop");
+        addUserIntoUserList: (state, action) => {
+          const { user,  } = action.payload;
+          console.log(user, "user");
           
-          const existShop = state.message.userList.find(item => item.id === shop.id);
+          const existShop = state.message.userList.find(item => item.userId === user.userId);
           console.log("here is an so sanh", existShop);
           
           if (!existShop) {
             console.log('co vao day');
-            const updatedUserList = [shop, ...state.message.userList];
+            const updatedUserList = [user, ...state.message.userList];
             return { ...state, message: { ...state.message, userList: updatedUserList } };
+          }else {
+            state.message.userList?.sort((a, b) => (a.userId === user.userId ? -1 : 1));
           }
           
           return state;
@@ -201,9 +203,9 @@ export const getListUser = createAsyncThunk(
     "message/channel-list",
     async (_, {getState}) => {
         const state = getState();
-        const userInfo = state.userInfoSlice.info
+        const userInfo = state.userInfoSlice.info;
         try {
-        const res = await api.get(`/users/${userInfo?.id}/channels`);
+        const res = await api.get(`/shop-owner/${userInfo?.id}/channels`);
           const data = res.data;
           return data;
         //   dispatch(getListUserSuccess(res.data));
@@ -215,11 +217,14 @@ export const getListUser = createAsyncThunk(
 
 export const getListMessage = createAsyncThunk(
     "message/message-list",
-    async (shopId, {getState}) => {
+    async (userid, {getState}) => {
         const state = getState();
         const userInfo = state.userInfoSlice.info;
+        const messageList = state.messageSlice.message.messageList;
+
+        // console.log("pagenumber default ne ", pageNumber);
         try {
-          const res = await api.get(`/users/${userInfo?.id}/messages`, {params: {shopId: shopId}});
+          const res = await api.get(`/shop-owner/${userInfo?.id}/messages`, {params: {userid: userid, pagenumber: 0}});
           const data = res.data;
           return data;
         //   dispatch(getListUserSuccess(res.data));
@@ -243,3 +248,5 @@ export const sendMessage = createAsyncThunk(
 )
 
 export const messageSelector = state => state.messageSlice.message
+
+

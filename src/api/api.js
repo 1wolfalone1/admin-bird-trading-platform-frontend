@@ -14,10 +14,10 @@ api.defaults.paramsSerializer = params => qs.stringify(params, {arrayFormat: 're
 api.interceptors.request.use(
    (config) => {
       if (!config.headers.Authorization) {
-         const token = JSON.parse(localStorage.getItem("token"));
+         const token = localStorage.getItem("token");
          console.log(token, '-------------------------------asdfasdfasdfasdf');
          if (token) {
-            // config.headers.Authorization = `Bearer ${token.accessToken}`;
+            config.headers.Authorization = `Bearer ${token}`;
          }
       }
       console.log(config);
