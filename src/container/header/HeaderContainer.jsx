@@ -7,6 +7,7 @@ import EmailIcon from "@mui/icons-material/Email";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import SmsIcon from "@mui/icons-material/Sms";
 import theme from "../../style/theme";
+import PopupMessage from "../../component/message/PopupMessage";
 const badgeStyle = {
    badge: {
       "& .MuiBadge-badge": { fontSize: '1.2rem', height: '1.6rem', minWidth: '1.6rem' },
@@ -57,7 +58,8 @@ export default function HeaderContainer() {
                         />
                      </Badge>
                   </IconButton>
-                  <IconButton>
+                  <PopupMessage/>
+                  {/* <IconButton>
                      <Badge
                         badgeContent={4}
                         color="primary"
@@ -65,7 +67,8 @@ export default function HeaderContainer() {
                      >
                         <SmsIcon sx={badgeStyle.icon} color="template6" />
                      </Badge>
-                  </IconButton>
+                  </IconButton> */}
+                  
                </div>
             </div>
          </div>
