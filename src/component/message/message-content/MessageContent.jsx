@@ -4,12 +4,13 @@ import clsx from 'clsx'
 import React, { useEffect, useRef } from 'react'
 import s from './messageContent.module.scss'
 import { useDispatch, useSelector } from 'react-redux'
-import messageSlice, { messageSelector, sendMessage } from '../../../redux/messageSlice';
+import messageSlice, { getListMessageOlder, messageSelector, sendMessage } from '../../../redux/messageSlice';
 import { userInfoSliceSelector } from '../../../redux/userInfoSlice';
 import moment from 'moment';
 import { Form, Formik, useFormik } from 'formik'
 import * as Yup from 'yup';
 import { v4 as uuidv4 } from 'uuid';
+import theme from '../../../style/theme'
 
 const SENDER_NAME = {
   USER: 'user',
@@ -60,7 +61,9 @@ const MessageContent = () => {
   // }, []);
 
   const scrollToBottom = () => {
-    containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    if(currentShopIDSelect !== -1) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    }
   };
 
   //validation
@@ -76,6 +79,10 @@ const MessageContent = () => {
     dispatch(messageSlice.actions.addMessage({  message: updatedValues }));
     dispatch(sendMessage(updatedValues));
     dispatch(messageSlice.actions.setReadMessage({userList: userList, id: currentShopIDSelect})); 
+    const user = {
+      userId: currentShopIDSelect
+    };
+    dispatch(messageSlice.actions.addUserIntoUserList({user: user}))
     console.log("here is curren shop id select: ", currentShopIDSelect);
   };
 
@@ -86,77 +93,104 @@ const MessageContent = () => {
         .required("Need to be write some thing")
   });
 
-  console.log(messageList.messageListData, "day la shop is")
+  const showMoreOlderMessage = async () => {
+    dispatch(messageSlice.actions.changeCurretNumberMessagePaing({number: 1}));
+    const data = await dispatch(getListMessageOlder(currentShopIDSelect));
+    console.log(data, "data ne")
+    dispatch(messageSlice.actions.updateListMessage({lists: data?.payload?.lists}))
+  }
+  console.log(messageList?.totalPage, "day la total page")
+  console.log(messageList.currentPageNumber, "day la current page number")
   return (
-    <div className={clsx(s.container)}>
-        <span className={clsx(s.shopName)}>
-          {userList?.find(item => item.id === currentShopIDSelect)?.shopName || <>Shop name</>}
-        </span>
-      
-        <div className={clsx(s.messageContent)}>
-            <ul className={clsx(s.messageList)} ref={containerRef}>
-                <div className={clsx(s.messagecontainer)}>
-                  {messageList.messageListData?.map(item => (
-                  <li className={item.shopID != info.id ? clsx(s.messageItem) : clsx(s.messageItemSelf)} key={item.id}>
-                    <div className={clsx(s.messageData)}>                    
-                      {item.content}
-                      <span className={clsx(s.messageTime)}>
-                        {moment(currentDate).isSameOrBefore(moment(item.date, 'YYYY-MM-DD'))
-                          ? moment(item.date).format('LT') 
-                          : moment(item.date).format('DD/MM/YYYY') 
-                        }
-                      </span>
+    <> 
+      {currentShopIDSelect !== -1 && 
+      <div className={clsx(s.container)}>
+          <span className={clsx(s.shopName)}>
+            {userList?.find(item => item.userId === currentShopIDSelect)?.userName || <>User name</>}
+          </span>
+        
+          <div className={clsx(s.messageContent)}>
+              <ul className={clsx(s.messageList)} ref={containerRef}>
+                {messageList?.totalPage > 0 &&
+                 (messageList?.totalPage - 1 !== messageList.currentPageNumber) &&
+                  <Button sx={{textAlign: 'center',
+                  width: '100%',
+                  fontFamily: 'Segoe UI, Roboto, Oxygen',
+                  color: theme.palette.template3.main,
+                  backgroundColor: theme.palette.table.main,
+                  '&:hover': {
+                    color: theme.palette.table.main, 
+                    backgroundColor: theme.palette.template3.main
+                  }
+                  }}
+                  onClick={showMoreOlderMessage}
+                  >
+                  View more
+                  </Button>
+                }
+                  <div className={clsx(s.messagecontainer)}>
+                    {messageList.messageListData?.map(item => (
+                    <li className={item.shopID != info.id ? clsx(s.messageItem) : clsx(s.messageItemSelf)} key={item.id}>
+                      <div className={clsx(s.messageData)}>                    
+                        {item.content}
+                        <span className={clsx(s.messageTime)}>
+                          {moment(currentDate).isSameOrBefore(moment(item.date, 'YYYY-MM-DD'))
+                            ? moment(item.date).format('LT') 
+                            : moment(item.date).format('DD/MM/YYYY') 
+                          }
+                        </span>
+                      </div>
+                    </li>
+                    ))}    
+                  </div>        
+              </ul>
+          </div>
+          {/* <div > */}
+          <Formik initialValues={{
+            date: 0,
+            senderName: SENDER_NAME.SHOP,
+            shopID: info.id,
+            userID: currentShopIDSelect,
+            status: MESSAGE_SATUS.SEND,
+            content: '',
+            id: 0,
+              }}
+                  // enableReinitialize = {true}
+            validationSchema ={validationSchema}
+            validateOnChange = {true}
+            validateOnBlur = {true}
+            onSubmit={handleSendMessage}
+            >
+                  
+            {
+              ({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                isSubmitting,
+                /* and other goodies */
+              }) => (
+                <Form className={clsx(s.wrapperInputSend)}>
+                  <div className={clsx(s.inputBox)}>
+                      <Input className={clsx(s.inputSend)} placeholder='Enter message here'
+                        name='content'
+                        type='text'
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.content}
+                        autoComplete="new-password"
+                      />
                     </div>
-                  </li>
-                  ))}    
-                </div>        
-            </ul>
-        </div>
-        {/* <div > */}
-        <Formik initialValues={{
-          date: 0,
-          senderName: SENDER_NAME.SHOP,
-          shopID: info.id,
-          userID: currentShopIDSelect,
-          status: MESSAGE_SATUS.SEND,
-          content: '',
-          id: 0,
-            }}
-                // enableReinitialize = {true}
-          validationSchema ={validationSchema}
-          validateOnChange = {true}
-          validateOnBlur = {true}
-          onSubmit={handleSendMessage}
-          >
-                
-          {
-            ({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              isSubmitting,
-              /* and other goodies */
-            }) => (
-              <Form className={clsx(s.wrapperInputSend)}>
-                 <div className={clsx(s.inputBox)}>
-                    <Input className={clsx(s.inputSend)} placeholder='Enter message here'
-                      name='content'
-                      type='text'
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values.content}
-                      autoComplete="new-password"
-                    />
-                  </div>
-                  <Button type='submit' disabled={currentShopIDSelect === 0} ><Send className={clsx(s.sendIcon)}></Send></Button>
-              </Form>
-             )}
-        </Formik>
-        {/* </div> */}
-    </div>
+                    <Button type='submit' disabled={currentShopIDSelect === 0} ><Send className={clsx(s.sendIcon)}></Send></Button>
+                </Form>
+              )}
+          </Formik>
+          {/* </div> */}
+      </div>}
+    </>
   )
 }
 

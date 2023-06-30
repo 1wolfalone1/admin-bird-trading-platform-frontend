@@ -38,6 +38,7 @@
     .memberItem {
         display: flex;
         align-items: center;
+        justify-content: space-between;
         &:hover {
             background-color: #dcdada;
         }
@@ -59,7 +60,8 @@
             max-width: 80%;
             .avatarShop {
                 // max-width: 30%;
-                width: 50px;
+                max-width: 50px;
+                min-width: 50px;
                 border-radius: 50%;
             }
     
