@@ -13,7 +13,9 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import productDetailsValidateSlice, {
+   getFeatureSelector,
    getFormSelector,
+   getProductDetailsValidateSelector,
 } from "../../../redux/productDetailsValidateSlice";
 
 const validationSchemaBirds = yup.object({
@@ -56,7 +58,7 @@ const initValue = {
 export default function CategorySpecialInfo({ category }) {
    const dispatch = useDispatch();
    const getForm = useSelector(getFormSelector);
-
+   const {feature, status} = useSelector(getProductDetailsValidateSelector);
    const validationSchema = (category) => {
       if (category === 1) {
          return validationSchemaBirds;
@@ -68,8 +70,8 @@ export default function CategorySpecialInfo({ category }) {
          return validationSchemaAccessories;
       }
    };
-
-   const initialValue = (category) => {
+   
+   let initialValue = (category) => {
       if (category === 1) {
          return initValue.bird;
       }
@@ -80,7 +82,11 @@ export default function CategorySpecialInfo({ category }) {
          return initValue.accessory;
       }
    };
-
+   if(status === 'UPDATE' ){
+      initialValue = () => {
+         return feature.data
+      };
+   }
    const form = useFormik({
       initialValues: initialValue(category),
       validationSchema: validationSchema(category),

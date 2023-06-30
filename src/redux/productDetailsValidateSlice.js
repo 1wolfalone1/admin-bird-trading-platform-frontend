@@ -5,7 +5,10 @@ import {
    current,
 } from "@reduxjs/toolkit";
 import { api } from "../api/api";
-import { getListImagesPreviewSelector } from "./fileControlSlice";
+import {
+   getListImagesForUpdate,
+   getListImagesPreviewSelector,
+} from "./fileControlSlice";
 
 const productDetailsValidateSlice = createSlice({
    name: "productDetailsValidateSlice",
@@ -42,11 +45,12 @@ const productDetailsValidateSlice = createSlice({
          status: true,
          msg: "Need images to create products!",
       },
-      errorForm : {
+      errorForm: {
          basic: 0,
          details: 0,
-         sales: 0
-      }
+         sales: 0,
+      },
+      status: "CREATE",
    },
 
    reducers: {
@@ -88,26 +92,53 @@ const productDetailsValidateSlice = createSlice({
       },
       changeErrorFormDetails: (state, action) => {
          state.errorForm.details = action.payload;
-
       },
       changeErrorFormSales: (state, action) => {
          state.errorForm.sales = action.payload;
       },
-
    },
-   // extraReducers: (builder) =>
-   //    builder
-   //       .addCase(getProductTableAndPaging.fulfilled, (state, action) => {
-   //          state.productsTable.data = action.payload.lists;
-   //          state.productsTable.page = action.payload.pageNumber;
-   //          state.productsTable.isLoading = false;
-   //       })
+   extraReducers: (builder) =>
+      builder
+         .addCase(getProductDetailsById.fulfilled, (state, action) => {
+            const { basicForm, detailsForm, feature, salesForm } =
+               action.payload;
+            state.basicForm.data = basicForm;
+            state.detailsForm.data = detailsForm;
+            state.feature.data = feature;
+            state.salesForm.data = salesForm;
+            state.status = "UPDATE";
+         })
+         .addCase(getProductDetailsById.pending, (state, action) => {})
+         .addCase(getProductDetailsById.rejected, (state, action) => {
+            console.log(action.payload);
+         }),
 });
 
 export default productDetailsValidateSlice;
 
+export const getProductDetailsById = createAsyncThunk(
+   "productDetailsValidateSlice/getProductDetailsById",
+   async (id, { dispatch }) => {
+      try {
+         const res = await api.get("/shop-owner/products/" + id);
+         const data = res.data;
+         console.log(data, "dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+         dispatch(
+            getListImagesForUpdate({
+               listImage: data.listImages,
+               video: data.video,
+            })
+         );
+         return data;
+      } catch (err) {
+         console.error(err);
+         throw err;
+      }
+   }
+);
+
 export const getCategoryInForm = (state) =>
-   state.productDetailsValidateSlice.basicForm.data.category;
+   state.productDetailsValidateSlice.basicForm?.data?.category;
 
 export const getProductValidateStateSelector = (state) =>
    state.productDetailsValidateSlice;
@@ -127,13 +158,16 @@ export const getFormSelector = (state) =>
 export const getImageStateSelector = (state) =>
    state.productDetailsValidateSlice.imageState;
 
-export const getErrorFormSelector = (state) => state.productDetailsValidateSlice.errorForm
+export const getErrorFormSelector = (state) =>
+   state.productDetailsValidateSlice.errorForm;
 
+export const getProductDetailsValidateSelector = (state) =>
+   state.productDetailsValidateSlice;
 export const getIsImageValidateSelector = createSelector(
    getListImagesPreviewSelector,
    (images) => {
       console.log(images);
-      if(images && images.length === 0) {
+      if (images && images.length === 0) {
          return false;
       } else {
          return true;

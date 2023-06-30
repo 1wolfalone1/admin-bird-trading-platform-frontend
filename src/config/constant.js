@@ -22,6 +22,10 @@ export const breadCrumbs = {
       name: "Create product",
       url: "/create-product",
    },
+   UPDATE_PRODUCT: {
+      name: "Update product",
+      url: "products/update-product",
+   },
    BIRDS: {
       name: "Birds",
       url: "/birds",
@@ -36,7 +40,7 @@ export const breadCrumbs = {
    },
    STAFF: {
       name: "Staff",
-      url: "/staff",
+      url: "staff",
       id: 4,
    },
    REVIEWS: {
@@ -121,3 +125,19 @@ export const modelStyle = {
    width: 'fit-content',
  };
  
+
+
+export const orderStatus = {
+   PENDING: {
+      code: 0,
+      string : 'PENDING'
+   },
+   PROCESSING: {
+      code: 1,
+      string : 'PROCESSING'
+   },
+   SHIPPED: {
+      code: 2, 
+      string : 'SHIPPED'
+   }
+ }

@@ -12,6 +12,7 @@ import productDetailsValidateSlice, {
    getDetailFormSelector,
    getFeatureSelector,
    getFormSelector,
+   getProductDetailsById,
    getSalesFormSelector,
 } from "../../redux/productDetailsValidateSlice";
 import {
@@ -25,10 +26,18 @@ import { objectToBlob } from "../../utils/myUtils";
 import axios from "axios";
 import { api } from "../../api/api";
 import globalConfigSlice from "../../redux/globalConfigSlice";
-let breadCrumbPath = [breadCrumbs.PRODUCTS, breadCrumbs.CREATE_PRODUCTS];
-
+import { useLocation, useParams } from "react-router-dom";
+let breadCrumbCreatePath = [breadCrumbs.PRODUCTS, breadCrumbs.CREATE_PRODUCTS];
+let breadCrumbUpdatePath = [breadCrumbs.PRODUCTS, breadCrumbs.UPDATE_PRODUCT];
 export default function UpdateProductPage() {
-   useBreadCrumb(breadCrumbPath);
+   const param = useParams();
+   let breadCrumb;
+   if(param.id) {
+      breadCrumb = breadCrumbUpdatePath
+   } else {
+      breadCrumb = breadCrumbCreatePath
+   }
+   useBreadCrumb(breadCrumb, param.id);
    const listImages = useSelector(getListImagesPreviewSelector);
    const video = useSelector(getVideoBlobSelector);
    const basicForm = useSelector(getBasicFormSelector);
@@ -36,12 +45,28 @@ export default function UpdateProductPage() {
    const feature = useSelector(getFeatureSelector);
    const salesForm = useSelector(getSalesFormSelector);
    const [getForm, setGetForm] = useState(0);
+   const location = useLocation();
    const [createStatus, setCreateStatus] = useState({
       isOpen: false,
       status: false,
       message: "",
    });
+
+
+
    const dispatch = useDispatch();
+
+
+   useEffect(() => {
+      console.log(location, 'location')
+      const params = location.pathname.split('/');
+      const id = params[params.length - 1];
+      if(location.pathname.includes(`${breadCrumbs.UPDATE_PRODUCT.url}`)) {
+         console.log(param.id)
+         dispatch(getProductDetailsById(id));
+      }  
+   }, []);
+
    const handleSubmit = async () => {
       await dispatch(productDetailsValidateSlice.actions.getForm());
 
@@ -49,6 +74,7 @@ export default function UpdateProductPage() {
    };
 
    useEffect(() => {
+
       if (getForm !== 0) {
          handleSubmitAfterGetForm();
       }

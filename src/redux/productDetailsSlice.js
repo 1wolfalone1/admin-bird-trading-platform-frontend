@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import { api } from "../api/api";
+import { convertImageUrlToBase64, dataAsyncUrlToFile } from "../utils/myUtils";
+import {v4} from 'uuid';
 
 const productDetailsSlice = createSlice({
    name: "productShopSlice",
@@ -56,7 +58,7 @@ export const getListVouchers = createAsyncThunk(
       try {
          const res = await api.get("/shop-owner/promotion-shop");
          const data = res.data;
-         console.log(data, "promotionnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
+
          return data;
       } catch (err) {
          console.log(err);
@@ -99,6 +101,7 @@ export default productDetailsSlice;
 export const productTableSelector = (state) =>
    state.productShopSlice.productsTable;
 
+export const productDetailsSelector = state => state.productDetailsSlice
 export const getListVoucherSelector = (state) =>
    state.productDetailsSlice.listVouchers;
 export const getListTagsSelector = (state) =>

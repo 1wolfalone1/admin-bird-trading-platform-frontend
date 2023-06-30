@@ -22,8 +22,9 @@ export default function InputImageFile({ quantity }) {
    const openModel = useSelector(getOpenEditSelector);
    const currentEdit = useSelector(getCurrentEditSelector);
    const cropperRef = useRef(null);
+   const [value, setValue] = useState("");
    const onChange = async (e) => {
-      e.preventDefault();
+      console.log(e);
       let files;
       if (e.dataTransfer) {
          files = e.dataTransfer.files;
@@ -39,17 +40,27 @@ export default function InputImageFile({ quantity }) {
             })
          );
          cropperRef.isInput = true;
+         console.log(cropperRef.current.cropper);
       };
       if (files[0]) {
          reader?.readAsDataURL(files[0]);
       } else {
       }
+      console.log(e, "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+      setValue("");
    };
    const handleClick = (event) => {
       hiddenFileInput.current.click();
    };
    const ready = (currentEdit) => {
+      console.log(
+         cropperRef.current?.cropper,
+         "asdfasdfkajlsdfhkajs dfkjasdf hjasd hfasdh akjsdasujd fasdf sad "
+      );
       return async (currentEdit2) => {
+         console.log(
+            "asdfasdfkajlsdfhkajs dfkjasdf hjasd hfasdh akjsdasujd fasdf sad "
+         );
          dispatch(globalConfigSlice.actions.changeBackDropState(true));
          if (typeof cropperRef.current?.cropper !== "undefined") {
             //  cropperRef.current?.cropper.setCanvasData({
@@ -66,6 +77,7 @@ export default function InputImageFile({ quantity }) {
                width: 500,
                height: 500,
             });
+            console.log(cropperRef);
             if (cropperRef.isInput) {
                const dataBase64 = cropperRef.current?.cropper
                   ?.getCroppedCanvas()
@@ -83,16 +95,18 @@ export default function InputImageFile({ quantity }) {
                   })
                );
                cropperRef.isInput = false;
-               dispatch(globalConfigSlice.actions.changeBackDropState(false));
             }
          }
+         dispatch(globalConfigSlice.actions.changeBackDropState(false));
       };
    };
 
    const handleCrop = async () => {
+      console.log(cropperRef.current?.cropper?.getCroppedCanvas());
       const dataBase64 = cropperRef.current?.cropper
          ?.getCroppedCanvas()
          ?.toDataURL();
+
       const id = currentEdit.id;
       const file = await dataAsyncUrlToFile(
          cropperRef.current?.cropper?.getCroppedCanvas()?.toDataURL(),
@@ -107,6 +121,7 @@ export default function InputImageFile({ quantity }) {
       );
       dispatch(fileControlSlice.actions.openEditor(false));
    };
+
    return (
       <>
          <div
@@ -119,6 +134,7 @@ export default function InputImageFile({ quantity }) {
                <br />({quantity})
             </span>
             <input
+               value={value}
                type="file"
                ref={hiddenFileInput}
                style={{ display: "none" }}
@@ -144,7 +160,8 @@ export default function InputImageFile({ quantity }) {
                         style={{ height: "500px", width: "500px" }}
                         initialAspectRatio={1}
                         preview=".img-preview"
-                        src={currentEdit.src}
+                        crossOrigin="anonymous"
+                        src={currentEdit?.src}
                         ref={cropperRef}
                         aspectRatio={1}
                         viewMode={0}
@@ -152,6 +169,7 @@ export default function InputImageFile({ quantity }) {
                         minCropBoxHeight={100}
                         minCropBoxWidth={100}
                         responsive={true}
+                        checkCrossOrigin={true}
                         checkOrientation={false}
                         modal={true}
                         ready={ready(currentEdit)}
