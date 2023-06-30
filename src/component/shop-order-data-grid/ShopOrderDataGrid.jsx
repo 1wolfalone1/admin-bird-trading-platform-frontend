@@ -450,7 +450,7 @@ const columns = [
       filterOperators: [operatorSelectPromotion],
       renderCell: (params) => {
          const promotions = params.value;
-         console.log(promotions);
+         console.log(promotions, " promotioin nnnnn");
          if (promotions.length === 0) {
             return (
                <Typography>
@@ -469,7 +469,7 @@ const columns = [
                               <Chip
                                  color={"template5"}
                                  variant="outlined"
-                                 label={`${promotion.name} - ${promotion.discountRate}%`}
+                                 label={`${promotion.quantity} x ${promotion.name} - ${promotion.discountRate}%`}
                               />
                            </ListItem>
                         ))}
@@ -483,7 +483,7 @@ const columns = [
                         <Chip
                            color={"table"}
                            variant="outlined"
-                           label={`${promotion.name} - ${promotion.discountRate}%`}
+                           label={`${promotion.quantity} x ${promotion.name} - ${promotion.discountRate}%`}
                         />
                      );
                   })}
