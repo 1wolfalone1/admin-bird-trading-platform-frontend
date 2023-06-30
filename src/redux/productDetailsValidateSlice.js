@@ -9,50 +9,49 @@ import {
    getListImagesForUpdate,
    getListImagesPreviewSelector,
 } from "./fileControlSlice";
-
+const initialState = {
+   basicForm: {
+      form: null,
+      data: {
+         name: "",
+         category: 0,
+      },
+   },
+   detailsForm: {
+      form: null,
+      data: {
+         type: 0,
+         tag: [],
+         description: "",
+      },
+   },
+   feature: {
+      form: null,
+      data: {},
+   },
+   salesForm: {
+      form: null,
+      data: {
+         price: 0,
+         quantity: 0,
+         voucher: [],
+      },
+   },
+   getForm: 0,
+   imageState: {
+      status: true,
+      msg: "Need images to create products!",
+   },
+   errorForm: {
+      basic: 0,
+      details: 0,
+      sales: 0,
+   },
+   status: "CREATE",
+};
 const productDetailsValidateSlice = createSlice({
    name: "productDetailsValidateSlice",
-   initialState: {
-      basicForm: {
-         form: null,
-         data: {
-            name: "",
-            category: 0,
-         },
-      },
-      detailsForm: {
-         form: null,
-         data: {
-            type: 0,
-            tag: [],
-            description: "",
-         },
-      },
-      feature: {
-         form: null,
-         data: {},
-      },
-      salesForm: {
-         form: null,
-         data: {
-            price: 0,
-            quantity: 0,
-            voucher: [],
-         },
-      },
-      getForm: 0,
-      imageState: {
-         status: true,
-         msg: "Need images to create products!",
-      },
-      errorForm: {
-         basic: 0,
-         details: 0,
-         sales: 0,
-      },
-      status: "CREATE",
-   },
-
+   initialState: initialState,
    reducers: {
       handleOnChangeBasicForm: (state, action) => {
          state.basicForm.data = action.payload;
@@ -96,6 +95,9 @@ const productDetailsValidateSlice = createSlice({
       changeErrorFormSales: (state, action) => {
          state.errorForm.sales = action.payload;
       },
+      clearData: (state, action) => {
+         return initialState;
+      },
    },
    extraReducers: (builder) =>
       builder
@@ -122,7 +124,6 @@ export const getProductDetailsById = createAsyncThunk(
       try {
          const res = await api.get("/shop-owner/products/" + id);
          const data = res.data;
-         console.log(data, "dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
          dispatch(
             getListImagesForUpdate({
                listImage: data.listImages,
@@ -166,7 +167,6 @@ export const getProductDetailsValidateSelector = (state) =>
 export const getIsImageValidateSelector = createSelector(
    getListImagesPreviewSelector,
    (images) => {
-      console.log(images);
       if (images && images.length === 0) {
          return false;
       } else {

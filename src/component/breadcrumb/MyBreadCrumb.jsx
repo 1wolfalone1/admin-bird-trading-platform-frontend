@@ -14,10 +14,8 @@ let CustomBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
    },
 }));
 export default function MyBreadCrumb() {
-   console.log("--------------------------------------------------------q1");
 
    let breadCrumbs = useSelector(getBreadCrumbSelector);
-   console.log("--------------------------------------------------------q2");
    return (
       <div className={s.container}>
          <CustomBreadcrumbs>

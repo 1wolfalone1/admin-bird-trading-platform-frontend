@@ -53,7 +53,6 @@ export default function FormSalesInfo() {
          return "accessory";
       }
    };
-   console.log(listVouchers,salesForm, 'voutttttttttttttttttt')
    useEffect(() => {
       if (status === "UPDATE") {
          form.setValues(salesForm.data);
@@ -105,7 +104,7 @@ export default function FormSalesInfo() {
                      id="price"
                      sx={styleFormUpdate.textField}
                      InputProps={{
-                        endAdornment: (
+                        startAdornment: (
                            <InputAdornment position="end">$</InputAdornment>
                         ),
                      }}
@@ -119,6 +118,7 @@ export default function FormSalesInfo() {
                      value={form.values.quantity}
                      onChange={form.handleChange}
                      onBlur={form.handleBlur}
+                     type="money"
                      error={
                         form.touched.quantity && Boolean(form.errors.quantity)
                      }

@@ -13,9 +13,10 @@ import productDetailsValidateSlice, {
    getFeatureSelector,
    getFormSelector,
    getProductDetailsById,
+   getProductValidateStateSelector,
    getSalesFormSelector,
 } from "../../redux/productDetailsValidateSlice";
-import {
+import fileControlSlice, {
    getListImagesPreviewSelector,
    getVideoBlobSelector,
 } from "../../redux/fileControlSlice";
@@ -32,10 +33,10 @@ let breadCrumbUpdatePath = [breadCrumbs.PRODUCTS, breadCrumbs.UPDATE_PRODUCT];
 export default function UpdateProductPage() {
    const param = useParams();
    let breadCrumb;
-   if(param.id) {
-      breadCrumb = breadCrumbUpdatePath
+   if (param.id) {
+      breadCrumb = breadCrumbUpdatePath;
    } else {
-      breadCrumb = breadCrumbCreatePath
+      breadCrumb = breadCrumbCreatePath;
    }
    useBreadCrumb(breadCrumb, param.id);
    const listImages = useSelector(getListImagesPreviewSelector);
@@ -52,19 +53,14 @@ export default function UpdateProductPage() {
       message: "",
    });
 
-
-
    const dispatch = useDispatch();
-
-
+   const { status } = useSelector(getProductValidateStateSelector);
    useEffect(() => {
-      console.log(location, 'location')
-      const params = location.pathname.split('/');
+      const params = location.pathname.split("/");
       const id = params[params.length - 1];
-      if(location.pathname.includes(`${breadCrumbs.UPDATE_PRODUCT.url}`)) {
-         console.log(param.id)
+      if (location.pathname.includes(`${breadCrumbs.UPDATE_PRODUCT.url}`)) {
          dispatch(getProductDetailsById(id));
-      }  
+      }
    }, []);
 
    const handleSubmit = async () => {
@@ -74,7 +70,6 @@ export default function UpdateProductPage() {
    };
 
    useEffect(() => {
-
       if (getForm !== 0) {
          handleSubmitAfterGetForm();
       }
@@ -180,7 +175,6 @@ export default function UpdateProductPage() {
          count++;
          dispatch(productDetailsValidateSlice.actions.changeErrorFormSales(-1));
       }
-      console.log(productData);
       formData.append("data", objectToBlob(productData));
       console.log(JSON.stringify(productData), count);
       if (count === 0) {
@@ -216,6 +210,12 @@ export default function UpdateProductPage() {
       }
       dispatch(globalConfigSlice.actions.changeBackDropState(false));
    };
+   useEffect(() => {
+      return () => {
+         dispatch(productDetailsValidateSlice.actions.clearData());
+         dispatch(fileControlSlice.actions.clearData());
+      };
+   }, []);
    return (
       <div className={s.container}>
          <Grid2 container spacing={4}>
@@ -227,21 +227,43 @@ export default function UpdateProductPage() {
             </Grid2>
          </Grid2>
          <div className={s.control}>
-            <Button
-               variant="outlined"
-               color="template7"
-               sx={{ fontSize: "2.4rem", width: "12rem" }}
-            >
-               Cancel
-            </Button>
-            <Button
-               variant="outlined"
-               color="template8"
-               sx={{ fontSize: "2.4rem", width: "12rem" }}
-               onClick={handleSubmit}
-            >
-               Save
-            </Button>
+            {status === "CREATE" ? (
+               <>
+                  <Button
+                     variant="outlined"
+                     color="template7"
+                     sx={{ fontSize: "2.4rem", width: "12rem" }}
+                  >
+                     Cancel
+                  </Button>
+                  <Button
+                     variant="outlined"
+                     color="template8"
+                     sx={{ fontSize: "2.4rem", width: "12rem" }}
+                     onClick={handleSubmit}
+                  >
+                     Save
+                  </Button>
+               </>
+            ) : (
+               <>
+                  <Button
+                     variant="outlined"
+                     color="template7"
+                     sx={{ fontSize: "2.4rem", width: "12rem" }}
+                  >
+                     Reset
+                  </Button>
+                  <Button
+                     variant="outlined"
+                     color="template8"
+                     sx={{ fontSize: "2.4rem", width: "12rem" }}
+                     onClick={handleSubmit}
+                  >
+                     Update
+                  </Button>
+               </>
+            )}
          </div>
          <Snackbar
             open={createStatus.isOpen}

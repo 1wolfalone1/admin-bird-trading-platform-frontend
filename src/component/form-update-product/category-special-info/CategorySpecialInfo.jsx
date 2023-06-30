@@ -105,7 +105,6 @@ export default function CategorySpecialInfo({ category }) {
 
    useEffect(() => {
       onCategoryChange(category);
-      console.log(category);
    }, [category]);
 
    const onCategoryChange = async (category) => {

@@ -103,7 +103,6 @@ export default function FormDetailsInfo() {
          form.setValues(detailsForm.data)
       }
    }, [detailsForm]);
-   console.log(form, 'detailssssssssssssssssssssssssssssssssssssss');
    useEffect(() => {
       dispatch(
          productDetailsValidateSlice.actions.handleOnChangeDetailsForm(

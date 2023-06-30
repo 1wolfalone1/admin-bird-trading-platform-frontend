@@ -46,8 +46,24 @@ const theme = createTheme({
          contrastText: "#fdfbfb",
       },
       template8: {
-         main: '#bd4f00',
+         main: '#8e3b00',
          contrastText: "#000000",
+      },
+      template9: {
+         main: '#666a5a',
+         contrastText: "#ffffff",
+      },
+      template10: {
+         main: '#858585',
+         contrastText: "#ffffff",
+      },
+      paypal: {
+         main: '#76afef',
+         contrastText: "#000522",
+      },
+      delivery: {
+         main: '#dfdfdf',
+         contrastText: "#202020",
       }
    },
    typography: {
