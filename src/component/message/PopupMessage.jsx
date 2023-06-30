@@ -42,6 +42,8 @@ const PopupMessage = () => {
   const { userList, numberUnread, numRead, currentShopIDSelect, isOpen } =
     useSelector(messageSelector);
 
+  const [newMessage, setNewMessage] = useState(false);
+
   // const [anchorEl, setAnchorEl] = useState(isOpen);
 
   // const open = Boolean(anchorEl);
@@ -57,6 +59,7 @@ const PopupMessage = () => {
   useEffect(() => {
     connect(role);
     refreshUnread();
+    console.log('cho nay nhay 2 phat')
   }, [role]);
 
   useEffect(() => {
@@ -64,9 +67,11 @@ const PopupMessage = () => {
   }, [numRead]);
 
   useEffect(() => {
-    handleMessageArrive(message, open, currentShopIDSelect);
-    handleNewMessage(" ");
-    console.log("Get an mesasge");
+    if(newMessage) {
+      handleMessageArrive(message, open, currentShopIDSelect);
+      handleNewMessage(" ");
+      console.log('hihih lan 1')
+    }
   }, [message]);
 
   useEffect(() => {
@@ -83,8 +88,6 @@ const PopupMessage = () => {
       stompClient.connect({}, onConnected, onError);
     }
   };
-  console.log("role ", role);
-  console.log("Here is an infor", info);
 
   const onConnected = () => {
     try {
@@ -104,19 +107,21 @@ const PopupMessage = () => {
   };
 
   const onPrivateMessage = (payload) => {
-    const message = JSON.parse(payload.body);
-    dispatch(messageSlice.actions.increaseNumberUnread());
-    setMessage(message);
+    if(!newMessage) {
+      const message = JSON.parse(payload.body);
+      setMessage(message);
+      //this line code use to check add message one time
+      setNewMessage(true);
+    }
   };
   // end socket
 
   const refreshUnread = async () => {
     if (role === userRole.SHOP_OWNER.code || role === userRole.SHOP_STAFF.code) {
       const data = await dispatch(getListUser()); 
-      console.log("hereh in status");
       if (data?.payload) {
         const numUnread =
-          data?.payload?.reduce(
+          data?.payload?.lists.reduce(
             (accumulator, user) => accumulator + user.unread,
             0
           ) || 0;
@@ -144,36 +149,41 @@ const PopupMessage = () => {
   };
   //This function use to handle message when user get an message
   const handleMessageArrive = (message, open, currentShopIDSelect) => {
-    const updateMessage = {
-      ...message,
-      date: moment(message?.date).format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
-    };
-    
-    if (open) {
-      const user = {
-        userId: message.userID,
-        channelId: 1,
-        userName: message.senderName,
-        userAvatar: message.userAvatar,
-        unread: 1,
+    if(newMessage) {
+      dispatch(messageSlice.actions.increaseNumberUnread());
+      const updateMessage = {
+        ...message,
+        date: moment(message?.date).format("YYYY-MM-DD[T]HH:mm:ss.SSS"),
+      };
+      
+      if (open) {
+        const user = {
+          userId: message.userID,
+          channelId: 1,
+          userName: message.senderName,
+          userAvatar: message?.userAvatar ? message.userAvatar : 'https://th.bing.com/th/id/OIP.Cl56H6WgxJ8npVqyhefTdQHaHa?pid=ImgDet&rs=1',
+          unread: 1,
+        }
+        // also need update the out side
+        setUnread(numberUnread);
+        // update unread in user list
+        dispatch(
+          messageSlice.actions.updateMessagePopoverOpenUser({
+            userList: userList,
+            message: updateMessage,
+            currentShopIDSelect: currentShopIDSelect,
+          })
+        );
+        dispatch(messageSlice.actions.addUserIntoUserList({user: user}));
+        console.log("here is an curent shop id select", currentShopIDSelect);
+      } else {
+        console.log("open ne", open);
+        console.log("have run funtion handle MessageArrive");
+        setUnread(numberUnread);
       }
-      // also need update the out side
-      setUnread(numberUnread);
-      // update unread in user list
-      dispatch(
-        messageSlice.actions.updateMessagePopoverOpenUser({
-          userList: userList,
-          message: updateMessage,
-          currentShopIDSelect: currentShopIDSelect,
-        })
-      );
-      dispatch(messageSlice.actions.addUserIntoUserList({user: user}));
-      console.log("here is an curent shop id select", currentShopIDSelect);
-    } else {
-      console.log("open ne", open);
-      console.log("have run funtion handle MessageArrive");
-      setUnread(numberUnread);
-    }
+      // check add one time
+      setNewMessage(false);
+    } 
   };
 
   //this function use to reset number unread message of button CHAT NOW
