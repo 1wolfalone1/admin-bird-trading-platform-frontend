@@ -1,18 +1,18 @@
 import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import { v4 } from "uuid";
 import { convertImageUrlToBase64, dataAsyncUrlToFile } from "../utils/myUtils";
-
+const initialState = {
+   listImagesPreview: [],
+   currentEdit: {},
+   isOpenEdit: false,
+   videoPreview: "",
+   videoBlob: "",
+   isVideoOpenEdit: false,
+   errorMessage: "",
+}
 const fileControlSlice = createSlice({
    name: "fileControlSlice",
-   initialState: {
-      listImagesPreview: [],
-      currentEdit: {},
-      isOpenEdit: false,
-      videoPreview: "",
-      videoBlob: "",
-      isVideoOpenEdit: false,
-      errorMessage: "",
-   },
+   initialState: initialState,
    reducers: {
       openVideoEditor: (state, action) => {
          state.isVideoOpenEdit = action.payload;
@@ -62,6 +62,9 @@ const fileControlSlice = createSlice({
       setVideoBlob: (state, action) => {
          state.videoBlob = action.payload;
       },
+      clearData: (state, action) => {
+         return initialState
+      }
    },
    extraReducers: (builder) =>
       builder

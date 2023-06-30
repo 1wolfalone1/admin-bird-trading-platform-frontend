@@ -30,12 +30,13 @@ import {
    getListVouchers,
    productDetailsSelector,
 } from "../../redux/productDetailsSlice";
+import { formatNumber } from "../../utils/myUtils";
 
 export default function ShopOrderDataGrid() {
    const apiRef = useGridApiRef();
    const [paginationModel, setPaginationModel] = useState({
       pageSize: 10, // Default page size
-      page: 1, // Default page number
+      page: 0, // Default page number
    });
    const dispatch = useDispatch();
    const {
@@ -53,7 +54,6 @@ export default function ShopOrderDataGrid() {
          page,
       }));
    };
-   console.log(data);
 
    const handleRowSelectionModelChange = (newRowSelectionModel, a) => {
       console.log(newRowSelectionModel);
@@ -92,9 +92,7 @@ export default function ShopOrderDataGrid() {
    }, []);
    const onFilterChange = (filterModel) => {
       // Here you save the data you need from the filter model
-      console.log(filterModel, "filter model");
       let filterObject = filterModel.items[0];
-      console.log(filterObject, "filter object");
       if (
          !filterObject ||
          filterObject.value === undefined ||
@@ -113,9 +111,8 @@ export default function ShopOrderDataGrid() {
       });
    };
    const handleRowChange = (row) => {
-      console.log(row);
+
    };
-   console.log(data);
    useEffect(() => {
       dispatch(getOrderFilterPaging(paginationModel.page + 1));
    }, [paginationModel]);
@@ -342,10 +339,18 @@ const CustomFilterDate = ({ applyValue, item }) => {
       <>
          <Box display="flex" flexDirection={"column"} gap={1}>
             <Box>
-               <DatePicker label={"From"} onChange={handleFrom} />
+               <DatePicker
+                  label={"From"}
+                  format="DD/MM/YYYY"
+                  onChange={handleFrom}
+               />
             </Box>
             <Box>
-               <DatePicker label={"To"} onChange={handleTo} />
+               <DatePicker
+                  label={"To"}
+                  format="DD/MM/YYYY"
+                  onChange={handleTo}
+               />
             </Box>
          </Box>
       </>
@@ -358,8 +363,8 @@ const operatorDate = {
    getValueAsString: (value) => `${JSON.stringify(value)}`,
 };
 const operatorSelectPromotion = {
-   label: "promotion",
-   value: "=",
+   label: "select",
+   value: "Contain",
    InputComponent: CustomFilterPromotionSelection,
    getValueAsString: (value) => value,
 };
@@ -413,6 +418,7 @@ const columns = [
       headerName: "Total Price",
       type: "number",
       width: 120,
+      valueFormatter: ({ value }) => formatNumber(value),
       filterOperators: [operatorPriceFrom],
       filterable: true,
    },
@@ -423,8 +429,25 @@ const columns = [
       width: 120,
       filterable: true,
       filterOperators: [operatorSelectStatus],
+      valueFormatter: ({ value }) => {
+       
+         return value.status
+      },
       renderCell: (params) => {
-         return params.value.status;
+         let colorTheme = "primary";
+         if (params.value.id === 0) {
+            colorTheme = "template10";
+         }
+         if (params.value.id === 2) {
+            colorTheme = "template9";
+         }
+         return (
+            <Chip
+               color={colorTheme}
+               variant="filled"
+               label={params.value.status}
+            />
+         );
       },
    },
    {
@@ -432,6 +455,7 @@ const columns = [
       headerName: "Shipping Fee",
       type: "number",
       width: 130,
+      valueFormatter: ({ value }) => formatNumber(value),
       filterOperators: [operatorPriceFrom],
       filterable: true,
    },
@@ -441,6 +465,22 @@ const columns = [
       type: "text",
       width: 160,
       filterOperators: [operatorSelectPaymenMethod],
+      renderCell: (params) => {
+         let colorTheme = "success";
+         if (params.value === "PAYPAL") {
+            colorTheme = "paypal";
+         }
+         if (params.value === "DELIVERY") {
+            colorTheme = "delivery";
+         }
+         return (
+            <Chip
+               color={colorTheme}
+               variant="filled"
+               label={params.value}
+            />
+         );
+      },
    },
    {
       field: "promotionsShop",
@@ -448,9 +488,16 @@ const columns = [
       width: 200,
       type: "custom",
       filterOperators: [operatorSelectPromotion],
+      valueFormatter: ({ value }) => {
+         return value
+            .map(
+               (item) =>
+                  `${item.quantity} x ${item.name} - ${item.discountRate}`
+            )
+            .join(", ");
+      },
       renderCell: (params) => {
          const promotions = params.value;
-         console.log(promotions, " promotioin nnnnn");
          if (promotions.length === 0) {
             return (
                <Typography>
@@ -467,7 +514,7 @@ const columns = [
                         {promotions.map((promotion, index) => (
                            <ListItem key={promotion.id}>
                               <Chip
-                                 color={"template5"}
+                                 color={"template4"}
                                  variant="outlined"
                                  label={`${promotion.quantity} x ${promotion.name} - ${promotion.discountRate}%`}
                               />
@@ -477,17 +524,17 @@ const columns = [
                   </>
                }
             >
-               <Box>
+               <Typography noWrap>
                   {promotions.map((promotion) => {
                      return (
                         <Chip
-                           color={"table"}
+                           color={"template8"}
                            variant="outlined"
                            label={`${promotion.quantity} x ${promotion.name} - ${promotion.discountRate}%`}
                         />
                      );
                   })}
-               </Box>
+               </Typography>
             </Tooltip>
          );
       },

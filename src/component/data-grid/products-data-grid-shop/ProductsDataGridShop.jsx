@@ -10,6 +10,7 @@ import { api } from "../../../api/api";
 import moment from "moment/moment";
 import {
    Box,
+   Chip,
    Input,
    MenuItem,
    Select,
@@ -22,6 +23,7 @@ import productShopSlice, {
    productTableSelector,
 } from "../../../redux/productsShopSlice";
 import clsx from "clsx";
+import { formatNumber, formatQuantity } from "../../../utils/myUtils";
 
 export default function ProductsDataGridShop() {
    const tableData = useSelector(productTableSelector);
@@ -51,8 +53,8 @@ export default function ProductsDataGridShop() {
       dispatch(productShopSlice.actions.changeProductSearchInfo(filterObject));
       setPaginationModel({
          pageSize: 10, // Default page size
-         page: 0, 
-      })
+         page: 0,
+      });
    };
 
    useEffect(() => {
@@ -64,8 +66,8 @@ export default function ProductsDataGridShop() {
          dispatch(productShopSlice.actions.changeSortDirection(sortModel[0]));
          setPaginationModel({
             pageSize: 10, // Default page size
-            page: 0, 
-         })
+            page: 0,
+         });
       } else {
          dispatch(
             productShopSlice.actions.changeSortDirection({
@@ -75,12 +77,11 @@ export default function ProductsDataGridShop() {
          );
          setPaginationModel({
             pageSize: 10, // Default page size
-            page: 0, 
-         })
+            page: 0,
+         });
       }
    }, []);
    const handleRowChange = (row) => {
-      console.log(row);
    };
 
    useEffect(() => {
@@ -99,14 +100,12 @@ export default function ProductsDataGridShop() {
             },
          ]);
          const data = await response.data;
-         console.log(data);
       } catch (e) {
          console.log(e);
       }
       return newRow;
    };
    const handleProcessRowUpdateError = (newRow, oldRow) => {
-      console.log(newRow, oldRow);
    };
    const handleRowSelectionModelChange = (newRowSelectionModel) => {
       if (tableData.mode === "view") {
@@ -323,6 +322,7 @@ const columns = [
       headerAlign: "center",
       headerName: "Price",
       width: 80,
+      valueFormatter: ({ value }) => formatNumber(value),
       filterable: true,
       filterOperators: [operatorPriceFrom],
    },
@@ -331,6 +331,7 @@ const columns = [
       headerClassName: "super-app-theme--header",
       headerAlign: "center",
       headerName: "Discounted price",
+      valueFormatter: ({ value }) => formatNumber(value),
       width: 120,
       filterable: false,
    },
@@ -341,7 +342,7 @@ const columns = [
       headerName: "Quantity",
       type: "number",
       width: 120,
-      renderCell: (params) => params.value,
+      valueFormatter: ({ value }) => formatQuantity(value),
       editable: true,
       renderEditCell: renderRatingEditInputCell,
       // preProcessEditCellProps: (params) => {
@@ -358,6 +359,7 @@ const columns = [
       width: 150,
       renderCell: (params) => params.value?.name || "",
       filterable: true,
+      valueFormatter: ({ value }) => value.name,
       filterOperators: [operatorTypeContain],
    },
    {
@@ -370,13 +372,23 @@ const columns = [
       sortable: false,
       filterOperators: [operatorSelect],
       renderCell: (params) => {
+         let colorTheme = "success";
          let statusString = "Active";
          if (params.value === 0) {
+            colorTheme = "template10";
             statusString = "Inactive";
          } else if (params.value === 2) {
             statusString = "Banned";
+            colorTheme = "error";
          }
-         return statusString;
+         return (
+            <Chip
+               color={colorTheme}
+               variant="outlined"
+               sx={{ fontWeight: "1000" }}
+               label={statusString}
+            />
+         );
       },
    },
    {

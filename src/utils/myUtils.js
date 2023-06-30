@@ -34,7 +34,6 @@ export const objectToBlob = (object) => {
 
 export const convertImageUrlToBase64 = async (imageUrl, a) => {
    try {
-      console.log(imageUrl, a);
      const response = await fetch(imageUrl);
      const blob = await response.blob();
      return new Promise((resolve, reject) => {
@@ -48,3 +47,28 @@ export const convertImageUrlToBase64 = async (imageUrl, a) => {
      return null;
    }
  };
+ export const formatNumber = (q) => {
+   if (q === undefined || q ===null || q === "") {
+      q = 0;
+   }
+   return q.toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD",
+   });
+};
+
+export const formatQuantity = q =>  {
+   if (q === undefined || q ===null || q === "") {
+      q = 0;
+   }
+   return q.toLocaleString('en-US');
+}
+
+export const fix2 = (number) => {
+   try {
+      return Math.round(number * 1e2) / 1e2;
+   } catch (e) {
+      console.error('not a number in fix2')
+      return 0;
+   }
+}
