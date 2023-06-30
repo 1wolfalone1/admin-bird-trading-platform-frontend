@@ -15,7 +15,6 @@ import { api } from "../../api/api";
 import { useDispatch } from "react-redux";
 import globalConfigSlice from "../../redux/globalConfigSlice";
 import LoadingButton from "@mui/lab/LoadingButton";
-import shopOrderSlice from "../../redux/shopOrderSlice";
 import shopStaffSlice from "../../redux/shopStaffSlice";
 const validationSchema = yup.object({
    userName: yup.string("").required("Username is required!"),
@@ -67,7 +66,7 @@ export default function CreateShopStaff() {
 
             dispatch(
                globalConfigSlice.actions.changeSnackBarState({
-                  type: "success",
+                  typeStatus: "success",
                   message: "Create staff successfully!",
                   open: true,
                   title: "Success",

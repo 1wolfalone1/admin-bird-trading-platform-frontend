@@ -110,9 +110,7 @@ export default function ShopOrderDataGrid() {
          page: 0,
       });
    };
-   const handleRowChange = (row) => {
-
-   };
+   const handleRowChange = (row) => {};
    useEffect(() => {
       dispatch(getOrderFilterPaging(paginationModel.page + 1));
    }, [paginationModel]);
@@ -430,8 +428,7 @@ const columns = [
       filterable: true,
       filterOperators: [operatorSelectStatus],
       valueFormatter: ({ value }) => {
-       
-         return value.status
+         return value.status;
       },
       renderCell: (params) => {
          let colorTheme = "primary";
@@ -465,6 +462,7 @@ const columns = [
       type: "text",
       width: 160,
       filterOperators: [operatorSelectPaymenMethod],
+      valueFormatter: ({ value }) => value === "DELIVERY" ? "COD" : "PAYPAL",
       renderCell: (params) => {
          let colorTheme = "success";
          if (params.value === "PAYPAL") {
@@ -477,7 +475,7 @@ const columns = [
             <Chip
                color={colorTheme}
                variant="filled"
-               label={params.value}
+               label={params.value === "DELIVERY" ? "COD" : "PAYPAL"}
             />
          );
       },

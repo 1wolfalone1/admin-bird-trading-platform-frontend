@@ -31,6 +31,7 @@ import { api } from "../../api/api";
 import theme from "../../style/theme";
 import { modelStyle } from "./../../config/constant";
 import globalConfigSlice from "../../redux/globalConfigSlice";
+import FormCreatePromotion from "../form-create-promotion/FormCreatePromotion";
 
 const MenuProps = {
    disableScrollLock: true,
@@ -53,15 +54,19 @@ export default function ProductShopPageController() {
    const openCreateMenu = Boolean(anchorElCreateMenu);
    const [openModel, setOpenModel] = useState(false);
    const [deleteProducts, setDeleteProducts] = useState("");
+   const [openPromotionModal, setOpenPromotionModal] = useState(false);
    const { type, listSelected, mode, currentPage } =
       useSelector(productTableSelector);
    const navigate = useNavigate();
    const dispatch = useDispatch();
 
+   const handleCloseFormCreatePromotion = () => {
+      setOpenPromotionModal(false);
+   }
    const handleClickCreateMenu = (event) => {
       setAnchorElCreateMenu(event.currentTarget);
    };
-   const handleCloseCreatMenu = () => {
+   const handleCloseCreateMenu = () => {
       setAnchorElCreateMenu(null);
    };
    const handleClick = (event) => {
@@ -201,6 +206,7 @@ export default function ProductShopPageController() {
                   aria-expanded={open ? "true" : undefined}
                   onClick={handleClick}
                   variant="outlined"
+                  disabled={listSelected.length === 0}
                >
                   Change status <KeyboardArrowDownIcon />
                </Button>
@@ -240,7 +246,7 @@ export default function ProductShopPageController() {
                   id="basic-menu-create"
                   anchorEl={anchorElCreateMenu}
                   open={openCreateMenu}
-                  onClose={handleCloseCreatMenu}
+                  onClose={handleCloseCreateMenu}
                   disableScrollLock
                   MenuListProps={{
                      "aria-labelledby": "basic-button-create",
@@ -252,15 +258,23 @@ export default function ProductShopPageController() {
                   >
                      Create product
                   </MenuItem>
-                  <MenuItem onClick={handleActionInRow} value={0}>
-                     Inactive
-                  </MenuItem>
-                  <MenuItem onClick={() => setOpenModel(true)} value={-1}>
-                     Delete
+                  <MenuItem onClick={() => {
+                     setOpenPromotionModal(true)
+                     handleCloseCreateMenu()
+                  }} value={0}>
+                     Create promotion
                   </MenuItem>
                </Menu>
             </Grid2>
          </Grid2>
+         <Modal
+            open={openPromotionModal}
+            onClose={handleCloseFormCreatePromotion}
+            aria-labelledby="parent-modal-title"
+            aria-describedby="parent-modal-description"
+         >
+            <FormCreatePromotion closeModel={handleCloseFormCreatePromotion}/>
+         </Modal>
          <Modal
             keepMounted
             open={openModel}
