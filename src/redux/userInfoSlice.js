@@ -1,10 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { userRole } from "../config/constant";
 
-
-
-
-
 const userInfoSlice = createSlice({
    name: 'userInfoSlice',
    initialState: {

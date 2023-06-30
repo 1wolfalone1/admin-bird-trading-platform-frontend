@@ -7,6 +7,8 @@ import productShopSlice from "./productsShopSlice";
 import productDetailsSlice from "./productDetailsSlice";
 import fileControlSlice from "./fileControlSlice";
 import productDetailsValidateSlice from "./productDetailsValidateSlice";
+import messageSlice from './messageSlice';
+
 import globalConfigSlice from "./globalConfigSlice";
 import shopOrderSlice from "./shopOrderSlice";
 import shopStaffSlice from "./shopStaffSlice";
@@ -34,6 +36,7 @@ const reducer = combineReducers({
    productDetailsSlice: productDetailsSlice.reducer,
    fileControlSlice: fileControlSlice.reducer,
    productDetailsValidateSlice: productDetailsValidateSlice.reducer,
+   messageSlice: messageSlice.reducer,
    globalConfigSlice: globalConfigSlice.reducer,
    shopOrderSlice: shopOrderSlice.reducer,
    shopStaffSlice: shopStaffSlice.reducer,

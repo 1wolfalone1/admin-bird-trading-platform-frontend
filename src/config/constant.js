@@ -104,15 +104,18 @@ export const userRole = {
    GUEST: {
       code: 0,
    },
-   ADMIN: {
-      code: 1,
+   USER: {
+      code: 1
+   },
+   SHOP_STAFF: {
+      code: 2,
 
    },
    SHOP_OWNER: {
-      code: 2
-   },
-   SHOP_STAFF: {
       code: 3
+   },
+   ADMIN: {
+      code: 4
    }
 }
 
