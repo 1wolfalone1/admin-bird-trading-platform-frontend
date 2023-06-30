@@ -22,9 +22,11 @@ import { CATEGORY } from "../../../config/constant";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import productDetailsValidateSlice, {
+   getBasicFormSelector,
    getFormSelector,
    getImageStateSelector,
    getIsImageValidateSelector,
+   getProductDetailsValidateSelector,
 } from "../../../redux/productDetailsValidateSlice";
 
 const validationSchema = yup.object({
@@ -44,17 +46,19 @@ export default function FormBasicInfo() {
    const isImageValidate = useSelector(getIsImageValidateSelector);
    const dispatch = useDispatch();
    const getForm = useSelector(getFormSelector);
+   const { basicForm, status } = useSelector(getProductDetailsValidateSelector);
    const form = useFormik({
-      initialValues: {
-         name: "",
-         category: 0,
-      },
+      initialValues: basicForm.data,
       validationSchema: validationSchema,
       validateOnChange: true,
       validateOnBlur: true,
       validationOnMount: true,
    });
-   useEffect(() => {}, []);
+   useEffect(() => {
+      if (status === "UPDATE") {
+         form.setValues(basicForm.data);
+      }
+   }, [basicForm]);
    useEffect(() => {
       dispatch(
          productDetailsValidateSlice.actions.handleOnChangeBasicForm(

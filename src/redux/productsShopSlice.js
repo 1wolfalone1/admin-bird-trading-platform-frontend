@@ -93,6 +93,8 @@ export const getProductTableAndPaging = createAsyncThunk(
             },
          });
          const data = res.data;
+
+         console.log(data, "dfsfdsfasdf dataaaaa")
          return {
             data: data,
             page: page,

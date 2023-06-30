@@ -23,8 +23,6 @@ import productShopSlice, {
 } from "../../../redux/productsShopSlice";
 import clsx from "clsx";
 
-
-
 export default function ProductsDataGridShop() {
    const tableData = useSelector(productTableSelector);
    const dispatch = useDispatch();
@@ -33,6 +31,7 @@ export default function ProductsDataGridShop() {
       pageSize: 10, // Default page size
       page: 0, // Default page number
    });
+
    const onFilterChange = (filterModel) => {
       // Here you save the data you need from the filter model
       console.log(filterModel, "filter model");
@@ -50,13 +49,10 @@ export default function ProductsDataGridShop() {
          };
       }
       dispatch(productShopSlice.actions.changeProductSearchInfo(filterObject));
-      dispatch(getProductTableAndPaging(1));
-   };
-   const handlePageChange = (page) => {
-      setPaginationModel((prevPaginationModel) => ({
-         ...prevPaginationModel,
-         page,
-      }));
+      setPaginationModel({
+         pageSize: 10, // Default page size
+         page: 0, 
+      })
    };
 
    useEffect(() => {
@@ -66,7 +62,10 @@ export default function ProductsDataGridShop() {
       // Here you save the data you need from the sort model
       if (sortModel[0]) {
          dispatch(productShopSlice.actions.changeSortDirection(sortModel[0]));
-         dispatch(getProductTableAndPaging(1));
+         setPaginationModel({
+            pageSize: 10, // Default page size
+            page: 0, 
+         })
       } else {
          dispatch(
             productShopSlice.actions.changeSortDirection({
@@ -74,11 +73,14 @@ export default function ProductsDataGridShop() {
                sort: "",
             })
          );
-         dispatch(getProductTableAndPaging(1));
+         setPaginationModel({
+            pageSize: 10, // Default page size
+            page: 0, 
+         })
       }
    }, []);
-   const handleRowChange = (row, id, a, b) => {
-      console.log(row, id, a, b);
+   const handleRowChange = (row) => {
+      console.log(row);
    };
 
    useEffect(() => {
@@ -121,12 +123,14 @@ export default function ProductsDataGridShop() {
             {tableData ? (
                <DataGrid
                   checkboxSelection
-                  autoPageSize
                   isRowSelectable={(params) => tableData?.mode === "view"}
                   onRowSelectionModelChange={handleRowSelectionModelChange}
                   onProcessRowUpdateError={handleProcessRowUpdateError}
                   processRowUpdate={handleProcessRowUpdate}
                   editMode="row"
+                  initialState={{
+                     pagination: { paginationModel: { pageSize: 10 } },
+                  }}
                   rowModesModel={tableData.rowModesModel}
                   onRowModesModelChange={handleRowChange}
                   sortingMode="server"
@@ -138,25 +142,18 @@ export default function ProductsDataGridShop() {
                   apiRef={apiRef}
                   columns={columns}
                   rowCount={tableData.totalProduct}
-                  rowsPerPageOptions={10}
-                  page={tableData?.currentPage}
+                  rowsPerPageOptions={[10]}
+                  page={tableData?.currentPage - 1}
                   rows={tableData?.data}
                   // editMode={isEditingEnabled ? "row" : "none"}
                   slots={{
                      toolbar: GridToolbar,
                   }}
-                  onPageChange={handlePageChange}
                   loading={tableData?.isLoading}
                   paginationModel={paginationModel}
                   paginationMode="server"
                   disableColumnMenu
-                  onPaginationModelChange={(newPaginationModel) => {
-               
-                     setPaginationModel({
-                        ...newPaginationModel,
-                        pageSize: 10,
-                     });
-                  }}
+                  onPaginationModelChange={setPaginationModel}
                   sx={{
                      boxShadow: 2,
                      border: 2,
@@ -335,8 +332,7 @@ const columns = [
       headerAlign: "center",
       headerName: "Discounted price",
       width: 120,
-      filterable: true,
-      filterOperators: [operatorPriceFrom],
+      filterable: false,
    },
    {
       field: "quantity",

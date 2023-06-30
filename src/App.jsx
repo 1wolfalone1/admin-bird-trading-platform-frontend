@@ -36,6 +36,7 @@ function App() {
                <Route index element={<ShopStaffDataGrid/>}/>
                <Route path={'create-staff'} element={<CreateShopStaff/>}/>
             </Route>
+            <Route path={`${breadCrumbs.UPDATE_PRODUCT.url}/:id`} element={<UpdateProductPage/>}/>
          </Route>
       </Routes>
    );
