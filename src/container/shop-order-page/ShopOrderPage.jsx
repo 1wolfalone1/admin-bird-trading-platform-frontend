@@ -19,5 +19,5 @@ export default function ShopOrderPage() {
             <Outlet />
          </div>
       </div>
-   );
+   ); 
 }

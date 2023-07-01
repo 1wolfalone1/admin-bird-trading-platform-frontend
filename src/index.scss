@@ -240,3 +240,10 @@ a {
 .Mui-disabled {
   color: rgb(125, 125, 125) !important;
 }
+
+.pac-container {
+   z-index: 10000 !important;
+   span {
+     font-size: 1.6rem;
+   }
+}
