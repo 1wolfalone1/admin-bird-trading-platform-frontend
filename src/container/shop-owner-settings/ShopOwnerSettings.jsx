@@ -444,7 +444,7 @@ export default function ShopOwnerSettings() {
                      )}
                      <Box>
                         <QuillWrapper
-                           disabled={!isEditable}
+                           readOnly={!isEditable}
                            placeholder="Write description here..."
                            field={form.getFieldProps("description")}
                            form={form}
