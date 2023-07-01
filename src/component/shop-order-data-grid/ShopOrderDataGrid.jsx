@@ -31,6 +31,7 @@ import {
    productDetailsSelector,
 } from "../../redux/productDetailsSlice";
 import { formatNumber } from "../../utils/myUtils";
+import { operatorDate, operatorIDEqual, operatorPriceFrom, operatorSelectPaymenMethod, operatorSelectPromotion, operatorSelectStatus } from "../filter-table-common/FiterTableCommon";
 
 export default function ShopOrderDataGrid() {
    const apiRef = useGridApiRef();
@@ -117,30 +118,10 @@ export default function ShopOrderDataGrid() {
    useEffect(() => {
       dispatch(shopOrderSlice.actions.changeTab(1));
    }, []);
-   const handleProcessRowUpdate = async (newRow, oldRow) => {
-      // Make the HTTP request to save in the backend
-      // try {
-      //    const response = await api.put("/shop-owner/products/quantity", [
-      //       {
-      //          id: newRow.id,
-      //          quantity: newRow.quantity,
-      //       },
-      //    ]);
-      //    const data = await response.data;
-      //    console.log(data);
-      // } catch (e) {
-      //    console.log(e);
-      // }
-      return newRow;
-   };
-   const handleProcessRowUpdateError = (newRow, oldRow) => {
-      console.log(newRow, oldRow);
-   };
+
    return (
       <div className={clsx(s.container, "box-shadow")}>
          <DataGrid
-            onProcessRowUpdateError={handleProcessRowUpdateError}
-            processRowUpdate={handleProcessRowUpdate}
             editMode="row"
             sortingMode="server"
             onSortModelChange={handleSortModelChange}
@@ -181,240 +162,24 @@ export default function ShopOrderDataGrid() {
       </div>
    );
 }
-const CustomFiltera = ({ applyValue, item }) => {
-   const handleFilterChange = (event) => {
-      console.log(event.target.value, item, applyValue);
-      let newItem = { ...item, value: event.target.value };
-      applyValue(newItem);
-   };
 
-   return (
-      <Box>
-         <Typography
-            sx={{ padding: "0", fontSize: "1.6rem", lineHeight: "1.6rem" }}
-         >
-            value
-         </Typography>
-         <Input
-            placeholder="Filter..."
-            value={item.value}
-            onChange={handleFilterChange}
-         />
-      </Box>
-   );
-};
-const CustomFilteraStatus = ({ applyValue, item }) => {
-   const handleFilterChange = (event) => {
-      console.log(event.target.value, item, applyValue);
-      let newItem = { ...item, value: event.target.value };
-      applyValue(newItem);
-   };
-
-   return (
-      <Box>
-         <Typography
-            sx={{ padding: "0", fontSize: "1.6rem", lineHeight: "1.6rem" }}
-         >
-            value
-         </Typography>
-         <Select
-            defaultValue={""}
-            value={item.value}
-            onChange={handleFilterChange}
-            sx={{ width: "100%" }}
-            MenuProps={{ disableScrollLock: true }}
-         >
-            <MenuItem value={9}>ALL</MenuItem>
-            <MenuItem value={0}>PENDING</MenuItem>
-            <MenuItem value={1}>PROCESSING</MenuItem>
-            <MenuItem value={2}>SHIPPED</MenuItem>
-         </Select>
-      </Box>
-   );
-};
-const CustomFilterPaymentMethod = ({ applyValue, item }) => {
-   const handleFilterChange = (event) => {
-      console.log(event.target.value, item, applyValue);
-      let newItem = { ...item, value: event.target.value };
-      applyValue(newItem);
-   };
-
-   return (
-      <Box>
-         <Typography
-            sx={{ padding: "0", fontSize: "1.6rem", lineHeight: "1.6rem" }}
-         >
-            value
-         </Typography>
-         <Select
-            defaultValue={""}
-            value={item.value}
-            onChange={handleFilterChange}
-            sx={{ width: "100%" }}
-            MenuProps={{ disableScrollLock: true }}
-         >
-            <MenuItem value={"9"}>ALL</MenuItem>
-            <MenuItem value={"PAYPAL"}>PAYPAL</MenuItem>
-            <MenuItem value={"DELIVERY"}>DELIVERY</MenuItem>
-         </Select>
-      </Box>
-   );
-};
-const CustomFilterPromotionSelection = ({ applyValue, item }) => {
-   const { listVouchers } = useSelector(productDetailsSelector);
-   const dispatch = useDispatch();
-   useEffect(() => {
-      dispatch(getListVouchers());
-   }, []);
-   const handleFilterChange = (event) => {
-      console.log(event.target.value, item, applyValue);
-      let newItem = { ...item, value: event.target.value };
-      applyValue(newItem);
-   };
-
-   return (
-      <Box>
-         <Typography
-            sx={{ padding: "0", fontSize: "1.6rem", lineHeight: "1.6rem" }}
-         >
-            value
-         </Typography>
-
-         {listVouchers.length === 0 ? (
-            <Typography>
-               <em>None</em>
-            </Typography>
-         ) : (
-            <>
-               <Select
-                  defaultValue={""}
-                  value={item.value}
-                  onChange={handleFilterChange}
-                  sx={{ width: "100%" }}
-                  MenuProps={{ disableScrollLock: true }}
-               >
-                  {listVouchers.map((item) => (
-                     <MenuItem value={item.id}>
-                        {" "}
-                        <Chip
-                           color={"table"}
-                           variant="outlined"
-                           label={`${item.name} - ${item.discountRate}%`}
-                        />
-                     </MenuItem>
-                  ))}
-               </Select>
-            </>
-         )}
-      </Box>
-   );
-};
-const CustomFilterDate = ({ applyValue, item }) => {
-   const [dateForm, setDateForm] = useState({
-      dateFrom: 0,
-      dateTo: -1,
-   });
-   const handleFrom = (value) => {
-      const milliseconds = Date.parse(value);
-      setDateForm((state) => {
-         return { ...state, dateFrom: milliseconds };
-      });
-   };
-   const handleTo = (value) => {
-      console.log(value, item, applyValue);
-      const milliseconds = Date.parse(value);
-      setDateForm((state) => {
-         return { ...state, dateTo: milliseconds };
-      });
-   };
-   useEffect(() => {
-      const newValue = JSON.stringify(dateForm);
-      console.log(newValue);
-      applyValue({ ...item, value: newValue });
-   }, [dateForm]);
-
-   return (
-      <>
-         <Box display="flex" flexDirection={"column"} gap={1}>
-            <Box>
-               <DatePicker
-                  label={"From"}
-                  format="DD/MM/YYYY"
-                  onChange={handleFrom}
-               />
-            </Box>
-            <Box>
-               <DatePicker
-                  label={"To"}
-                  format="DD/MM/YYYY"
-                  onChange={handleTo}
-               />
-            </Box>
-         </Box>
-      </>
-   );
-};
-const operatorDate = {
-   label: "date",
-   value: "Range",
-   InputComponent: CustomFilterDate,
-   getValueAsString: (value) => `${JSON.stringify(value)}`,
-};
-const operatorSelectPromotion = {
-   label: "select",
-   value: "Contain",
-   InputComponent: CustomFilterPromotionSelection,
-   getValueAsString: (value) => value,
-};
-const operatorSelectStatus = {
-   label: "select",
-   value: "=",
-   InputComponent: CustomFilteraStatus,
-   getValueAsString: (value) => value,
-};
-const operatorSelectPaymenMethod = {
-   label: "select",
-   value: "=",
-   InputComponent: CustomFilterPaymentMethod,
-   getValueAsString: (value) => value,
-};
-const operatorPriceFrom = {
-   label: ">=",
-   value: ">=",
-   InputComponent: CustomFiltera,
-   getValueAsString: (value) => value,
-};
-const operatorNameContain = {
-   label: "Contain",
-   value: "Contain",
-   InputComponent: CustomFiltera,
-   getValueAsString: (value) => value,
-};
-const operatorTypeContain = {
-   label: "Contain",
-   value: "Contain",
-   InputComponent: CustomFiltera,
-   getValueAsString: (value) => value,
-};
-const operatorIDEqual = {
-   label: "=",
-   value: "=",
-   InputComponent: CustomFiltera,
-   getValueAsString: (value) => value,
-};
 const columns = [
    {
       field: "id",
       headerName: "ID",
+      headerAlign: "center",
       type: "number",
+      headerClassName: "super-app-theme--header",
       width: 90,
       filterOperators: [operatorIDEqual],
       filterable: true,
    },
    {
       field: "totalPrice",
+      headerAlign: "center",
       headerName: "Total Price",
       type: "number",
+      headerClassName: "super-app-theme--header",
       width: 120,
       valueFormatter: ({ value }) => formatNumber(value),
       filterOperators: [operatorPriceFrom],
@@ -422,6 +187,9 @@ const columns = [
    },
    {
       field: "orderStatus",
+      headerAlign: "center",
+      
+      headerClassName: "super-app-theme--header",
       headerName: "Status",
       type: "text",
       width: 120,
@@ -449,7 +217,9 @@ const columns = [
    },
    {
       field: "shippingFee",
+      headerAlign: "center",
       headerName: "Shipping Fee",
+      headerClassName: "super-app-theme--header",
       type: "number",
       width: 130,
       valueFormatter: ({ value }) => formatNumber(value),
@@ -457,7 +227,9 @@ const columns = [
       filterable: true,
    },
    {
+      headerAlign: "center",
       field: "paymentMethod",
+      headerClassName: "super-app-theme--header",
       headerName: "Payment Method",
       type: "text",
       width: 160,
@@ -481,7 +253,9 @@ const columns = [
       },
    },
    {
+      headerAlign: "center",
       field: "promotionsShop",
+      headerClassName: "super-app-theme--header",
       headerName: "Promotions",
       width: 200,
       type: "custom",
@@ -538,20 +312,23 @@ const columns = [
       },
    },
    {
+      headerAlign: "center",
       field: "createdDate",
+      headerClassName: "super-app-theme--header",
       headerName: "Created Date",
       type: "number",
-      width: 150,
+      width: 200,
       filterOperators: [operatorDate],
-
       valueFormatter: (params) =>
          moment.utc(params.value).format("DD/MM/YY HH:mm"),
    },
    {
+      headerAlign: "center",
       field: "lastedUpdate",
+      headerClassName: "super-app-theme--header",
       headerName: "Last Updated",
       type: "number",
-      width: 150,
+      width: 200,
       filterOperators: [operatorDate],
       valueFormatter: (params) =>
          moment.utc(params.value).format("DD/MM/YY HH:mm"),

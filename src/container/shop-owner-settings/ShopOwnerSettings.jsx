@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import useBreadCrumb from "../../custom-hook/useBreadCrumb";
-import { breadCrumbs } from "./../../config/constant";
-import { useSelector } from "react-redux";
-import { userInfoSliceSelector } from "../../redux/userInfoSlice";
+import { breadCrumbs, userRole } from "./../../config/constant";
+import { useDispatch, useSelector } from "react-redux";
+import userInfoSlice, { userInfoSliceSelector } from "../../redux/userInfoSlice";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { Box } from "@mui/system";
 import {
@@ -24,10 +24,14 @@ import { useFormik } from "formik";
 import { styleFormUpdate } from "../../component/form-update-product/FormUpdateProduct";
 import ReactQuill from "react-quill";
 import AutoFixHighIcon from "@mui/icons-material/AutoFixHigh";
+import { dataAsyncUrlToFile, objectToBlob } from "../../utils/myUtils";
+import { api } from "../../api/api";
+import globalConfigSlice from "../../redux/globalConfigSlice";
+import LoadingButton from "@mui/lab/LoadingButton/LoadingButton";
 let breadCrumbPath = [breadCrumbs.SETTINGS];
 const validationSchema = yup.object({
    shopName: yup.string("").required("Shop name is required!"),
-   phone: yup
+   shopPhone: yup
       .string()
       .matches(/^(?!\D)/, "Phone number is not valid!")
       .required("Phone number is required!"),
@@ -62,12 +66,13 @@ export default function ShopOwnerSettings() {
    const [valueCoverImage, setValueCoverImage] = useState();
    const hiddenAvatarInput = useRef(null);
    const hiddenCoverImageInput = useRef(null);
+   const {info} = useSelector(userInfoSliceSelector);
+   const [isLoading, setIsLoading] =useState(false);
+   const dispatch = useDispatch();
    const [errorCustom, setErrorCustom] = useState({
-      avatar: "",
       address: "",
    });
 
-   const hiddenFileInput = (e) => {};
    const form = useFormik({
       initialValues: {
          shopName: "",
@@ -79,10 +84,72 @@ export default function ShopOwnerSettings() {
       validateOnBlur: true,
       validationOnMount: true,
       onSubmit: async () => {
-         console.log(form.values);
+         if (address === "") {
+            setErrorCustom({
+               address: "Please fill in the address!",
+            });
+         } else {
+            const formData = new FormData();
+            const data = {
+               ...form.values,
+               address,
+               id: info?.id
+            };
+            formData.append("data", objectToBlob(data));
+            if (valueAvatar && valueAvatar.src) {
+               const avatarBlob = await dataAsyncUrlToFile(valueAvatar.src);
+               formData.append("avatar", avatarBlob);
+            }
+            if (valueCoverImage && valueCoverImage.src) {
+               const coverImageBlob = await dataAsyncUrlToFile(
+                  valueCoverImage.src
+               );
+               formData.append("cover", coverImageBlob);
+            }
+            console.log(formData.getAll('data'), data)
+            updateShopProfile(formData);
+         }
       },
    });
-   const { info } = useSelector(userInfoSliceSelector);
+
+   const updateShopProfile = async (formData) => {
+      try {
+         setIsLoading(true)
+         const res = await api.put("/shop-owner/profile", formData, {
+            headers: {
+               "Content-type": "multipart/form-data",
+            },
+         });
+         const data = await res.data;
+         console.log(data, 'dataaa');
+         dispatch(userInfoSlice.actions.changeUserInfo({
+            role: userRole.SHOP_OWNER.code,
+            info: data,
+         }));
+         dispatch(
+            globalConfigSlice.actions.changeSnackBarState({
+               typeStatus: "success",
+               message: "Update profile successfully!",
+               open: true,
+               title: "Success",
+            })
+         );
+         setIsLoading(false)
+
+            setIsEditable(false);
+      } catch (err) {
+         setIsLoading(false)
+         dispatch(
+            globalConfigSlice.actions.changeSnackBarState({
+               typeStatus: "error",
+               message: "Update failure! Try again",
+               open: true,
+               title: "Error",
+            })
+         );
+         console.log(err);
+      }
+   };
    useEffect(() => {
       if (info) {
          form.setValues({
@@ -95,8 +162,43 @@ export default function ShopOwnerSettings() {
    }, [info]);
    console.log(info);
    useBreadCrumb(breadCrumbPath);
-   const handleUpdateAvatar = (e) => {};
-   const handleUpdateCoverImage = (e) => {};
+   const handleUpdateAvatar = (e) => {
+      e.preventDefault();
+      let files;
+      if (e.dataTransfer) {
+         files = e.dataTransfer.files;
+      } else if (e.target) {
+         files = e.target.files;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+         const newAvatar = reader.result;
+         setValueAvatar({
+            src: newAvatar,
+            obj: files[0],
+         });
+      };
+      if (files[0]) reader?.readAsDataURL(files[0]);
+   };
+   const handleUpdateCoverImage = (e) => {
+      e.preventDefault();
+      let files;
+      if (e.dataTransfer) {
+         files = e.dataTransfer.files;
+      } else if (e.target) {
+         files = e.target.files;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+         const newAvatar = reader.result;
+         console.log(reader.result, files[0], e.target.value);
+         setValueCoverImage({
+            src: newAvatar,
+            obj: files[0],
+         });
+      };
+      if (files[0]) reader?.readAsDataURL(files[0]);
+   };
    const handleClickFile = (e) => {
       const target = e.target.value;
       console.log(target);
@@ -108,11 +210,15 @@ export default function ShopOwnerSettings() {
       }
    };
    return (
-      <Box sx={{ width: "100%", padding: "3rem 0 0 0" }}>
+      <Box sx={{ width: "100%", padding: "1rem 0 0 0" }}>
          <Typography
             variant="h3"
             fullWidth
-            sx={{ textAlign: "center", marginBottom: "3rem", color: "#241e00" }}
+            sx={{
+               textAlign: "center",
+               marginBottom: "5.6rem",
+               color: "#241e00",
+            }}
          >
             Shop profile
          </Typography>
@@ -121,7 +227,11 @@ export default function ShopOwnerSettings() {
                <Box
                   fullWidth
                   sx={{
-                     backgroundImage: `url(${info?.coverImgUrl})`,
+                     backgroundImage: `url(${
+                        valueCoverImage
+                           ? valueCoverImage.src
+                           : info?.coverImgUrl
+                     })`,
                      backgroundSize: "cover",
                      backgroundRepeat: "no-repeat",
                      backgroundPosition: "center",
@@ -140,6 +250,7 @@ export default function ShopOwnerSettings() {
                               variant="contained"
                               onClick={handleClickFile}
                               value={0}
+                              color={"template4"}
                               sx={{
                                  display: "flex",
                                  justifyContent: "space-between",
@@ -153,6 +264,7 @@ export default function ShopOwnerSettings() {
                               variant="contained"
                               onClick={handleClickFile}
                               value={1}
+                              color={"template5"}
                               sx={{
                                  display: "flex",
                                  justifyContent: "space-between",
@@ -166,7 +278,6 @@ export default function ShopOwnerSettings() {
                      )}
                   </Box>
                   <input
-                     value={valueAvatar}
                      type="file"
                      ref={hiddenAvatarInput}
                      style={{ display: "none" }}
@@ -174,7 +285,6 @@ export default function ShopOwnerSettings() {
                      accept="image/*"
                   />
                   <input
-                     value={valueCoverImage}
                      type="file"
                      ref={hiddenCoverImageInput}
                      style={{ display: "none" }}
@@ -192,7 +302,8 @@ export default function ShopOwnerSettings() {
                   }}
                >
                   <Avatar
-                     src={info.avatarImgUrl}
+                     className={clsx("box-shadow")}
+                     src={valueAvatar ? valueAvatar?.src : info.avatarImgUrl}
                      alt=""
                      sx={{ width: "100%", height: "100%" }}
                   />
@@ -215,6 +326,7 @@ export default function ShopOwnerSettings() {
                   gap="2rem"
                >
                   <form
+                     onSubmit={form.handleSubmit}
                      className={clsx("box-shadow")}
                      style={{
                         backgroundColor: theme.palette.template5.main,
@@ -344,43 +456,44 @@ export default function ShopOwnerSettings() {
                               </FormHelperText>
                            )}
                      </Box>
-                  </form>
-                  <Box
-                     display={"flex"}
-                     justifyContent={"flex-end"}
-                     fullWidth
-                     sx={{ flex: 1, width: "100%" }}
-                  >
-                     {isEditable ? (
-                        <>
+                     <Box
+                        display={"flex"}
+                        justifyContent={"flex-end"}
+                        fullWidth
+                        sx={{ flex: 1, width: "100%" }}
+                     >
+                        {isEditable ? (
+                           <>
+                              <Button
+                                 variant="outlined"
+                                 onClick={() => setIsEditable(false)}
+                                 sx={{ fontSize: "2rem", marginRight: "1rem" }}
+                                 color="template8"
+                              >
+                                 Cancel
+                              </Button>
+                              <LoadingButton
+                              loading={isLoading}
+                                 variant="outlined"
+                                 type="submit"
+                                 sx={{ fontSize: "2rem" }}
+                                 color="template7"
+                              >
+                                 Save
+                              </LoadingButton>
+                           </>
+                        ) : (
                            <Button
                               variant="outlined"
-                              onClick={() => setIsEditable(false)}
-                              sx={{ fontSize: "2rem", marginRight: "1rem" }}
-                              color="template8"
-                           >
-                              Cancel
-                           </Button>
-                           <Button
-                              variant="outlined"
-                              onClick={() => setIsEditable(true)}
                               sx={{ fontSize: "2rem" }}
+                              onClick={() => setIsEditable(true)}
                               color="template7"
                            >
-                              Save
+                              Edit
                            </Button>
-                        </>
-                     ) : (
-                        <Button
-                           variant="outlined"
-                           sx={{ fontSize: "2rem" }}
-                           onClick={() => setIsEditable(true)}
-                           color="template7"
-                        >
-                           Edit
-                        </Button>
-                     )}
-                  </Box>
+                        )}
+                     </Box>
+                  </form>
                </Box>
             </Grid2>
          </Grid2>

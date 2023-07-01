@@ -24,6 +24,7 @@ import productShopSlice, {
 } from "../../../redux/productsShopSlice";
 import clsx from "clsx";
 import { formatNumber, formatQuantity } from "../../../utils/myUtils";
+import { operatorIDEqual, operatorNameContain, operatorPriceFrom, operatorSelect, operatorTypeContain } from "../../filter-table-common/FiterTableCommon";
 
 export default function ProductsDataGridShop() {
    const tableData = useSelector(productTableSelector);
@@ -267,36 +268,7 @@ const CustomFilteraStatus = ({ applyValue, item }) => {
       </Box>
    );
 };
-const operatorSelect = {
-   label: "select",
-   value: "=",
-   InputComponent: CustomFilteraStatus,
-   getValueAsString: (value) => value,
-};
-const operatorPriceFrom = {
-   label: ">=",
-   value: ">=",
-   InputComponent: CustomFiltera,
-   getValueAsString: (value) => value,
-};
-const operatorNameContain = {
-   label: "Contain",
-   value: "Contain",
-   InputComponent: CustomFiltera,
-   getValueAsString: (value) => value,
-};
-const operatorTypeContain = {
-   label: "Contain",
-   value: "Contain",
-   InputComponent: CustomFiltera,
-   getValueAsString: (value) => value,
-};
-const operatorIDEqual = {
-   label: "=",
-   value: "=",
-   InputComponent: CustomFiltera,
-   getValueAsString: (value) => value,
-};
+
 const columns = [
    {
       field: "id",
@@ -344,6 +316,7 @@ const columns = [
       width: 120,
       valueFormatter: ({ value }) => formatQuantity(value),
       editable: true,
+      filterable: false,
       renderEditCell: renderRatingEditInputCell,
       // preProcessEditCellProps: (params) => {
       //    console.log(params);
