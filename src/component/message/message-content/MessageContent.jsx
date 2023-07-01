@@ -111,7 +111,7 @@ const MessageContent = () => {
         
           <div className={clsx(s.messageContent)}>
               <ul className={clsx(s.messageList)} ref={containerRef}>
-                {messageList?.totalPage > 0 &&
+                {messageList?.totalPage > 1 &&
                  (messageList?.totalPage - 1 !== messageList.currentPageNumber) &&
                   <Button sx={{textAlign: 'center',
                   width: '100%',
