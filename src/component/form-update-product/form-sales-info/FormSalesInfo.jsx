@@ -3,7 +3,7 @@ import s from "./formSalesInfo.module.scss";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import productDetailsValidateSlice, {
-   getCategoryInForm, getFormSelector,
+   getCategoryInForm, getFormSelector, getProductDetailsValidateSelector,
 } from "../../../redux/productDetailsValidateSlice";
 import FieldCustom from "../field-custom/FieldCustom";
 import { useFormik } from "formik";
@@ -32,11 +32,16 @@ const validationSchema = yup.object().shape({
       .max(1000,"Maximum weight is 1000")
       .required("Quantity is required"),
 });
+const isOptionEqualToValue = (option, value) => {
+   // Customize the equality test based on your data structure
+   return option.id === value.id;
+};
 export default function FormSalesInfo() {
    const category = useSelector(getCategoryInForm);
    const listVouchers = useSelector(getListVoucherSelector);
    const dispatch = useDispatch();
    const getForm = useSelector(getFormSelector);
+   const {salesForm, status} = useSelector(getProductDetailsValidateSelector);
    const getCategoryName = (category) => {
       if (category === 1) {
          return "bird";
@@ -48,12 +53,14 @@ export default function FormSalesInfo() {
          return "accessory";
       }
    };
+   useEffect(() => {
+      if (status === "UPDATE") {
+         form.setValues(salesForm.data);
+      
+      }
+   }, [salesForm]);
    const form = useFormik({
-      initialValues: {
-         price: 0,
-         quantity: 0,
-         voucher: [],
-      },
+      initialValues: salesForm.data,
       validationSchema: validationSchema,
       validateOnChange: true,
       validateOnBlur: true,
@@ -97,7 +104,7 @@ export default function FormSalesInfo() {
                      id="price"
                      sx={styleFormUpdate.textField}
                      InputProps={{
-                        endAdornment: (
+                        startAdornment: (
                            <InputAdornment position="end">$</InputAdornment>
                         ),
                      }}
@@ -111,6 +118,7 @@ export default function FormSalesInfo() {
                      value={form.values.quantity}
                      onChange={form.handleChange}
                      onBlur={form.handleBlur}
+                     type="money"
                      error={
                         form.touched.quantity && Boolean(form.errors.quantity)
                      }
@@ -125,6 +133,7 @@ export default function FormSalesInfo() {
                         <Autocomplete
                            id="tag"
                            multiple
+                           isOptionEqualToValue={isOptionEqualToValue}
                            value={form.values.voucher}
                            onBlur={form.handleBlur("voucher")}
                            onChange={(event, value) =>

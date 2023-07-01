@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import globalConfigSlice, {
    globalSliceSelector,
 } from "../../redux/globalConfigSlice";
+import { Helmet } from "react-helmet";
 
 export default function LayoutContainer() {
    const { openBackDrop } = useSelector(globalSliceSelector);

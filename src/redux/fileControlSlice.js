@@ -1,16 +1,18 @@
-import { createSlice, current } from "@reduxjs/toolkit";
-
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
+import { v4 } from "uuid";
+import { convertImageUrlToBase64, dataAsyncUrlToFile } from "../utils/myUtils";
+const initialState = {
+   listImagesPreview: [],
+   currentEdit: {},
+   isOpenEdit: false,
+   videoPreview: "",
+   videoBlob: "",
+   isVideoOpenEdit: false,
+   errorMessage: "",
+}
 const fileControlSlice = createSlice({
    name: "fileControlSlice",
-   initialState: {
-      listImagesPreview: [],
-      currentEdit: {},
-      isOpenEdit: false,
-      videoPreview: "",
-      videoBlob: "",
-      isVideoOpenEdit: false,
-      errorMessage: ""
-   },
+   initialState: initialState,
    reducers: {
       openVideoEditor: (state, action) => {
          state.isVideoOpenEdit = action.payload;
@@ -19,8 +21,12 @@ const fileControlSlice = createSlice({
          state.videoPreview = action.payload;
       },
       addImagesPreview: (state, action) => {
-         console.log(action.payload);
+         console.log(action.payload, "image preview");
          state.listImagesPreview?.push(action.payload);
+         state.currentEdit = {
+            id: 0,
+            src: "",
+         };
       },
       openEditor: (state, action) => {
          state.isOpenEdit = action.payload;
@@ -47,27 +53,47 @@ const fileControlSlice = createSlice({
          );
       },
       setErrorMessage: (state, action) => {
-         state.errorMessage = action.payload
+         state.errorMessage = action.payload;
       },
       removeVideoPreview: (state, action) => {
-         state.videoPreview = '';
-         console.log(current(state))
+         state.videoPreview = "";
+         console.log(current(state));
       },
       setVideoBlob: (state, action) => {
-         state.videoBlob = action.payload
+         state.videoBlob = action.payload;
+      },
+      clearData: (state, action) => {
+         return initialState
       }
    },
-   // extraReducers: (builder) =>
-   //    builder
-   //       .addCase(getProductTableAndPaging.fulfilled, (state, action) => {
-   //          state.productsTable.data = action.payload.lists;
-   //          state.productsTable.page = action.payload.pageNumber;
-   //          state.productsTable.isLoading = false;
-   //       })
+   extraReducers: (builder) =>
+      builder
+         .addCase(getListImagesForUpdate.fulfilled, (state, action) => {
+            const { listImagesPreview, videoPreview } =
+               action.payload;
+            state.listImagesPreview = listImagesPreview;
+            state.videoPreview = videoPreview;
+         })
+         .addCase(getListImagesForUpdate.pending, (state, action) => {})
+         .addCase(getListImagesForUpdate.rejected, (state, action) => {
+            console.log(action.payload, "errorrrrrrrrrr");
+         }),
 });
 
 export default fileControlSlice;
 
+export const getListImagesForUpdate = createAsyncThunk(
+   "fileControlSlice/getListImagesForUpdate",
+   async ({ listImage, video }) => {
+      const listImagePreview = listImage.map(image => {
+         return {id: v4(), src: image }
+      })
+      return {
+         listImagesPreview: listImagePreview,
+         videoPreview: video,
+      };
+   }
+);
 export const getListImagesPreviewSelector = (state) =>
    state.fileControlSlice.listImagesPreview;
 export const getOpenEditSelector = (state) => state.fileControlSlice.isOpenEdit;
@@ -75,7 +101,9 @@ export const getCurrentEditSelector = (state) =>
    state.fileControlSlice.currentEdit;
 export const getVideoPreviewSelector = (state) =>
    state.fileControlSlice.videoPreview;
-export const getIdVideoEditorSelector = state => state.fileControlSlice.isVideoOpenEdit;
+export const getIdVideoEditorSelector = (state) =>
+   state.fileControlSlice.isVideoOpenEdit;
 
-export const getErrorMessageSelector = state => state.fileControlSlice.errorMessage;
-export const getVideoBlobSelector = state => state.fileControlSlice.videoBlob;
+export const getErrorMessageSelector = (state) =>
+   state.fileControlSlice.errorMessage;
+export const getVideoBlobSelector = (state) => state.fileControlSlice.videoBlob;

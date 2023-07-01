@@ -14,18 +14,39 @@ const shopOrderSlice = createSlice({
          currentPage: 1,
       },
       tab: 1,
+      filter: {
+         orderSearchInfo: {
+            id: 0,
+            field: "",
+            value: "",
+            operator: "",
+         },
+         sortDirection: {
+            field: "",
+            sort: "",
+         },
+         pageNumber: 1,
+      },
    },
    reducers: {
       changeTab: (state, action) => {
          state.tab = action.payload;
       },
+      changeListSelectedRows: (state, action) => {
+         state.shopOrderTable.listSelected = action.payload
+      },
+      changeOrderSearchInfo: (state, action) => {
+         state.filter.orderSearchInfo = action.payload;
+      },
+      changeSortDirection: (state, action) => {
+         state.filter.sortDirection = action.payload;
+      }
    },
    extraReducers: (builder) =>
       builder
          .addCase(getOrderFilterPaging.fulfilled, (state, action) => {
             const { pageNumber, totalElement, lists } = action.payload.data;
             const page = action.payload.page;
-            console.log(JSON.stringify(lists));
             state.shopOrderTable.data = lists;
             state.shopOrderTable.totalOrders = totalElement;
             state.shopOrderTable.isLoading = false;
@@ -48,12 +69,20 @@ export default shopOrderSlice;
 
 export const getOrderFilterPaging = createAsyncThunk(
    "shopOrderSlice/getorderfilterpag",
-   async (page) => {
-      console.log(page, "page");
+   async (page, {getState}) => {
+      const state = getState();
       try {
-         const res = await api.get("shop-owner/orders?pageNumber=" + page);
+         const filter = state.shopOrderSlice.filter;
+         const formData = {
+            ...filter,
+            pageNumber: page,
+         };
+         const res = await api.get("shop-owner/orders", {
+            params: {
+               data: JSON.stringify(formData)
+            }
+         });
          const data = await res.data;
-         console.log(data);
          return {
             data: data,
             page: page,

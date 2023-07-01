@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { breadCrumbs } from './../config/constant';
 import sideBarSlice from "../redux/sideBarSlice";
 
-export default function useBreadCrumb(breadCrumbsPath) {
+export default function useBreadCrumb(breadCrumbsPath, isDisabled) {
    const dispatch = useDispatch();
    useEffect(() => {
       
