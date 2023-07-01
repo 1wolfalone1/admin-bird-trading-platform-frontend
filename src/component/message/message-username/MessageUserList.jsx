@@ -45,12 +45,15 @@ const MessageUserList = () => {
     dispatch(getListUser());
   }
 
+  console.log('here is totalPageUserListPaging', totalPageUserListPaging)
+
   return (
     <div  className={clsx(s.container)}>
       <DialogContent sx={{padding:  "0px", overflow: "hidden"}}>
-          <DialogContentText className={clsx(s.messageTitle)}>
+          <DialogContentText className={clsx(s.messageTitle)} sx={totalPageUserListPaging > 1 && {marginTop: "20px"}}>
             <b>Select a user:</b>
           </DialogContentText>
+          <div className={clsx(s.wapperUserList)}>
           <ul className={clsx(s.memberList)}>
             {userList?.map((item) => (
               <li  key={item.userId} 
@@ -67,7 +70,7 @@ const MessageUserList = () => {
                 }
               </li>
             ))}
-            {totalPageUserListPaging > 0 && (
+            {totalPageUserListPaging > 1 && (
               (totalPageUserListPaging - 1) !== currentPagenumberUserList ? (
                 <Button
                   variant="outlined"
@@ -79,7 +82,8 @@ const MessageUserList = () => {
                     '&:hover': {
                       color: theme.palette.table.main,
                       backgroundColor: theme.palette.template3.main
-                    }
+                    },
+                    marginBottom: '10px'
                   }}
                   onClick={() => handleViewMore(1)}
                 >
@@ -96,7 +100,8 @@ const MessageUserList = () => {
                     '&:hover': {
                       color: theme.palette.table.main,
                       backgroundColor: theme.palette.template3.main
-                    }
+                    },
+                    marginBottom: '10px'
                   }}
                   onClick={() => handleViewMore(-1)}
                 >
@@ -105,6 +110,7 @@ const MessageUserList = () => {
               )
             )}
           </ul>
+          </div>
       </DialogContent>
     </div>
   )
