@@ -112,7 +112,7 @@ export default function FormDetailsInfo() {
       form.validateForm(form.values);
       dispatch(productDetailsValidateSlice.actions.setDetailsForm(form));
    }, [getForm]);
-
+   console.log(form.values, 'formmmmmmmmmmmmmm updateeeeeeeeeeeeeeeeeeeeeeeeee');
    const handleNewTag = async () => {
       if (newTag) {
          try {
