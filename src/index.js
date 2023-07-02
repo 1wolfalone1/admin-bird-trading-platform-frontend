@@ -9,22 +9,19 @@ import "./fontLoader.scss";
 import persistStore from "redux-persist/es/persistStore";
 import { PersistGate } from "redux-persist/integration/react";
 import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 let persistor = persistStore(store);
 root.render(
-   <React.StrictMode>
-      {/* Rest of your component */}
-      <Provider store={store}>
-         <PersistGate persistor={persistor}>
+   <Provider store={store}>
+      <PersistGate persistor={persistor}>
          <LocalizationProvider dateAdapter={AdapterDayjs}>
             <BrowserRouter>
                <App />
             </BrowserRouter>
-            </LocalizationProvider>
-         </PersistGate>
-      </Provider>
-   </React.StrictMode>
+         </LocalizationProvider>
+      </PersistGate>
+   </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function
