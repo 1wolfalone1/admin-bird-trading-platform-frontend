@@ -100,8 +100,11 @@ export default function FormDetailsInfo() {
    });
    useEffect(() => {
       console.log(status, detailsForm);
-      if(status === 'UPDATE') {
+      if(status == 'UPDATE') {
+         console.log(form)
          form.setValues(detailsForm.data)
+         console.log(form)
+
       }
    }, [detailsForm]);
    useEffect(() => {
