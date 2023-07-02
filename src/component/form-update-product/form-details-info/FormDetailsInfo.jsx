@@ -99,6 +99,7 @@ export default function FormDetailsInfo() {
       validationOnMount: true,
    });
    useEffect(() => {
+      console.log(status, detailsForm);
       if(status === 'UPDATE') {
          form.setValues(detailsForm.data)
       }
