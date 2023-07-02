@@ -87,14 +87,7 @@ export default function FormDetailsInfo() {
          return "accessory";
       }
    };
-   useEffect(() => {
-      console.log(status, detailsForm);
-      if(status == 'UPDATE') {
-         console.log(form)
-         form.setValues(detailsForm.data)
-         console.log(form)
-      }
-   }, [detailsForm]);
+
    const form = useFormik({
       initialValues: {
          type: 0,
@@ -155,7 +148,12 @@ export default function FormDetailsInfo() {
       // Customize the equality test based on your data structure
       return option.id === value.id;
    };
-
+   useEffect(() => {
+      if(status == 'UPDATE') {
+         
+         form.setValues(detailsForm.data)
+      }
+   }, [detailsForm]);
    return (
       <form className={s.container}>
          <h2>Details information</h2>

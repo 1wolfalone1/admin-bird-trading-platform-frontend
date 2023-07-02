@@ -54,7 +54,10 @@ export default function FormSalesInfo() {
       }
    };
    useEffect(() => {
+      console.log(status, salesForm);
       if (status === "UPDATE") {
+         console.log(form)
+
          form.setValues(salesForm.data);
       
       }
@@ -79,6 +82,7 @@ export default function FormSalesInfo() {
       dispatch(getListVouchers());
       console.log(listVouchers);
    }, []);
+   console.log(form)
    return (
       <form className={s.container}>
          <h2>Sales information</h2>
