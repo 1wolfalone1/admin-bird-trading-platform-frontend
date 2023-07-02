@@ -232,7 +232,7 @@ const columns = [
       },
    },
    {
-      field: "createDate",
+      field: "createdDate",
       headerClassName: "super-app-theme--header",
       headerAlign: "center",
       headerName: "Create Date",
