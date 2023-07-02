@@ -71,7 +71,9 @@ export const getOrderDetailsFilterPaging = createAsyncThunk(
    async (page, { getState }) => {
       const state = getState();
       try {
-         const filter = state.shopOrderSlice.filter;
+         const filter = state.shopOrderDetailsSlice.filter;
+         console.log(filter, 'filterrrr')
+
          const formData = {
             ...filter,
             pageNumber: page,
