@@ -130,6 +130,7 @@ export const getProductDetailsById = createAsyncThunk(
                video: data.video,
             })
          );
+         console.log(data);
          return data;
       } catch (err) {
          console.error(err);
