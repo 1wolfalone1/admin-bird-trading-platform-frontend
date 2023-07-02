@@ -87,6 +87,14 @@ export default function FormDetailsInfo() {
          return "accessory";
       }
    };
+   useEffect(() => {
+      console.log(status, detailsForm);
+      if(status == 'UPDATE') {
+         console.log(form)
+         form.setValues(detailsForm.data)
+         console.log(form)
+      }
+   }, [detailsForm]);
    const form = useFormik({
       initialValues: {
          type: 0,
@@ -98,15 +106,7 @@ export default function FormDetailsInfo() {
       validateOnBlur: true,
       validationOnMount: true,
    });
-   useEffect(() => {
-      console.log(status, detailsForm);
-      if(status == 'UPDATE') {
-         console.log(form)
-         form.setValues(detailsForm.data)
-         console.log(form)
-
-      }
-   }, [detailsForm]);
+ 
    useEffect(() => {
       dispatch(
          productDetailsValidateSlice.actions.handleOnChangeDetailsForm(
