@@ -72,7 +72,11 @@ export default function ShopOrderDetailsDataGrid() {
          });
       }
    }, []);
-
+   useEffect(() => {
+      return () => {
+         dispatch(shopOrderDetailsSlice.actions.resetState())
+      }
+   }, []);
    const onFilterChange = (filterModel) => {
       console.log(filterModel);
       // Here you save the data you need from the filter model
@@ -235,6 +239,6 @@ const columns = [
       width: 200,
       filterOperators: [operatorDate],
       valueFormatter: (params) =>
-         moment.utc(params.value).format("DD/MM/YY HH:mm"),
+      moment(params.value).format("DD/MM/YY HH:mm"),
    },
 ];
