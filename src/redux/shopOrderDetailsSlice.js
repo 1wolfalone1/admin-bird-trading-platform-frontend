@@ -33,7 +33,7 @@ const shopOrderDetailsSlice = createSlice({
          state.tab = action.payload;
       },
       changeListSelectedRows: (state, action) => {
-         state.shopOrderTable.listSelected = action.payload;
+         state.shopOrderDetailsTable.listSelected = action.payload;
       },
       changeOrderSearchInfo: (state, action) => {
          state.filter.orderSearchInfo = action.payload;
