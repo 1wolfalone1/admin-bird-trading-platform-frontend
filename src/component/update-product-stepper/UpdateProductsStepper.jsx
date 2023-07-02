@@ -25,7 +25,6 @@ export default function UpdateProductsStepper() {
    const category = useSelector(getCategoryInForm);
    const formRef = useSelector(getFormRefSelector);
    const errorForm = useSelector(getErrorFormSelector);
-   console.log(formRef);
    const labelProps = (state) => {
       if (state) {
          const labelProps = {};

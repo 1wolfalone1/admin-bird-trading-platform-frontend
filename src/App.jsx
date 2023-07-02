@@ -15,6 +15,7 @@ import ShopOrderDetailsDataGrid from "./component/shop-order-details-data-grids/
 import ShopStaffPage from "./container/shop-staff-page/ShopStaffPage";
 import ShopStaffDataGrid from "./component/shop-staff-data-grid/ShopStaffDataGrid";
 import CreateShopStaff from "./container/create-shop-staff/CreateShopStaff";
+import ShopOwnerSettings from "./container/shop-owner-settings/ShopOwnerSettings";
 
 function App() {
    return (
@@ -34,8 +35,10 @@ function App() {
             <Route path="get-token" element={<GetToken />} />
             <Route path={breadCrumbs.STAFF.url} element={<ShopStaffPage />} >
                <Route index element={<ShopStaffDataGrid/>}/>
-               <Route path={''} element={<CreateShopStaff/>}/>
+               <Route path={'create-staff'} element={<CreateShopStaff/>}/>
             </Route>
+            <Route path={`${breadCrumbs.UPDATE_PRODUCT.url}/:id`} element={<UpdateProductPage/>}/>
+            <Route path={`${breadCrumbs.SETTINGS.url}`} element={<ShopOwnerSettings/>}/>
          </Route>
       </Routes>
    );

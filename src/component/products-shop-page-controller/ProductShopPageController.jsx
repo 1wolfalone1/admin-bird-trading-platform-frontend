@@ -30,6 +30,8 @@ import { GridRowModes } from "@mui/x-data-grid";
 import { api } from "../../api/api";
 import theme from "../../style/theme";
 import { modelStyle } from "./../../config/constant";
+import globalConfigSlice from "../../redux/globalConfigSlice";
+import FormCreatePromotion from "../form-create-promotion/FormCreatePromotion";
 
 const MenuProps = {
    disableScrollLock: true,
@@ -47,9 +49,26 @@ const selectStyle = {
 };
 export default function ProductShopPageController() {
    const [anchorEl, setAnchorEl] = React.useState(null);
+   const [anchorElCreateMenu, setAnchorElCreateMenu] = React.useState(null);
    const open = Boolean(anchorEl);
+   const openCreateMenu = Boolean(anchorElCreateMenu);
    const [openModel, setOpenModel] = useState(false);
    const [deleteProducts, setDeleteProducts] = useState("");
+   const [openPromotionModal, setOpenPromotionModal] = useState(false);
+   const { type, listSelected, mode, currentPage } =
+      useSelector(productTableSelector);
+   const navigate = useNavigate();
+   const dispatch = useDispatch();
+
+   const handleCloseFormCreatePromotion = () => {
+      setOpenPromotionModal(false);
+   }
+   const handleClickCreateMenu = (event) => {
+      setAnchorElCreateMenu(event.currentTarget);
+   };
+   const handleCloseCreateMenu = () => {
+      setAnchorElCreateMenu(null);
+   };
    const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
    };
@@ -59,10 +78,6 @@ export default function ProductShopPageController() {
    const handleCloseModelDelete = () => {
       setOpenModel(false);
    };
-   const { type, listSelected, mode, currentPage } =
-      useSelector(productTableSelector);
-   const navigate = useNavigate();
-   const dispatch = useDispatch();
    const handleTabValueChange = (e, value) => {
       const cate = Object.values(category).find((cate) => cate.id === value);
       dispatch(productShopSlice.actions.changeTab(cate));
@@ -87,12 +102,29 @@ export default function ProductShopPageController() {
          console.log(data);
          dispatch(getProductTableAndPaging(currentPage));
          dispatch(productShopSlice.actions.changeListSelectedRows([]));
-         console.log(e.target.value, openModel)
-         if(e.target.value == -1) {
-            console.log(e.target.value, openModel)
+         console.log(e.target.value, openModel);
+         if (e.target.value == -1) {
+            console.log(e.target.value, openModel);
             setOpenModel(false);
          }
+         dispatch(
+            globalConfigSlice.actions.changeSnackBarState({
+               typeStatus: "success",
+               message: "The status has been successfully changed.",
+               open: true,
+               title: "Success",
+            })
+         );
       } catch (e) {
+         dispatch(
+            globalConfigSlice.actions.changeSnackBarState({
+               type: "error",
+               message:
+                  "Sorry, your action cannot be completed at the moment. Please try again.",
+               open: true,
+               title: "Error",
+            })
+         );
          console.log(e);
       }
    };
@@ -124,7 +156,9 @@ export default function ProductShopPageController() {
       dispatch(productShopSlice.actions.changeTableMode("view"));
       dispatch(productShopSlice.actions.changeListSelectedRows([]));
    };
-
+   const handleToViewDetails = () => {
+      navigate(`/${breadCrumbs.UPDATE_PRODUCT.url}/${listSelected[0]}`);
+   }
    return (
       <div className={clsx(s.controller, "box-shadow")}>
          <Grid2 container width={"100%"}>
@@ -158,14 +192,23 @@ export default function ProductShopPageController() {
                   </ButtonGroup>
                )}
                <Button
+                  onClick={handleToViewDetails}
+                  variant="outlined"
+                  disabled={listSelected.length !== 1}
+
+               >
+                  View details
+               </Button>
+               <Button
                   id="basic-button"
                   aria-controls={open ? "basic-menu" : undefined}
                   aria-haspopup="true"
                   aria-expanded={open ? "true" : undefined}
                   onClick={handleClick}
                   variant="outlined"
+                  disabled={listSelected.length === 0}
                >
-                  Action <KeyboardArrowDownIcon />
+                  Change status <KeyboardArrowDownIcon />
                </Button>
                <Menu
                   id="basic-menu"
@@ -188,14 +231,50 @@ export default function ProductShopPageController() {
                   </MenuItem>
                </Menu>
                <Button
+                  id="basic-button-create"
+                  aria-controls={
+                     openCreateMenu ? "basic-menu-create" : undefined
+                  }
+                  aria-haspopup="true"
+                  aria-expanded={openCreateMenu ? "true" : undefined}
+                  onClick={handleClickCreateMenu}
                   variant="outlined"
-                  sx={{ fontSize: "1.5rem" }}
-                  onClick={() => navigate(breadCrumbs.CREATE_PRODUCTS.url)}
                >
-                  <span>Create products +</span>
+                  Create <KeyboardArrowDownIcon />
                </Button>
+               <Menu
+                  id="basic-menu-create"
+                  anchorEl={anchorElCreateMenu}
+                  open={openCreateMenu}
+                  onClose={handleCloseCreateMenu}
+                  disableScrollLock
+                  MenuListProps={{
+                     "aria-labelledby": "basic-button-create",
+                  }}
+               >
+                  <MenuItem
+                     onClick={() => navigate(breadCrumbs.CREATE_PRODUCTS.url)}
+                     value={1}
+                  >
+                     Create product
+                  </MenuItem>
+                  <MenuItem onClick={() => {
+                     setOpenPromotionModal(true)
+                     handleCloseCreateMenu()
+                  }} value={0}>
+                     Create promotion
+                  </MenuItem>
+               </Menu>
             </Grid2>
          </Grid2>
+         <Modal
+            open={openPromotionModal}
+            onClose={handleCloseFormCreatePromotion}
+            aria-labelledby="parent-modal-title"
+            aria-describedby="parent-modal-description"
+         >
+            <FormCreatePromotion closeModel={handleCloseFormCreatePromotion}/>
+         </Modal>
          <Modal
             keepMounted
             open={openModel}
@@ -222,11 +301,18 @@ export default function ProductShopPageController() {
                      Delete products?
                   </Typography>
                </Box>
-               <Box sx={{ padding: "1rem 2rem", display: 'flex' , flexDirection: 'column', gap: 1}}>
+               <Box
+                  sx={{
+                     padding: "1rem 2rem",
+                     display: "flex",
+                     flexDirection: "column",
+                     gap: 1,
+                  }}
+               >
                   <Typography sx={{ fontSize: "2rem" }}>
                      The product has been deleted and cannot be obtained again.
                   </Typography>
-                  <Typography sx={{ fontSize: "2rem", color: 'red' }}>
+                  <Typography sx={{ fontSize: "2rem", color: "red" }}>
                      Are you certain that you want to delete everything?
                   </Typography>
                </Box>
@@ -238,8 +324,16 @@ export default function ProductShopPageController() {
                      padding: 1,
                   }}
                >
-                  <Button variant="outlined" onClick={handleCloseModelDelete}>Cancel</Button>
-                  <Button variant="outlined" onClick={handleActionInRow} value={-1}>Delete</Button>
+                  <Button variant="outlined" onClick={handleCloseModelDelete}>
+                     Cancel
+                  </Button>
+                  <Button
+                     variant="outlined"
+                     onClick={handleActionInRow}
+                     value={-1}
+                  >
+                     Delete
+                  </Button>
                </Box>
             </Box>
          </Modal>

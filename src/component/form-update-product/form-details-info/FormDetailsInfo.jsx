@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import productDetailsValidateSlice, {
    getCategoryInForm,
    getFormSelector,
+   getProductDetailsValidateSelector,
 } from "../../../redux/productDetailsValidateSlice";
 import s from "./formDetailsInfo.module.scss";
 import React, { useEffect, useState } from "react";
@@ -67,7 +68,14 @@ export default function FormDetailsInfo() {
    const dispatch = useDispatch();
    const category = useSelector(getCategoryInForm);
    const getForm = useSelector(getFormSelector);
+   const { detailsForm, status } = useSelector(getProductDetailsValidateSelector);
    const [errorAddTag, setErrorAddTag] = useState("");
+   const [initValue, setInitValue] = useState()
+   useEffect(() => {
+      if(detailsForm) {
+         setInitValue(detailsForm.data);
+      }
+   }, [detailsForm]);
    const getCategoryName = (category) => {
       if (category === 1) {
          return "bird";
@@ -91,6 +99,7 @@ export default function FormDetailsInfo() {
       validateOnBlur: true,
       validationOnMount: true,
    });
+ 
    useEffect(() => {
       dispatch(
          productDetailsValidateSlice.actions.handleOnChangeDetailsForm(
@@ -100,7 +109,7 @@ export default function FormDetailsInfo() {
       form.validateForm(form.values);
       dispatch(productDetailsValidateSlice.actions.setDetailsForm(form));
    }, [getForm]);
-
+   console.log(form.values, 'formmmmmmmmmmmmmm updateeeeeeeeeeeeeeeeeeeeeeeeee');
    const handleNewTag = async () => {
       if (newTag) {
          try {
@@ -119,7 +128,7 @@ export default function FormDetailsInfo() {
    };
    useEffect(() => {
       const newTagg = responseTag;
- 
+
       if (listTags) {
          const isExist = listTags.find((tag) => tag.id === responseTag?.id);
          if (isExist) {
@@ -138,8 +147,13 @@ export default function FormDetailsInfo() {
    const isOptionEqualToValue = (option, value) => {
       // Customize the equality test based on your data structure
       return option.id === value.id;
-    };
-    
+   };
+   useEffect(() => {
+      if(status == 'UPDATE') {
+         
+         form.setValues(detailsForm.data)
+      }
+   }, [detailsForm]);
    return (
       <form className={s.container}>
          <h2>Details information</h2>
