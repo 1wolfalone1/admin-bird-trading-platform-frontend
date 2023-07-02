@@ -83,7 +83,6 @@ const MessageContent = () => {
       userId: currentShopIDSelect
     };
     dispatch(messageSlice.actions.addUserIntoUserList({user: user}))
-    console.log("here is curren shop id select: ", currentShopIDSelect);
   };
 
   const validationSchema = Yup.object( {
@@ -99,8 +98,7 @@ const MessageContent = () => {
     console.log(data, "data ne")
     dispatch(messageSlice.actions.updateListMessage({lists: data?.payload?.lists}))
   }
-  console.log(messageList?.totalPage, "day la total page")
-  console.log(messageList.currentPageNumber, "day la current page number")
+
   return (
     <> 
       {currentShopIDSelect !== -1 && 

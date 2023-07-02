@@ -41,7 +41,6 @@ const messageSlice = createSlice({
                 if (item.userId === action.payload.id) {
                   //get number unread
                   numberRead = item.unread;
-                  console.log('have jum in here number read', numberRead);
                   return {
                     ...item,
                     unread: 0
@@ -185,7 +184,6 @@ const messageSlice = createSlice({
           }
         },
         updateListMessage: (state, action) => {
-          console.log(action.payload.lists, "data nhin ne")
             const olderMessageList = action.payload.lists;
             const updateList = [...olderMessageList, ...state.message.messageList.messageListData];
             // const updateList = [];
@@ -247,7 +245,6 @@ export const getListUser = createAsyncThunk(
           const pageNumber = messageList?.currentPagenumberUserList;
           const res = await api.get(`/shop-owner/${userInfo?.id}/channels`, {params: {pagenumber: pageNumber}});
           const data = res.data;
-          console.log(data, 'data o channle ne');
           return data;
         //   dispatch(getListUserSuccess(res.data));
         } catch (error) {
