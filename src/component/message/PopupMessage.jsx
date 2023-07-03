@@ -7,13 +7,13 @@ import s from "./popupmessage.module.scss";
 import clsx from "clsx";
 import { Cancel, Message, Pages, Sms } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import {  userInfoSliceSelector } from "../../redux/userInfoSlice";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
 import messageSlice, { getListUser, messageSelector } from "../../redux/messageSlice";
 import moment from "moment";
 import { userRole } from "../../config/constant";
 import { Badge, Grid, IconButton, Popover } from "@mui/material";
+import { userInfoSliceSelector } from "../../redux/userInfoSlice";
 
 
 const badgeStyle = {
@@ -44,10 +44,6 @@ const PopupMessage = () => {
 
   const [newMessage, setNewMessage] = useState(false);
 
-  // const [anchorEl, setAnchorEl] = useState(isOpen);
-
-  // const open = Boolean(anchorEl);
-
   const [open, setOpen] = useState(isOpen);
 
   const id = open ? "popup-message" : undefined;
@@ -59,7 +55,6 @@ const PopupMessage = () => {
   useEffect(() => {
     connect(role);
     refreshUnread();
-    console.log('cho nay nhay 2 phat')
   }, [role]);
 
   useEffect(() => {
@@ -70,7 +65,6 @@ const PopupMessage = () => {
     if(newMessage) {
       handleMessageArrive(message, open, currentShopIDSelect);
       handleNewMessage(" ");
-      console.log('hihih lan 1')
     }
   }, [message]);
 
@@ -175,10 +169,7 @@ const PopupMessage = () => {
           })
         );
         dispatch(messageSlice.actions.addUserIntoUserList({user: user}));
-        console.log("here is an curent shop id select", currentShopIDSelect);
       } else {
-        console.log("open ne", open);
-        console.log("have run funtion handle MessageArrive");
         setUnread(numberUnread);
       }
       // check add one time
@@ -232,7 +223,6 @@ const PopupMessage = () => {
       console.log(error);
     }
   };
-  console.log("here is num open  ", open);
 
   return (
     <>
