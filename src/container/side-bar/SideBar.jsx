@@ -6,10 +6,23 @@ import MenuItem from "../../component/menu-item/MenuItem";
 import { typeMenu } from "./../../redux/sideBarSlice";
 import { useSelector } from "react-redux";
 import { userInfoSliceSelector } from "../../redux/userInfoSlice";
+import { api } from "../../api/api";
 
 export default function SideBar() {
    const userInfo = useSelector(userInfoSliceSelector);
    console.log(userInfo);
+   const handleLogout = () => {
+      try {
+            const token = localStorage.getItem("token");
+            console.log(token);
+            window.location.href = `${process.env.REACT_APP_REDIRECT_USER}get-token?token=${token}`; // Redirect to the desired page
+      } catch (e) {
+         const error = e.response.data;
+         if (error.errorCode === "400") {
+         }
+         console.log(e);
+      }
+   }
    return (
       <div className={clsx(s.container, "box-shadow")}>
          <div className={s.adminInfo}>
@@ -33,8 +46,8 @@ export default function SideBar() {
                <MenuItem type={typeMenu.SUPPORT} />
                <MenuItem type={typeMenu.SETTING} />
             </div>
-            <div className={s.controlAccount}>
-               <MenuItem type={typeMenu.LOGOUT} />
+            <div className={s.controlAccount}  >
+               <MenuItem type={typeMenu.LOGOUT} logout={handleLogout}/>
             </div>
          </div>
       </div>
