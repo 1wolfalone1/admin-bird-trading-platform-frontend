@@ -9,7 +9,9 @@ const initialState = {
    videoBlob: "",
    isVideoOpenEdit: false,
    errorMessage: "",
-}
+   listImageRemove: [],
+   deleteVideo: false,
+};
 const fileControlSlice = createSlice({
    name: "fileControlSlice",
    initialState: initialState,
@@ -28,6 +30,7 @@ const fileControlSlice = createSlice({
             src: "",
          };
       },
+
       openEditor: (state, action) => {
          state.isOpenEdit = action.payload;
       },
@@ -48,6 +51,7 @@ const fileControlSlice = createSlice({
       },
       removeImage: (state, action) => {
          console.log(action.payload);
+
          state.listImagesPreview = state.listImagesPreview.filter(
             (image) => image.id !== action.payload.id
          );
@@ -63,14 +67,29 @@ const fileControlSlice = createSlice({
          state.videoBlob = action.payload;
       },
       clearData: (state, action) => {
-         return initialState
+         return initialState;
+      },
+      changeListRemoveUpdate: (state, action) => {
+         const removeImage = state.listImagesPreview.find(
+            (image) => image.id === action.payload
+         );
+         if (removeImage) {
+            if (!removeImage.file) {
+               console.log(removeImage.src, 'remove image')
+               state.listImageRemove.push(removeImage.src);
+            } else {
+               console.log(removeImage.src, 'not remove')
+            }
+         }
+      },
+      changeDeleteVideo: (state, action) => {
+         state.deleteVideo = action.payload;
       }
    },
    extraReducers: (builder) =>
       builder
          .addCase(getListImagesForUpdate.fulfilled, (state, action) => {
-            const { listImagesPreview, videoPreview } =
-               action.payload;
+            const { listImagesPreview, videoPreview } = action.payload;
             state.listImagesPreview = listImagesPreview;
             state.videoPreview = videoPreview;
          })
@@ -85,9 +104,9 @@ export default fileControlSlice;
 export const getListImagesForUpdate = createAsyncThunk(
    "fileControlSlice/getListImagesForUpdate",
    async ({ listImage, video }) => {
-      const listImagePreview = listImage.map(image => {
-         return {id: v4(), src: image }
-      })
+      const listImagePreview = listImage.map((image) => {
+         return { id: v4(), src: image };
+      });
       return {
          listImagesPreview: listImagePreview,
          videoPreview: video,
@@ -107,3 +126,8 @@ export const getIdVideoEditorSelector = (state) =>
 export const getErrorMessageSelector = (state) =>
    state.fileControlSlice.errorMessage;
 export const getVideoBlobSelector = (state) => state.fileControlSlice.videoBlob;
+
+
+export const getListImageRemoveSelector = state => state.fileControlSlice.listImageRemove;
+
+export const getDeleteVideoSelector = state => state.deleteVideo;

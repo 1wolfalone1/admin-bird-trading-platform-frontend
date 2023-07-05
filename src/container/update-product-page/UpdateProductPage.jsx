@@ -17,6 +17,8 @@ import productDetailsValidateSlice, {
    getSalesFormSelector,
 } from "../../redux/productDetailsValidateSlice";
 import fileControlSlice, {
+   getDeleteVideoSelector,
+   getListImageRemoveSelector,
    getListImagesPreviewSelector,
    getVideoBlobSelector,
 } from "../../redux/fileControlSlice";
@@ -47,12 +49,14 @@ export default function UpdateProductPage() {
    const salesForm = useSelector(getSalesFormSelector);
    const [getForm, setGetForm] = useState(0);
    const location = useLocation();
+   const listImageRemove = useSelector(getListImageRemoveSelector);
+   const deleteVideo = useSelector(getDeleteVideoSelector);
    const [createStatus, setCreateStatus] = useState({
       isOpen: false,
       status: false,
       message: "",
    });
-
+   console.log(listImages);
    const dispatch = useDispatch();
    const { status } = useSelector(getProductValidateStateSelector);
    useEffect(() => {
@@ -96,16 +100,25 @@ export default function UpdateProductPage() {
       const formData = new FormData();
       let count = 0;
       let productData = {};
+
       if (listImages !== undefined && listImages.length > 0) {
+         console.log(listImages, "in good");
+         let count3 = 0;
          listImages.forEach((image) => {
-            formData.append("image", image.file);
+            if (image.file) {
+               count3++;
+               formData.append("image", image.file);
+            }
          });
          dispatch(productDetailsValidateSlice.actions.setImagesState(true));
          dispatch(productDetailsValidateSlice.actions.changeErrorFormBasic(1));
       } else {
+         console.log(listImages, "in not good");
          count++;
          dispatch(productDetailsValidateSlice.actions.setImagesState(false));
          dispatch(productDetailsValidateSlice.actions.changeErrorFormBasic(-1));
+      }
+      if (status === "UPDATE") {
       }
       if (video !== null && video !== "") {
          console.log(video, "?????????????????????????????");
@@ -113,11 +126,19 @@ export default function UpdateProductPage() {
       }
 
       if (basicForm?.isValid) {
-         productData = {
-            ...productData,
-            categoryId: basicForm.values.category,
-            name: basicForm.values.name,
-         };
+         if (status === "CREATE") {
+            productData = {
+               ...productData,
+               categoryId: basicForm.values.category,
+               name: basicForm.values.name,
+            };
+         } else if (status === "UPDATE") {
+            productData = {
+               ...productData,
+               basicForm: basicForm.values,
+            };
+         }
+
          if (count === 0) {
             dispatch(
                productDetailsValidateSlice.actions.changeErrorFormBasic(1)
@@ -129,13 +150,27 @@ export default function UpdateProductPage() {
       }
       let count2 = 0;
       if (detailsForm?.isValid) {
-         const listTagId = detailsForm.values.tag.map((tag) => tag.id);
-         productData = {
-            ...productData,
-            tagId: listTagId,
-            typeId: detailsForm.values.type,
-            description: detailsForm.values.description,
-         };
+         let listTagId = [];
+         if (status === "CREATE") {
+            listTagId = detailsForm.values.tags.map((tag) => tag.id);
+            productData = {
+               ...productData,
+               tagId: listTagId,
+               typeId: detailsForm.values.type,
+               description: detailsForm.values.description,
+            };
+         } else if (status === "UPDATE") {
+            listTagId = detailsForm.values.tags.map((tag) => tag);
+            productData = {
+               ...productData,
+               detailsForm: {
+                  description: detailsForm.values.description,
+                  typeId: detailsForm.values.type,
+                  tags: listTagId,
+               },
+            };
+         }
+
          dispatch(
             productDetailsValidateSlice.actions.changeErrorFormDetails(1)
          );
@@ -148,7 +183,15 @@ export default function UpdateProductPage() {
       }
 
       if (feature?.isValid) {
-         productData = { ...productData, feature: feature.values };
+         if (status === "CREATE") {
+            productData = { ...productData, feature: feature.values };
+         } else if (status === "UPDATE") {
+            productData = {
+               ...productData,
+               feature: feature.values,
+            };
+         }
+
          if (count2 === 0)
             dispatch(
                productDetailsValidateSlice.actions.changeErrorFormDetails(1)
@@ -161,27 +204,80 @@ export default function UpdateProductPage() {
          );
       }
       if (salesForm?.isValid) {
-         const listVoucherId = salesForm.values.voucher?.map(
-            (voucher) => voucher.id
-         );
-         productData = {
-            ...productData,
-            price: salesForm.values.price,
-            quantity: salesForm.values.quantity,
-            promotionShopId: listVoucherId,
-         };
+         let listVoucherId = [];
+         if (status === "CREATE") {
+            listVoucherId = salesForm.values.voucher?.map(
+               (voucher) => voucher.id
+            );
+            productData = {
+               ...productData,
+               price: salesForm.values.price,
+               quantity: salesForm.values.quantity,
+               promotionShopId: listVoucherId,
+            };
+         } else if (status === "UPDATE") {
+            listVoucherId = salesForm.values.voucher?.map((voucher) => voucher);
+            productData = {
+               ...productData,
+               salesForm: {
+                  price: +salesForm.values.price,
+                  quantity: +salesForm.values.quantity,
+                  voucher: listVoucherId,
+               },
+            };
+         }
          dispatch(productDetailsValidateSlice.actions.changeErrorFormSales(1));
       } else {
          count++;
          dispatch(productDetailsValidateSlice.actions.changeErrorFormSales(-1));
       }
-      formData.append("data", objectToBlob(productData));
+      if (status === "UPDATE") {
+         productData = {
+            ...productData,
+            listImages: listImageRemove,
+            deleteVideo,
+         };
+      }
+      formData.append("data", objectToBlob(productData), productData);
       console.log(JSON.stringify(productData), count);
       if (count === 0) {
-         handleCreateProduct(formData);
+         if (status === "UPDATE") {
+            handleUpdateProduct(formData);
+         } else if (status === "CREATE") {
+            handleCreateProduct(formData);
+         }
       }
    };
+   const handleUpdateProduct = async (formData) => {
+      try {
+         dispatch(globalConfigSlice.actions.changeBackDropState(true));
 
+         console.log(formData);
+         const res = await api.put(`/shop-owner/products`, formData, {
+            headers: {
+               "Content-type": "multipart/form-data",
+            },
+         });
+         const data = await res.data;
+         console.log(data, "dataaaaaaaaaaaaaaaaaaaaaaaa");
+         dispatch(globalConfigSlice.actions.changeBackDropState(false));
+         setCreateStatus({
+            isOpen: true,
+            status: true,
+            message: "Product was successfully updated",
+         });
+      } catch (e) {
+         dispatch(globalConfigSlice.actions.changeBackDropState(false));
+         setCreateStatus({
+            isOpen: true,
+            status: false,
+            message:
+               "Something went wrong that can't update new product! Try again",
+         });
+         console.log(e);
+      }
+      dispatch(globalConfigSlice.actions.changeBackDropState(false));
+   };
    const handleCreateProduct = async (formData) => {
       try {
          dispatch(globalConfigSlice.actions.changeBackDropState(true));
@@ -233,6 +329,14 @@ export default function UpdateProductPage() {
                      variant="outlined"
                      color="template7"
                      sx={{ fontSize: "2.4rem", width: "12rem" }}
+                     onClick={() => {
+                        basicForm?.resetForm();
+                        detailsForm?.resetForm();
+                        salesForm?.resetForm();
+                        feature?.resetForm();
+                      
+                        dispatch(fileControlSlice.actions.clearData());
+                     }}
                   >
                      Cancel
                   </Button>
@@ -251,6 +355,13 @@ export default function UpdateProductPage() {
                      variant="outlined"
                      color="template7"
                      sx={{ fontSize: "2.4rem", width: "12rem" }}
+                     onClick={() => {
+                        basicForm?.resetForm();
+                        detailsForm?.resetForm();
+                        salesForm?.resetForm();
+                        feature?.resetForm();
+                        dispatch(fileControlSlice.actions.clearData());
+                     }}
                   >
                      Reset
                   </Button>

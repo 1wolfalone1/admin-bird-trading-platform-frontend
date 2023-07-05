@@ -109,7 +109,6 @@ export const userRole = {
    },
    SHOP_STAFF: {
       code: 2,
-
    },
    SHOP_OWNER: {
       code: 3
@@ -126,8 +125,7 @@ export const modelStyle = {
    left: '50%',
    transform: 'translate(-50%, -50%)',
    width: 'fit-content',
- };
- 
+};
 
 
 export const orderStatus = {

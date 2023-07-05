@@ -4,8 +4,9 @@ import React from "react";
 import clsx from "clsx";
 import PhotoSizeSelectLargeOutlinedIcon from "@mui/icons-material/PhotoSizeSelectLargeOutlined";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import fileControlSlice from "../../redux/fileControlSlice";
+import { getProductValidateStateSelector } from "../../redux/productDetailsValidateSlice";
 
 const style = {
    button: {},
@@ -18,6 +19,8 @@ const style = {
 
 export default function ImagePreview({ image }) {
    const dispatch = useDispatch();
+   const { status } = useSelector(getProductValidateStateSelector);
+   console.log(image);
    return (
       <div className={clsx(s.container, s.previewImg)}>
          <img src={image.src} alt="" />
@@ -40,9 +43,16 @@ export default function ImagePreview({ image }) {
             <IconButton
                color="inputImage"
                sx={style.icon}
-               onClick={() =>
-                  dispatch(fileControlSlice.actions.removeImage(image))
-               }
+               onClick={() => {
+                  if (status === "UPDATE") {
+                     dispatch(
+                        fileControlSlice.actions.changeListRemoveUpdate(
+                           image.id
+                        )
+                     );
+                  }
+                  dispatch(fileControlSlice.actions.removeImage(image));
+               }}
             >
                <DeleteOutlineIcon sx={style.icon} />
             </IconButton>
