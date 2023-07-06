@@ -18,7 +18,7 @@ const boxStyle = {
 export default function ShopViewOrderDetails() {
    useBreadCrumb(breadCrumbPath);
    const params = useParams();
-   const [orderDetails, setOrderDetails] = useState({});
+   const [orderDetails, setOrderDetails] = useState(null);
    useEffect(() => {
       if (params.orderId) {
          getOrderDetailsByOrderId(params.orderId);
@@ -36,124 +36,239 @@ export default function ShopViewOrderDetails() {
    };
    return (
       <Box width={"100%"} p={"10rem 5rem"}>
-         <Grid2 container spacing={4}>
-            <Grid2 xs={7}>
-               <Box
-                  sx={{ ...boxStyle, padding: "2rem 1.5rem" }}
-                  className={clsx("box-shadow")}
-                  display={"flex"}
-                  flexDirection={"column"}
-                  gap={2}
+         {orderDetails ? (
+            <Grid2 container spacing={4}>
+               <Grid2 xs={7}>
+                  <Box
+                     sx={{ ...boxStyle, padding: "2rem 1.5rem" }}
+                     className={clsx("box-shadow")}
+                     display={"flex"}
+                     flexDirection={"column"}
+                     gap={2}
+                  >
+                     <Box>
+                        <Typography variant="h4">Order details</Typography>
+                        <Divider color="template7.main" />
+                     </Box>
+                     <Box
+                        sx={{
+                           display: "flex",
+                           flexDirection: "column",
+                           gap: "2.4rem",
+                        }}
+                     >
+                        {orderDetails.orderDetails ? (
+                           <>
+                              {orderDetails.orderDetails.map((details) => (
+                                 <Grid2
+                                    container
+                                    key={details.id}
+                                    sx={{
+                                       backgroundColor:
+                                          theme.palette.template2.main,
+                                       boxShadow: "2px 3px 5px #7b7b7b5f",
+                                    }}
+                                 >
+                                    <Grid2
+                                       xs={2}
+                                       sx={{ border: "1px solid #161616" }}
+                                    >
+                                       <img
+                                          style={{ width: "100%" }}
+                                          src={details.imgUrl}
+                                          alt=""
+                                       />
+                                    </Grid2>
+                                    <Grid2
+                                       xs={5}
+                                       display={"flex"}
+                                       alignItems={"center"}
+                                       sx={{ padding: "0.8rem" }}
+                                    >
+                                       <Typography
+                                          variant="h5"
+                                          color="template7.main"
+                                       >
+                                          {details.productName}
+                                       </Typography>
+                                    </Grid2>
+                                    <Grid2
+                                       xs={5}
+                                       display={"flex"}
+                                       flexDirection={"column"}
+                                       justifyContent={"center"}
+                                       alignItems={"center"}
+                                    >
+                                       <Typography sx={{ fontSize: "2rem" }}>
+                                          {formatNumber(details.price)} x{" "}
+                                          {formatQuantity(details.quantity)}
+                                       </Typography>
+                                       <Box>
+                                          {details.listPromotion.map(
+                                             (promotion) => (
+                                                <Chip
+                                                   key={promotion.id}
+                                                   variant="outlined"
+                                                   color="paypal"
+                                                   label={
+                                                      <Typography>
+                                                         {promotion.name} -{" "}
+                                                         {
+                                                            promotion.discountRate
+                                                         }
+                                                         %
+                                                      </Typography>
+                                                   }
+                                                />
+                                             )
+                                          )}
+                                       </Box>
+                                    </Grid2>
+                                 </Grid2>
+                              ))}
+                           </>
+                        ) : (
+                           ""
+                        )}
+                     </Box>
+                  </Box>
+               </Grid2>
+               <Grid2
+                  xs={5}
+                  sx={{
+                     display: "flex",
+                     flexDirection: "column",
+                     gap: "2.4rem",
+                  }}
                >
-                  <Box>
-                     <Typography variant="h4">Order details</Typography>
-                     <Divider />
+                  <Box
+                     sx={{ ...boxStyle, padding: "2rem 1rem" }}
+                     className={clsx("box-shadow")}
+                     display={"flex"}
+                     flexDirection={"column"}
+                     gap={"1rem"}
+                  >
+                     <Box>
+                        <Typography variant="h4" color={"paypal.contrastText"}>
+                           Order date:{" "}
+                           {moment(orderDetails.createdDate).format(
+                              "HH:mm DD/MM/YY"
+                           )}
+                        </Typography>
+                        <Divider color="template7.main" />
+                     </Box>
+                     <Box
+                        display={"flex"}
+                        flexDirection={"column"}
+                        gap={"1rem"}
+                        p="2rem 2rem"
+                     >
+                        <Box display={"flex"} justifyContent={"space-between"}>
+                           <Typography variant="h5">Total price:</Typography>{" "}
+                           <Typography variant="h5" color={"template8.main"}>
+                              {formatNumber(orderDetails.totalPriceProduct)}
+                           </Typography>
+                        </Box>
+                        <Box display={"flex"} justifyContent={"space-between"}>
+                           <Typography variant="h5">Shipping fee:</Typography>{" "}
+                           <Typography variant="h5" color={"template8.main"}>
+                              {formatNumber(orderDetails.shippingFee)}
+                           </Typography>
+                        </Box>
+                        <Divider />
+                        <Box display={"flex"} justifyContent={"space-between"}>
+                           <Typography variant="h5">Total payment:</Typography>{" "}
+                           <Typography variant="h5" color={"template8.main"}>
+                              {formatNumber(
+                                 +orderDetails.shippingFee +
+                                    +orderDetails.totalPriceProduct
+                              )}
+                           </Typography>
+                        </Box>
+                     </Box>
                   </Box>
                   <Box
-                     sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "2.4rem",
-                     }}
+                     sx={{ ...boxStyle, padding: "2rem 1.5rem" }}
+                     className={clsx("box-shadow")}
+                     display={"flex"}
+                     flexDirection={"column"}
+                     gap={2}
                   >
-                     {orderDetails.orderDetails ? (
-                        <>
-                           {orderDetails.orderDetails.map((details) => (
-                              <Grid2
-                                 container
-                                 key={details.id}
-                                 sx={{
-                                    backgroundColor:
-                                       theme.palette.template2.main,
-                                    boxShadow: "2px 3px 5px #7b7b7b5f",
-                                 }}
-                              >
-                                 <Grid2
-                                    xs={2}
-                                    sx={{ border: "1px solid #161616" }}
-                                 >
-                                    <img
-                                       style={{ width: "100%" }}
-                                       src={details.imgUrl}
-                                       alt=""
-                                    />
-                                 </Grid2>
-                                 <Grid2
-                                    xs={5}
-                                    display={"flex"}
-                                    alignItems={"center"}
-                                    sx={{ padding: "0.8rem" }}
-                                 >
-                                    <Typography
-                                       variant="h4"
-                                       color="template7.main"
-                                    >
-                                       {details.productName}
-                                    </Typography>
-                                 </Grid2>
-                                 <Grid2
-                                    xs={5}
-                                    display={"flex"}
-                                    flexDirection={"column"}
-                                    justifyContent={"center"}
-                                    alignItems={"center"}
-                                 >
-                                    <Typography sx={{ fontSize: "2rem" }}>
-                                       {formatNumber(details.price)} x{" "}
-                                       {formatQuantity(details.quantity)}
-                                    </Typography>
-                                    <Box>
-                                       {details.listPromotion.map(
-                                          (promotion) => (
-                                             <Chip
-                                                variant="outlined"
-                                                color="paypal"
-                                                label={
-                                                   <Typography>
-                                                      {promotion.name} -{" "}
-                                                      {promotion.discountRate}%
-                                                   </Typography>
-                                                }
-                                             />
-                                          )
-                                       )}
-                                    </Box>
-                                 </Grid2>
-                              </Grid2>
-                           ))}
-                        </>
-                     ) : (
-                        ""
-                     )}
-                  </Box>
-               </Box>
-            </Grid2>
-            <Grid2 xs={5}>
-               <Box
-                  sx={{ ...boxStyle, padding: "2rem 1rem" }}
-                  className={clsx("box-shadow")}
-                  display={'flex'} flexDirection={'column'} gap={'1rem'}
-               >
-                  <Box>
-                     <Typography variant="h4" color={"paypal.contrastText"}>
-                        Order date:{" "}
-                        {moment(orderDetails.createdDate).format(
-                           "DD/MM/YY HH:mm"
-                        )}
-                     </Typography>
-                     <Divider />
-                  </Box>
-                  <Box display={'flex'} flexDirection={'column'} gap={'1rem'}>
-                     <Box display={'flex'} justifyContent={'space-between'}>
-                        <Typography variant="h5">Total price:</Typography>{" "}
-                        <Typography variant="h5" color={'template8.main'}>Total price:</Typography>
+                     <Box>
+                        <Typography variant="h4" color={"paypal.contrastText"}>
+                           Status
+                        </Typography>
+                        <Divider color="template7.main" />
                      </Box>
-                     <Typography></Typography>
-                     <Typography></Typography>
+                     <Box
+                        display={"flex"}
+                        flexDirection={"column"}
+                        gap={"2rem"}
+                     >
+                        <Box display={"flex"} justifyContent={"space-between"}>
+                           <Typography variant="h5">Last update:</Typography>{" "}
+                           <Typography variant="h5" color={"template8.main"}>
+                              {moment(orderDetails.lastedUpdate).format(
+                                 "HH:mm DD/MM/YY"
+                              )}
+                           </Typography>
+                        </Box>
+                        <Box display={"flex"} justifyContent={"space-between"}>
+                           <Typography variant="h5">Current:</Typography>{" "}
+                           <Typography variant="h5" color={"template8.main"}>
+                              {orderDetails.orderStatus}
+                           </Typography>
+                        </Box>
+                        <Box display={"flex"} justifyContent={"space-between"}>
+                           <Typography variant="h5">Payment method:</Typography>{" "}
+                           <Typography variant="h5" color={"template8.main"}>
+                              {orderDetails.paymentMethod}
+                           </Typography>
+                        </Box>
+                     </Box>
                   </Box>
-               </Box>
+                  <Box
+                     sx={{ ...boxStyle, padding: "2rem 1.5rem" }}
+                     className={clsx("box-shadow")}
+                     display={"flex"}
+                     flexDirection={"column"}
+                     gap={2}
+                  >
+                     <Box>
+                        <Typography variant="h4" color={"paypal.contrastText"}>
+                           Delivery information
+                        </Typography>
+                        <Divider color="template7.main" />
+                     </Box>
+                     <Box
+                        display={"flex"}
+                        flexDirection={"column"}
+                        gap={"2rem"}
+                     >
+                        <Box display={"flex"} justifyContent={"space-around"}>
+                           <Typography variant="h5">
+                              {orderDetails.address?.fullName}
+                           </Typography>
+                           <Divider
+                              orientation="vertical"
+                              color="template8.contrastText"
+                           />
+                           <Typography variant="h5">
+                              {orderDetails.address?.phone}
+                           </Typography>{" "}
+                        </Box>
+                        <Box display={"flex"} justifyContent={"space-between"}>
+                           <Typography variant="h5" color={"template8.main"}>
+                              {orderDetails.address?.address}
+                           </Typography>
+                        </Box>
+                     </Box>
+                  </Box>
+               </Grid2>
             </Grid2>
-         </Grid2>
+         ) : (
+            ""
+         )}
       </Box>
    );
 }
