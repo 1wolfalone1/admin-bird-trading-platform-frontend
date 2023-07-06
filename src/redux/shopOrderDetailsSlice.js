@@ -1,39 +1,39 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api } from "../api/api";
-
+const initialState = {
+   shopOrderDetailsTable: {
+      data: [],
+      isLoading: true,
+      totalOrdersDetails: 0,
+      listSelected: [],
+      rowModesModel: {},
+      mode: "view",
+      currentPage: 1,
+   },
+   tab: 1,
+   filter: {
+      orderSearchInfo: {
+         id: 0,
+         field: "",
+         value: "",
+         operator: "",
+      },
+      sortDirection: {
+         field: "",
+         sort: "",
+      },
+      pageNumber: 1,
+   },
+}
 const shopOrderDetailsSlice = createSlice({
    name: "shopOrderDetailsSlice",
-   initialState: {
-      shopOrderDetailsTable: {
-         data: [],
-         isLoading: true,
-         totalOrdersDetails: 0,
-         listSelected: [],
-         rowModesModel: {},
-         mode: "view",
-         currentPage: 1,
-      },
-      tab: 1,
-      filter: {
-         orderSearchInfo: {
-            id: 0,
-            field: "",
-            value: "",
-            operator: "",
-         },
-         sortDirection: {
-            field: "",
-            sort: "",
-         },
-         pageNumber: 1,
-      },
-   },
+   initialState: initialState,
    reducers: {
       changeTab: (state, action) => {
          state.tab = action.payload;
       },
       changeListSelectedRows: (state, action) => {
-         state.shopOrderTable.listSelected = action.payload;
+         state.shopOrderDetailsTable.listSelected = action.payload;
       },
       changeOrderSearchInfo: (state, action) => {
          state.filter.orderSearchInfo = action.payload;
@@ -41,6 +41,9 @@ const shopOrderDetailsSlice = createSlice({
       changeSortDirection: (state, action) => {
          state.filter.sortDirection = action.payload;
       },
+      resetState: (state, action) => {
+         return initialState;
+      }
    },
    extraReducers: (builder) =>
       builder
@@ -71,7 +74,9 @@ export const getOrderDetailsFilterPaging = createAsyncThunk(
    async (page, { getState }) => {
       const state = getState();
       try {
-         const filter = state.shopOrderSlice.filter;
+         const filter = state.shopOrderDetailsSlice.filter;
+         console.log(filter, 'filterrrr')
+
          const formData = {
             ...filter,
             pageNumber: page,

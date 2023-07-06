@@ -1,34 +1,34 @@
 import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import { api } from "../api/api";
 import { category } from "../config/constant";
-
+const initialState = {
+   productsTable: {
+      data: [],
+      isLoading: true,
+      type: category.BIRDS,
+      totalProduct: 0,
+      listSelected: [],
+      rowModesModel: {},
+      mode: "view",
+      currentPage: 1,
+   },
+   filter: {
+      category: 1,
+      productSearchInfo: {
+         field: "",
+         value: "",
+         operator: "",
+      },
+      sortDirection: {
+         field: "",
+         sort: "",
+      },
+      pageNumber: 1,
+   },
+}
 const productShopSlice = createSlice({
    name: "productShopSlice",
-   initialState: {
-      productsTable: {
-         data: [],
-         isLoading: true,
-         type: category.BIRDS,
-         totalProduct: 0,
-         listSelected: [],
-         rowModesModel: {},
-         mode: "view",
-         currentPage: 1,
-      },
-      filter: {
-         category: 1,
-         productSearchInfo: {
-            field: "",
-            value: "",
-            operator: "",
-         },
-         sortDirection: {
-            field: "",
-            sort: "",
-         },
-         pageNumber: 1,
-      },
-   },
+   initialState: initialState,
    reducers: {
       changeTab: (state, action) => {
          state.productsTable.type = action.payload;
@@ -47,6 +47,9 @@ const productShopSlice = createSlice({
       },
       changeProductSearchInfo: (state, action) => {
          state.filter.productSearchInfo = action.payload;
+      },
+      resetState: (state, action) => {
+         return initialState;
       }
    },
    extraReducers: (builder) =>

@@ -1,33 +1,33 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api } from "../api/api";
-
+const initialState = {
+   shopOrderTable: {
+      data: [],
+      isLoading: true,
+      totalOrders: 0,
+      listSelected: [],
+      rowModesModel: {},
+      mode: "view",
+      currentPage: 1,
+   },
+   tab: 1,
+   filter: {
+      orderSearchInfo: {
+         id: 0,
+         field: "",
+         value: "",
+         operator: "",
+      },
+      sortDirection: {
+         field: "",
+         sort: "",
+      },
+      pageNumber: 1,
+   },
+}
 const shopOrderSlice = createSlice({
    name: "shopOrderSlice",
-   initialState: {
-      shopOrderTable: {
-         data: [],
-         isLoading: true,
-         totalOrders: 0,
-         listSelected: [],
-         rowModesModel: {},
-         mode: "view",
-         currentPage: 1,
-      },
-      tab: 1,
-      filter: {
-         orderSearchInfo: {
-            id: 0,
-            field: "",
-            value: "",
-            operator: "",
-         },
-         sortDirection: {
-            field: "",
-            sort: "",
-         },
-         pageNumber: 1,
-      },
-   },
+   initialState: initialState,
    reducers: {
       changeTab: (state, action) => {
          state.tab = action.payload;
@@ -40,6 +40,9 @@ const shopOrderSlice = createSlice({
       },
       changeSortDirection: (state, action) => {
          state.filter.sortDirection = action.payload;
+      },
+      resetState: (state, action) => {
+         return initialState;
       }
    },
    extraReducers: (builder) =>

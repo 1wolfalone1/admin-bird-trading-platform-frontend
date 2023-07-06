@@ -6,10 +6,12 @@ import PhotoSizeSelectLargeOutlinedIcon from "@mui/icons-material/PhotoSizeSelec
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { useDispatch, useSelector } from "react-redux";
 import fileControlSlice, {
+   getVideoBlobSelector,
    getVideoPreviewSelector,
 } from "../../redux/fileControlSlice";
 import ReactPlayer from "react-player";
 import VideoSettingsIcon from "@mui/icons-material/VideoSettings";
+import { getProductValidateStateSelector } from "../../redux/productDetailsValidateSlice";
 const style = {
    button: {},
    icon: {
@@ -22,7 +24,8 @@ const style = {
 export default function VideoPreview() {
    const video = useSelector(getVideoPreviewSelector);
    const dispatch = useDispatch();
-
+   const videoBlob = useSelector(getVideoBlobSelector);
+   const { status } = useSelector(getProductValidateStateSelector);
    return (
       <div className={clsx(s.container, s.previewImg)}>
          <ReactPlayer url={video} alt="" width={"100%"} height={"100%"} />
@@ -44,8 +47,12 @@ export default function VideoPreview() {
             <IconButton
                color="inputImage"
                sx={style.icon}
-               onClick={() =>
+               onClick={() =>{
+                  if(!videoBlob && status === "UPDATE"){
+                     dispatch(fileControlSlice.actions.changeDeleteVideo(true));
+                  }
                   dispatch(fileControlSlice.actions.removeVideoPreview())
+               }
                }
             >
                <DeleteOutlineIcon sx={style.icon} />

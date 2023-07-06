@@ -36,7 +36,7 @@ import { api } from "../../../api/api";
 // Custom CSS for the Quill editor
 const validationSchema = yup.object().shape({
    type: yup.number().notOneOf([0], "Type is required!"),
-   tag: yup.array().min(1, "Please select at least one tag"),
+   tags: yup.array().min(1, "Please select at least one tag"),
    description: yup
       .string()
       .min(100, "Description must be at least 100 characters long")
@@ -87,10 +87,11 @@ export default function FormDetailsInfo() {
          return "accessory";
       }
    };
+
    const form = useFormik({
       initialValues: {
          type: 0,
-         tag: [],
+         tags: [],
          description: "",
       },
       validationSchema: validationSchema,
@@ -98,20 +99,8 @@ export default function FormDetailsInfo() {
       validateOnBlur: true,
       validationOnMount: true,
    });
-   useEffect(() => {
-      if(status === 'UPDATE') {
-         form.setValues(detailsForm.data)
-      }
-   }, [detailsForm]);
-   useEffect(() => {
-      dispatch(
-         productDetailsValidateSlice.actions.handleOnChangeDetailsForm(
-            form.values
-         )
-      );
-      form.validateForm(form.values);
-      dispatch(productDetailsValidateSlice.actions.setDetailsForm(form));
-   }, [getForm]);
+ 
+  
 
    const handleNewTag = async () => {
       if (newTag) {
@@ -135,7 +124,7 @@ export default function FormDetailsInfo() {
       if (listTags) {
          const isExist = listTags.find((tag) => tag.id === responseTag?.id);
          if (isExist) {
-            form.setFieldValue("tag", [...form.values.tag, responseTag]);
+            form.setFieldValue("tags", [...form.values.tags, responseTag]);
             setResponseTag("");
          }
       }
@@ -151,7 +140,20 @@ export default function FormDetailsInfo() {
       // Customize the equality test based on your data structure
       return option.id === value.id;
    };
-
+   useEffect(() => {
+      dispatch(
+         productDetailsValidateSlice.actions.handleOnChangeDetailsForm(
+            form.values
+         )
+      );
+      form.validateForm(form.values);
+      dispatch(productDetailsValidateSlice.actions.setDetailsForm(form));
+   }, [getForm]);
+   useEffect(() => {
+      if(status == 'UPDATE') {
+         form.setValues(detailsForm.data)
+      }
+   }, [detailsForm]);
    return (
       <form className={s.container}>
          <h2>Details information</h2>
@@ -206,13 +208,13 @@ export default function FormDetailsInfo() {
                   {listTags !== undefined && listTags.length !== 0 && (
                      <>
                         <Autocomplete
-                           id="tag"
+                           id="tags"
                            multiple
                            isOptionEqualToValue={isOptionEqualToValue}
-                           value={form.values.tag}
-                           onBlur={form.handleBlur("tag")}
+                           value={form.values.tags}
+                           onBlur={form.handleBlur("tags")}
                            onChange={(event, value) =>
-                              form.setFieldValue("tag", value)
+                              form.setFieldValue("tags", value)
                            }
                            disableCloseOnSelect
                            renderOption={(props, option, { selected }) => (
@@ -240,9 +242,9 @@ export default function FormDetailsInfo() {
                            }
                         />
 
-                        {form.touched.tag && form.errors.tag && (
+                        {form.touched.tags && form.errors.tags && (
                            <FormHelperText error>
-                              {form.errors.tag}
+                              {form.errors.tags}
                            </FormHelperText>
                         )}
                      </>

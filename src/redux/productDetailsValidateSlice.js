@@ -21,7 +21,7 @@ const initialState = {
       form: null,
       data: {
          type: 0,
-         tag: [],
+         tags: [],
          description: "",
       },
    },
@@ -42,6 +42,7 @@ const initialState = {
       status: true,
       msg: "Need images to create products!",
    },
+   listImageUpdate: [],
    errorForm: {
       basic: 0,
       details: 0,
@@ -130,6 +131,7 @@ export const getProductDetailsById = createAsyncThunk(
                video: data.video,
             })
          );
+         console.log(data);
          return data;
       } catch (err) {
          console.error(err);

@@ -55,7 +55,11 @@ export default function ShopOrderDataGrid() {
          page,
       }));
    };
-
+   useEffect(() => {
+      return () => {
+         dispatch(shopOrderSlice.actions.resetState())
+      }
+   }, []);
    const handleRowSelectionModelChange = (newRowSelectionModel, a) => {
       console.log(newRowSelectionModel);
       let newListSelected = [];
@@ -320,7 +324,7 @@ const columns = [
       width: 200,
       filterOperators: [operatorDate],
       valueFormatter: (params) =>
-         moment.utc(params.value).format("DD/MM/YY HH:mm"),
+      moment(params.value).format("DD/MM/YY HH:mm"),
    },
    {
       headerAlign: "center",
@@ -331,6 +335,6 @@ const columns = [
       width: 200,
       filterOperators: [operatorDate],
       valueFormatter: (params) =>
-         moment.utc(params.value).format("DD/MM/YY HH:mm"),
+         moment(params.value).format("DD/MM/YY HH:mm"),
    },
 ];

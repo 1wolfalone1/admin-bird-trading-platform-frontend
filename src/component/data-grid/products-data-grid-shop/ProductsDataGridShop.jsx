@@ -24,7 +24,13 @@ import productShopSlice, {
 } from "../../../redux/productsShopSlice";
 import clsx from "clsx";
 import { formatNumber, formatQuantity } from "../../../utils/myUtils";
-import { operatorIDEqual, operatorNameContain, operatorPriceFrom, operatorSelect, operatorTypeContain } from "../../filter-table-common/FiterTableCommon";
+import {
+   operatorIDEqual,
+   operatorNameContain,
+   operatorPriceFrom,
+   operatorSelect,
+   operatorTypeContain,
+} from "../../filter-table-common/FiterTableCommon";
 
 export default function ProductsDataGridShop() {
    const tableData = useSelector(productTableSelector);
@@ -82,12 +88,12 @@ export default function ProductsDataGridShop() {
          });
       }
    }, []);
-   const handleRowChange = (row) => {
-   };
+   const handleRowChange = (row) => {};
 
    useEffect(() => {
       return () => {
          dispatch(productShopSlice.actions.changeListSelectedRows([]));
+         dispatch(productShopSlice.actions.resetState());
       };
    }, []);
 
@@ -106,8 +112,7 @@ export default function ProductsDataGridShop() {
       }
       return newRow;
    };
-   const handleProcessRowUpdateError = (newRow, oldRow) => {
-   };
+   const handleProcessRowUpdateError = (newRow, oldRow) => {};
    const handleRowSelectionModelChange = (newRowSelectionModel) => {
       if (tableData.mode === "view") {
          dispatch(
@@ -216,57 +221,6 @@ function CustomEditComponent(props) {
 }
 const renderRatingEditInputCell = (params) => {
    return <CustomEditComponent {...params} />;
-};
-const CustomFiltera = ({ applyValue, item }) => {
-   const handleFilterChange = (event) => {
-      console.log(event.target.value, item, applyValue);
-      let newItem = { ...item, value: event.target.value };
-      applyValue(newItem);
-   };
-
-   return (
-      <Box>
-         <Typography
-            sx={{ padding: "0", fontSize: "1.6rem", lineHeight: "1.6rem" }}
-         >
-            value
-         </Typography>
-         <Input
-            placeholder="Filter..."
-            value={item.value}
-            onChange={handleFilterChange}
-         />
-      </Box>
-   );
-};
-const CustomFilteraStatus = ({ applyValue, item }) => {
-   const handleFilterChange = (event) => {
-      console.log(event.target.value, item, applyValue);
-      let newItem = { ...item, value: event.target.value };
-      applyValue(newItem);
-   };
-
-   return (
-      <Box>
-         <Typography
-            sx={{ padding: "0", fontSize: "1.6rem", lineHeight: "1.6rem" }}
-         >
-            value
-         </Typography>
-         <Select
-            defaultValue={""}
-            value={item.value}
-            onChange={handleFilterChange}
-            sx={{ width: "100%" }}
-            MenuProps={{ disableScrollLock: true }}
-         >
-            <MenuItem value={9}>All</MenuItem>
-            <MenuItem value={1}>Active</MenuItem>
-            <MenuItem value={0}>Inactive</MenuItem>
-            <MenuItem value={-2}>Banned</MenuItem>
-         </Select>
-      </Box>
-   );
 };
 
 const columns = [
@@ -397,8 +351,7 @@ const columns = [
       width: 180,
       filterable: false,
 
-      valueFormatter: (params) =>
-         moment.utc(params.value).format("DD/MM/YY HH:mm"),
+      valueFormatter: (params) => moment(params.value).format("DD/MM/YY HH:mm"),
    },
    {
       field: "lastUpdate",
@@ -407,7 +360,6 @@ const columns = [
       headerAlign: "center",
       width: 180,
       filterable: false,
-      valueFormatter: (params) =>
-         moment.utc(params.value).format("DD/MM/YY HH:mm"),
+      valueFormatter: (params) => moment(params.value).format("DD/MM/YY HH:mm"),
    },
 ];

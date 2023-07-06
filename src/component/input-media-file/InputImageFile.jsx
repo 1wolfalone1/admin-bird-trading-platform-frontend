@@ -16,6 +16,7 @@ import { v4 } from "uuid";
 import { useEffect } from "react";
 import { dataAsyncUrlToFile } from "../../utils/myUtils";
 import globalConfigSlice from "../../redux/globalConfigSlice";
+import { getProductValidateStateSelector } from "../../redux/productDetailsValidateSlice";
 export default function InputImageFile({ quantity }) {
    const hiddenFileInput = React.useRef(null);
    const dispatch = useDispatch();
@@ -23,6 +24,8 @@ export default function InputImageFile({ quantity }) {
    const currentEdit = useSelector(getCurrentEditSelector);
    const cropperRef = useRef(null);
    const [value, setValue] = useState("");
+   const { status } = useSelector(getProductValidateStateSelector);
+
    const onChange = async (e) => {
       let files;
       if (e.dataTransfer) {
@@ -52,9 +55,7 @@ export default function InputImageFile({ quantity }) {
    const ready = (currentEdit) => {
      
       return async (currentEdit2) => {
-         console.log(
-            "asdfasdfkajlsdfhkajs dfkjasdf hjasd hfasdh akjsdasujd fasdf sad "
-         );
+
          dispatch(globalConfigSlice.actions.changeBackDropState(true));
          if (typeof cropperRef.current?.cropper !== "undefined") {
             //  cropperRef.current?.cropper.setCanvasData({
@@ -80,6 +81,9 @@ export default function InputImageFile({ quantity }) {
                   cropperRef.current?.cropper?.getCroppedCanvas()?.toDataURL(),
                   `${id}`
                );
+               if(status === 'UPDATE') {
+                  dispatch(fileControlSlice.actions.changeListRemoveUpdate(id))                  
+               }
                dispatch(
                   fileControlSlice.actions.addImagesPreview({
                      id: id,

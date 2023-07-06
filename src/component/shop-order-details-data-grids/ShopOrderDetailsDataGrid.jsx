@@ -72,7 +72,11 @@ export default function ShopOrderDetailsDataGrid() {
          });
       }
    }, []);
-
+   useEffect(() => {
+      return () => {
+         dispatch(shopOrderDetailsSlice.actions.resetState())
+      }
+   }, []);
    const onFilterChange = (filterModel) => {
       console.log(filterModel);
       // Here you save the data you need from the filter model
@@ -198,6 +202,7 @@ const columns = [
       headerAlign: "center",
       headerName: "Promotion Rate",
       valueFormatter: ({ value }) => `${value}%`,
+      filterable: false,
       type: "number",
       width: 150,
    },
@@ -207,6 +212,7 @@ const columns = [
       headerAlign: "center",
       headerName: "Quantity",
       type: "number",
+      filterable: false,
       valueFormatter: ({ value }) => formatQuantity(value),
       width: 150,
    },
@@ -226,13 +232,13 @@ const columns = [
       },
    },
    {
-      field: "createDate",
+      field: "createdDate",
       headerClassName: "super-app-theme--header",
       headerAlign: "center",
       headerName: "Create Date",
       width: 200,
       filterOperators: [operatorDate],
       valueFormatter: (params) =>
-         moment.utc(params.value).format("DD/MM/YY HH:mm"),
+      moment(params.value).format("DD/MM/YY HH:mm"),
    },
 ];
