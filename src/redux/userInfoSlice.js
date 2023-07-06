@@ -18,5 +18,6 @@ const userInfoSlice = createSlice({
 
 export default userInfoSlice;
 
-
 export const userInfoSliceSelector = state => state.userInfoSlice;
+
+export const userRoleSelector = state => state.userInfoSlice.role

@@ -57,7 +57,7 @@ export default function ShopOrderBarController() {
             2: true,
          });
       } else {
-         console.log(listSelected, 'list selecteddddddddddddddd')
+         console.log(listSelected, "list selecteddddddddddddddd");
          const isHasTwoStatus = listSelected.some(
             (row) => listSelected[0].orderStatus.id !== row.orderStatus.id
          );
@@ -147,6 +147,10 @@ export default function ShopOrderBarController() {
    const handleCloseModelConfirmStatus = () => {
       setModelConfirmChangeStatus(false);
    };
+   const handleViewOrderDetails = () => {
+      console.log(listSelected)
+      navigate(`/order/order-details/${listSelected[0].id}`)
+   }
    return (
       <Grid2
          container
@@ -173,7 +177,21 @@ export default function ShopOrderBarController() {
                />
             </Tabs>
          </Grid2>
-         <Grid2 xs={6} sx={{ display: "flex", justifyContent: "flex-end" }}>
+         <Grid2
+            xs={6}
+            sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }}
+         >
+            <Button
+               variant="outlined"
+               disabled={
+                  listSelected &&
+                  Array.isArray(listSelected) &&
+                  listSelected.length !== 1
+               }
+               onClick={handleViewOrderDetails}
+            >
+               View details
+            </Button>
             {tab === 1 ? (
                <>
                   <Button
