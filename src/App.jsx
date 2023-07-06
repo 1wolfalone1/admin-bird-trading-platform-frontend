@@ -40,6 +40,26 @@ function App() {
             <Route path={`${breadCrumbs.UPDATE_PRODUCT.url}/:id`} element={<UpdateProductPage/>}/>
             <Route path={`${breadCrumbs.SETTINGS.url}`} element={<ShopOwnerSettings/>}/>
          </Route>
+         <Route path="/admin" element={<LayoutContainer />}>
+            <Route index element={<DashBoard />} />
+            <Route path={breadCrumbs.PRODUCTS.url} element={<Products />} />
+            <Route path={breadCrumbs.ORDER.url} element={<ShopOrderPage />}>
+               <Route index element={<ShopOrderDataGrid />} />
+               <Route
+                  path="order-details"
+                  element={<ShopOrderDetailsDataGrid />}
+               />
+            </Route>
+            <Route path="create-product" element={<UpdateProductPage />} />
+            <Route path="logout" element={<TestPage />} />
+            <Route path="get-token" element={<GetToken />} />
+            <Route path={breadCrumbs.STAFF.url} element={<ShopStaffPage />} >
+               <Route index element={<ShopStaffDataGrid/>}/>
+               <Route path={'create-staff'} element={<CreateShopStaff/>}/>
+            </Route>
+            <Route path={`${breadCrumbs.UPDATE_PRODUCT.url}/:id`} element={<UpdateProductPage/>}/>
+            <Route path={`${breadCrumbs.SETTINGS.url}`} element={<ShopOwnerSettings/>}/>
+         </Route>
       </Routes>
    );
 }
