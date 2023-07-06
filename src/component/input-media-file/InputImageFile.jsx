@@ -53,9 +53,7 @@ export default function InputImageFile({ quantity }) {
       hiddenFileInput.current.click();
    };
    const ready = (currentEdit) => {
-     
       return async (currentEdit2) => {
-
          dispatch(globalConfigSlice.actions.changeBackDropState(true));
          if (typeof cropperRef.current?.cropper !== "undefined") {
             //  cropperRef.current?.cropper.setCanvasData({
@@ -81,9 +79,7 @@ export default function InputImageFile({ quantity }) {
                   cropperRef.current?.cropper?.getCroppedCanvas()?.toDataURL(),
                   `${id}`
                );
-               if(status === 'UPDATE') {
-                  dispatch(fileControlSlice.actions.changeListRemoveUpdate(id))                  
-               }
+
                dispatch(
                   fileControlSlice.actions.addImagesPreview({
                      id: id,
@@ -109,6 +105,11 @@ export default function InputImageFile({ quantity }) {
          cropperRef.current?.cropper?.getCroppedCanvas()?.toDataURL(),
          `${currentEdit.id}`
       );
+      console.log(id);
+      if (status === "UPDATE") {
+         console.log(id);
+         dispatch(fileControlSlice.actions.changeListRemoveUpdate(id));
+      }
       dispatch(
          fileControlSlice.actions.cropImage({
             id: id,

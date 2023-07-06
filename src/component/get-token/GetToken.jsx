@@ -20,18 +20,34 @@ export default function GetToken() {
    }, []);
    const getToken = () => {
       const token = params.get("token");
-      localStorage.setItem("token", token);
-      getAdminInfo();
+      const role = params.get("role");
+      if(role == 2) {
+         console.log('stafffffffffffffffffffffffffffffffffffffffffffffffff')
+      }
+      if(!role){
+         console.log('shopownerrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr')
+
+         localStorage.setItem("token", token);
+         getShopOwnerInfo();
+      }
+      if(role == 3){
+         console.log('adminnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn')
+
+      }
    };
-   const getAdminInfo = async () => {
+   const getStaffInfo = () => {
+
+   }
+   const getShopOwnerInfo = async () => {
       try {
          const res = await api.get("/shop-owner/profile");
          const data = res.data;
-         console.log(res);
+
+         console.log(data, 'dataaaaaaaaaaaaaaaaaaaaaaaa');
          const role = userRole.SHOP_OWNER.code;
          dispatch(
             userInfoSlice.actions.changeUserInfo({
-               role: role,
+               role: data.role,
                info: data,
             })
          );

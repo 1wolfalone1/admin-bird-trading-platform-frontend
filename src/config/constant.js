@@ -26,6 +26,10 @@ export const breadCrumbs = {
       name: "Update product",
       url: "products/update-product",
    },
+   ORDER_DETAILS: {
+      name: 'Order details',
+      url: 'orders/order-details'
+   },
    BIRDS: {
       name: "Birds",
       url: "/birds",

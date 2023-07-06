@@ -16,6 +16,8 @@ import ShopStaffPage from "./container/shop-staff-page/ShopStaffPage";
 import ShopStaffDataGrid from "./component/shop-staff-data-grid/ShopStaffDataGrid";
 import CreateShopStaff from "./container/create-shop-staff/CreateShopStaff";
 import ShopOwnerSettings from "./container/shop-owner-settings/ShopOwnerSettings";
+import AdminDashboard from "./container/admin-dashboard/AdminDashboard";
+import ShopViewOrderDetails from "./container/shop-view-order-details/ShopViewOrderDetails";
 
 function App() {
    return (
@@ -33,12 +35,22 @@ function App() {
             <Route path="create-product" element={<UpdateProductPage />} />
             <Route path="logout" element={<TestPage />} />
             <Route path="get-token" element={<GetToken />} />
-            <Route path={breadCrumbs.STAFF.url} element={<ShopStaffPage />} >
-               <Route index element={<ShopStaffDataGrid/>}/>
-               <Route path={'create-staff'} element={<CreateShopStaff/>}/>
+            <Route path={breadCrumbs.STAFF.url} element={<ShopStaffPage />}>
+               <Route index element={<ShopStaffDataGrid />} />
+               <Route path={"create-staff"} element={<CreateShopStaff />} />
             </Route>
-            <Route path={`${breadCrumbs.UPDATE_PRODUCT.url}/:id`} element={<UpdateProductPage/>}/>
-            <Route path={`${breadCrumbs.SETTINGS.url}`} element={<ShopOwnerSettings/>}/>
+            <Route
+               path={`${breadCrumbs.UPDATE_PRODUCT.url}/:id`}
+               element={<UpdateProductPage />}
+            />
+            <Route
+               path={`${breadCrumbs.SETTINGS.url}`}
+               element={<ShopOwnerSettings />}
+            />
+            <Route path="order/order-details/:orderId" element={<ShopViewOrderDetails />}/>
+         </Route>
+         <Route path="/admin" element={<LayoutContainer />}>
+            <Route index element={<AdminDashboard />} />
          </Route>
       </Routes>
    );

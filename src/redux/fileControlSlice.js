@@ -73,6 +73,7 @@ const fileControlSlice = createSlice({
          const removeImage = state.listImagesPreview.find(
             (image) => image.id === action.payload
          );
+         console.log(removeImage);
          if (removeImage) {
             if (!removeImage.file) {
                console.log(removeImage.src, 'remove image')
