@@ -41,7 +41,6 @@ const messageSlice = createSlice({
                 if (item.userId === action.payload.id) {
                   //get number unread
                   numberRead = item.unread;
-                  console.log('have jum in here number read', numberRead);
                   return {
                     ...item,
                     unread: 0
@@ -185,7 +184,6 @@ const messageSlice = createSlice({
           }
         },
         updateListMessage: (state, action) => {
-          console.log(action.payload.lists, "data nhin ne")
             const olderMessageList = action.payload.lists;
             const updateList = [...olderMessageList, ...state.message.messageList.messageListData];
             // const updateList = [];
@@ -231,6 +229,12 @@ const messageSlice = createSlice({
         .addCase(sendMessage.rejected, (state, action) => {
             console.log(action)
         }) 
+        .addCase(getTotalUnread.fulfilled, (state, action) => {
+          state.message.numberUnread = action.payload.totalUnread;
+        })
+        .addCase(getTotalUnread.rejected, (state,action) => {
+          console.log(action)
+        })
 })
 
 export const { setMessage, addMessage } = messageSlice.actions;
@@ -247,7 +251,6 @@ export const getListUser = createAsyncThunk(
           const pageNumber = messageList?.currentPagenumberUserList;
           const res = await api.get(`/shop-owner/${userInfo?.id}/channels`, {params: {pagenumber: pageNumber}});
           const data = res.data;
-          console.log(data, 'data o channle ne');
           return data;
         //   dispatch(getListUserSuccess(res.data));
         } catch (error) {
@@ -308,6 +311,23 @@ export const sendMessage = createAsyncThunk(
           console.log(error)
         }
     }
+)
+
+export const getTotalUnread = createAsyncThunk(
+  "message/message-total-unread",
+  async(_, {getState}) => {
+    const state = getState();
+    const userInfo = state.userInfoSlice.info;
+    try{
+      console.log('here is info', userInfo)
+      const res = await api.get(`/shop-owner/${userInfo?.id}/messages/unread`);
+      const data = res.data;
+      return data;
+    }catch(error){
+      console.log(error);
+      throw error;
+    }
+  }
 )
 
 export const messageSelector = state => state.messageSlice.message

@@ -45,12 +45,11 @@ const MessageUserList = () => {
     dispatch(getListUser());
   }
 
-  console.log('here is totalPageUserListPaging', totalPageUserListPaging)
 
   return (
     <div  className={clsx(s.container)}>
       <DialogContent sx={{padding:  "0px", overflow: "hidden"}}>
-          <DialogContentText className={clsx(s.messageTitle)} sx={totalPageUserListPaging > 1 && {marginTop: "20px"}}>
+          <DialogContentText className={clsx(s.messageTitle)} sx={(totalPageUserListPaging > 1 && totalPageUserListPaging == currentPagenumberUserList ) && {marginTop: "20px"}}>
             <b>Select a user:</b>
           </DialogContentText>
           <div className={clsx(s.wapperUserList)}>
