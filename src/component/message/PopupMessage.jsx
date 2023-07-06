@@ -9,7 +9,7 @@ import { Cancel, Message, Pages, Sms } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
-import messageSlice, { getListUser, messageSelector } from "../../redux/messageSlice";
+import messageSlice, { getListUser, getTotalUnread, messageSelector } from "../../redux/messageSlice";
 import moment from "moment";
 import { userRole } from "../../config/constant";
 import { Badge, Grid, IconButton, Popover } from "@mui/material";
@@ -54,12 +54,15 @@ const PopupMessage = () => {
 
   useEffect(() => {
     connect(role);
-    refreshUnread();
   }, [role]);
 
-  useEffect(() => {
-    handleReadMessage();
-  }, [numRead]);
+  // useEffect(() => {
+  //   handleReadMessage();
+  // }, [numRead]);
+
+  useEffect( () => {
+    refreshUnread();
+  },[info])
 
   useEffect(() => {
     if(newMessage) {
@@ -110,25 +113,32 @@ const PopupMessage = () => {
   };
   // end socket
 
+  // const refreshUnread = async () => {
+  //   if (role === userRole.SHOP_OWNER.code || role === userRole.SHOP_STAFF.code) {
+  //     const data = await dispatch(getListUser()); 
+  //     if (data?.payload) {
+  //       const numUnread =
+  //         data?.payload?.lists.reduce(
+  //           (accumulator, user) => accumulator + user.unread,
+  //           0
+  //         ) || 0;
+  //       dispatch(
+  //         messageSlice.actions.setNumberUnread({
+  //           key: "",
+  //           numberUnread: numUnread,
+  //         })
+  //       );
+  //       setUnread(numUnread);
+  //     }
+  //   }
+  // };
   const refreshUnread = async () => {
-    if (role === userRole.SHOP_OWNER.code || role === userRole.SHOP_STAFF.code) {
-      const data = await dispatch(getListUser()); 
-      if (data?.payload) {
-        const numUnread =
-          data?.payload?.lists.reduce(
-            (accumulator, user) => accumulator + user.unread,
-            0
-          ) || 0;
-        dispatch(
-          messageSlice.actions.setNumberUnread({
-            key: "",
-            numberUnread: numUnread,
-          })
-        );
-        setUnread(numUnread);
-      }
+    if(info?.id != null) {
+      const res = await dispatch(getTotalUnread());
+      setUnread(res.payload?.totalUnread);
+      console.log(res ,'nhin data ne')
     }
-  };
+};
 
   const handleClick = (event) => {
     // setAnchorEl(event.currentTarget);
@@ -223,6 +233,8 @@ const PopupMessage = () => {
       console.log(error);
     }
   };
+  
+  console.log(numberUnread, 'here is number unread');
 
   return (
     <>
@@ -233,7 +245,7 @@ const PopupMessage = () => {
             sx={badgeStyle.badge}
           >
               <Badge
-                badgeContent={unread}
+                badgeContent={numberUnread}
                 color="primary"
                 sx={badgeStyle.badge}
               >

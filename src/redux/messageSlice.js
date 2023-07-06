@@ -229,6 +229,12 @@ const messageSlice = createSlice({
         .addCase(sendMessage.rejected, (state, action) => {
             console.log(action)
         }) 
+        .addCase(getTotalUnread.fulfilled, (state, action) => {
+          state.message.numberUnread = action.payload.totalUnread;
+        })
+        .addCase(getTotalUnread.rejected, (state,action) => {
+          console.log(action)
+        })
 })
 
 export const { setMessage, addMessage } = messageSlice.actions;
@@ -305,6 +311,23 @@ export const sendMessage = createAsyncThunk(
           console.log(error)
         }
     }
+)
+
+export const getTotalUnread = createAsyncThunk(
+  "message/message-total-unread",
+  async(_, {getState}) => {
+    const state = getState();
+    const userInfo = state.userInfoSlice.info;
+    try{
+      console.log('here is info', userInfo)
+      const res = await api.get(`/shop-owner/${userInfo?.id}/messages/unread`);
+      const data = res.data;
+      return data;
+    }catch(error){
+      console.log(error);
+      throw error;
+    }
+  }
 )
 
 export const messageSelector = state => state.messageSlice.message
