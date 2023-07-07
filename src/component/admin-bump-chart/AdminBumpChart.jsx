@@ -8,7 +8,7 @@ import { ResponsiveBump } from '@nivo/bump'
 // website examples showcase many properties,
 // you'll often use just a few of them.
 const AdminBumpChart = ({ data /* see data tab */ }) => {
-   console.log(data);
+   
    return (
       <ResponsiveBump
           data={data}

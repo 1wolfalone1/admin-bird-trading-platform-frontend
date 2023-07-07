@@ -9,8 +9,8 @@ const boxStyle = {
 };
 export default function AdminRankShopBumpChart({ data }) {
    return (
-      <Box sx={{ ...boxStyle }} className={clsx("box-shadow")}>
-         <Typography variant="h5" sx={{ textAlign: "center", padding: "1rem" }}>
+      <Box sx={{ ...boxStyle, padding: "1rem"  }} className={clsx("box-shadow")}>
+         <Typography variant="h5" sx={{ textAlign: "center"}}>
             Arrangement of stores based on weekly revenue performance
          </Typography>
          <Box width={"100%"} height={"40rem"}>
