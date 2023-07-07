@@ -210,6 +210,13 @@ const columns = [
          if (params.value.id === 2) {
             colorTheme = "template9";
          }
+         if(params.value.id === 3){
+            colorTheme = "shipping";
+         }
+         if(params.value.id === 4){
+            colorTheme = "delivered";
+         }
+         
          return (
             <Chip
                color={colorTheme}
@@ -240,6 +247,7 @@ const columns = [
       filterOperators: [operatorSelectPaymenMethod],
       valueFormatter: ({ value }) => value === "DELIVERY" ? "COD" : "PAYPAL",
       renderCell: (params) => {
+         console.log(params.value);
          let colorTheme = "success";
          if (params.value === "PAYPAL") {
             colorTheme = "paypal";

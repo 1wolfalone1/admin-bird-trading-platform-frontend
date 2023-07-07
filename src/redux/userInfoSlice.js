@@ -1,18 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { userRole } from "../config/constant";
+const initialState = {
+   info: {
 
+   }, 
+   role: 0,
+}
 const userInfoSlice = createSlice({
    name: 'userInfoSlice',
-   initialState: {
-      info: {
-
-      }, 
-      role: 0,
-   },
+   initialState: initialState,
    reducers :{
       changeUserInfo: (state, actions) => {
          return actions.payload;
-      }
+      },
+      resetState: (state, actions) => initialState
    }
 })
 
