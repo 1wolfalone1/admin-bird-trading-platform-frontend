@@ -4,6 +4,26 @@ export const breadCrumbs = {
       url: "",
       id: 1,
    },
+   ADMIN_DASH_BOARD: {
+      name: "Dashboard",
+      url: "/admin",
+      id: 11,
+   },
+   ADMIN_PRODUCTS: {
+      name: "Dashboard",
+      url: "/admin/products",
+      id: 12,
+   },
+   ADMIN_ORDER: {
+      name: "Orders",
+      url: "/admin/order",
+      id: 13,
+   },
+   ADMIN_REPORTS: {
+      name: "Reports",
+      url: "/admin/report",
+      id: 14,
+   },
    SUMMARY_ORDERS: {
       name: "Summary order",
       url: "dashboard/summary-order",

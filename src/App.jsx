@@ -18,12 +18,15 @@ import CreateShopStaff from "./container/create-shop-staff/CreateShopStaff";
 import ShopOwnerSettings from "./container/shop-owner-settings/ShopOwnerSettings";
 import AdminDashboard from "./container/admin-dashboard/AdminDashboard";
 import ShopViewOrderDetails from "./container/shop-view-order-details/ShopViewOrderDetails";
+import PageNotFound from "./container/page-not-found/PageNotFound";
 
 function App() {
+   
    return (
       <Routes>
          <Route path="/" element={<LayoutContainer />}>
             <Route index element={<DashBoard />} />
+            <Route path={'/page-not-found'} element={<PageNotFound />} />
             <Route path={breadCrumbs.PRODUCTS.url} element={<Products />} />
             <Route path={breadCrumbs.ORDER.url} element={<ShopOrderPage />}>
                <Route index element={<ShopOrderDataGrid />} />

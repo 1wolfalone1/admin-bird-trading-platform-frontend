@@ -64,6 +64,14 @@ const theme = createTheme({
       delivery: {
          main: '#dfdfdf',
          contrastText: "#202020",
+      },
+      shipping: {
+         main: '#0d0051',
+         contrastText: "#c9ffe0",
+      },
+      delivered: {
+         main: '#711970',
+         contrastText: "#c1ffc0",
       }
    },
    typography: {

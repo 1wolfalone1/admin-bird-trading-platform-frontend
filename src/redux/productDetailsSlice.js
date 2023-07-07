@@ -58,7 +58,7 @@ export const getListVouchers = createAsyncThunk(
       try {
          const res = await api.get("/shop-owner/promotion-shop");
          const data = res.data;
-
+         console.log(data);
          return data;
       } catch (err) {
          console.log(err);

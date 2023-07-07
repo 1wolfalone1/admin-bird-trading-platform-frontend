@@ -28,7 +28,7 @@ export default function Products() {
    return (
       <div className={s.container}>
          <div className={s.headerTable}>
-            <h2>Product mananger</h2>
+            <h2>Product manager</h2>
             <ProductShopPageController/>
          </div>
          <div style={{ height: "60rem", width: "100%" }}>

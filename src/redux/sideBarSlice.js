@@ -70,6 +70,30 @@ export const typeMenu = {
       url: breadCrumbs.SUPPORT.url
 
    },
+   ADMIN_DASHBOARD: {
+      Icon: <AnalyticsIcon sx={commonStyle.icon} color="template6"/>,
+      title: "Dashboard",
+      id: 1,
+      url: breadCrumbs.ADMIN_DASH_BOARD.url,
+   },
+   ADMIN_PRODUCTS: {
+      Icon: <InventoryIcon sx={commonStyle.icon} color="template6"/>,
+      title: "Products",
+      id: 2,
+      url: breadCrumbs.ADMIN_PRODUCTS.url,
+   },
+   ADMIN_ORDER: {
+      Icon: <ReceiptIcon sx={commonStyle.icon} color="template6"/>,
+      title: "Orders",
+      id: 3,
+      url: breadCrumbs.ADMIN_ORDER.url
+   },
+   ADMIN_REPORT: {
+      Icon: <SummarizeIcon sx={commonStyle.icon} color="template6"/>,
+      title: "Reports",
+      id: 6,
+      url: breadCrumbs.ADMIN_REPORTS.url
+   },
    LOGOUT: {
       Icon: <LogoutIcon sx={commonStyle.icon} color="template6"/>,
       title: "Logout",

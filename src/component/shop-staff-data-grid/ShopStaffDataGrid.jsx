@@ -83,7 +83,13 @@ const columns = [
       headerClassName: "super-app-theme--header",
 
       headerName: "ID",
-      width: 70,
+      width: 150,
+   },
+   {
+      field: "shopId",
+      headerClassName: "super-app-theme--header",
+      headerName: "Shop ID",
+      width: 100,
    },
    {
       field: "userName",

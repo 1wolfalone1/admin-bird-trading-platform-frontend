@@ -21,29 +21,44 @@ export default function GetToken() {
    const getToken = () => {
       const token = params.get("token");
       const role = params.get("role");
-      if(role == 2) {
-         console.log('stafffffffffffffffffffffffffffffffffffffffffffffffff')
+      if (role == 2) {
+         console.log("stafffffffffffffffffffffffffffffffffffffffffffffffff");
       }
-      if(!role){
-         console.log('shopownerrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr')
+      if (!role) {
+         console.log("shopownerrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
 
          localStorage.setItem("token", token);
          getShopOwnerInfo();
       }
-      if(role == 3){
-         console.log('adminnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn')
-
+      if (role == 4) {
+         console.log("adminnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
+         getAdminInfo(token);
       }
    };
-   const getStaffInfo = () => {
-
-   }
+   const getAdminInfo = async (token) => {
+      try {
+         const res = await api.get(`info?token=${token}`);
+         const data = await res.data;
+         localStorage.setItem("token", data.token.accessToken);
+         dispatch(
+            userInfoSlice.actions.changeUserInfo({
+               role: data.role,
+               info: data.userInfo,
+            })
+         );
+         console.log(data);
+         navigate("/admin");
+      } catch (err) {
+         console.log(err);
+      }
+   };
+   const getStaffInfo = () => {};
    const getShopOwnerInfo = async () => {
       try {
          const res = await api.get("/shop-owner/profile");
          const data = res.data;
 
-         console.log(data, 'dataaaaaaaaaaaaaaaaaaaaaaaa');
+         console.log(data, "dataaaaaaaaaaaaaaaaaaaaaaaa");
          const role = userRole.SHOP_OWNER.code;
          dispatch(
             userInfoSlice.actions.changeUserInfo({
@@ -58,7 +73,7 @@ export default function GetToken() {
    };
    return (
       <>
-         <Grid2 container spacing={4} width={'100%'}>
+         <Grid2 container spacing={4} width={"100%"}>
             <Grid2 xs={4}>
                <Skeleton variant="rectangular" width={"100%"} height={"100%"} />
             </Grid2>
