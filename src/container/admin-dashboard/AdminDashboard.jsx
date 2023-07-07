@@ -27,10 +27,10 @@ export default function AdminDashboard() {
             bumpChartRes.data,
             pieChartRes.data,
          ]);
-         const newBumpChartData = bumpChartData.map(data => {
-            return {id: data.id, data: data.bumpChartDtoList}
-         })
-         setBumpChartData(newBumpChartData);
+         // const newBumpChartData = bumpChartData.map(data => {
+         //    return {id: data.id, data: data.bumpChartDtoList}
+         // })
+         setBumpChartData(bumpChartData);
          setPieChartData(pieChartData);
          console.log(bumpChartData);
          console.log(pieChartData);
