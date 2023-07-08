@@ -111,6 +111,7 @@ export default function FormBasicInfo() {
             <FieldCustom title={"Category"} isRequired={true}>
                <Select
                   id="category"
+                  disabled={status === "UPDATE"}
                   sx={styleFormUpdate.select}
                   value={form.values.category}
                   error={form.touched.category && Boolean(form.errors.category)}

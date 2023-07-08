@@ -148,6 +148,9 @@ export default function ProductsDataGridShop() {
                   columns={columns}
                   rowCount={tableData.totalProduct}
                   rowsPerPageOptions={[10]}
+                  paginationModel={paginationModel}
+                  paginationMode="server"
+                  onPaginationModelChange={setPaginationModel}
                   page={tableData?.currentPage - 1}
                   rows={tableData?.data}
                   // editMode={isEditingEnabled ? "row" : "none"}
@@ -155,10 +158,7 @@ export default function ProductsDataGridShop() {
                      toolbar: GridToolbar,
                   }}
                   loading={tableData?.isLoading}
-                  paginationModel={paginationModel}
-                  paginationMode="server"
                   disableColumnMenu
-                  onPaginationModelChange={setPaginationModel}
                   sx={{
                      boxShadow: 2,
                      border: 2,

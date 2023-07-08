@@ -19,14 +19,14 @@ import ShopOwnerSettings from "./container/shop-owner-settings/ShopOwnerSettings
 import AdminDashboard from "./container/admin-dashboard/AdminDashboard";
 import ShopViewOrderDetails from "./container/shop-view-order-details/ShopViewOrderDetails";
 import PageNotFound from "./container/page-not-found/PageNotFound";
+import ReviewPage from "./container/review-page/ReviewPage";
 
 function App() {
-   
    return (
       <Routes>
          <Route path="/" element={<LayoutContainer />}>
             <Route index element={<DashBoard />} />
-            <Route path={'/page-not-found'} element={<PageNotFound />} />
+            <Route path={"/page-not-found"} element={<PageNotFound />} />
             <Route path={breadCrumbs.PRODUCTS.url} element={<Products />} />
             <Route path={breadCrumbs.ORDER.url} element={<ShopOrderPage />}>
                <Route index element={<ShopOrderDataGrid />} />
@@ -50,7 +50,14 @@ function App() {
                path={`${breadCrumbs.SETTINGS.url}`}
                element={<ShopOwnerSettings />}
             />
-            <Route path="order/order-details/:orderId" element={<ShopViewOrderDetails />}/>
+            <Route
+               path={`${breadCrumbs.REVIEWS.url}`}
+               element={<ReviewPage />}
+            />
+            <Route
+               path="order/order-details/:orderId"
+               element={<ShopViewOrderDetails />}
+            />
          </Route>
          <Route path="/admin" element={<LayoutContainer />}>
             <Route index element={<AdminDashboard />} />
