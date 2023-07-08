@@ -24,7 +24,7 @@ const initialState = {
       },
       pageNumber: 1,
    },
-}
+};
 const shopOrderDetailsSlice = createSlice({
    name: "shopOrderDetailsSlice",
    initialState: initialState,
@@ -43,7 +43,7 @@ const shopOrderDetailsSlice = createSlice({
       },
       resetState: (state, action) => {
          return initialState;
-      }  
+      },
    },
    extraReducers: (builder) =>
       builder
@@ -75,20 +75,17 @@ export const getOrderDetailsFilterPaging = createAsyncThunk(
       const state = getState();
       try {
          const filter = state.shopOrderDetailsSlice.filter;
-         console.log(filter, 'filterrrr')
+         console.log(filter, "filterrrr");
 
          const formData = {
             ...filter,
             pageNumber: page,
          };
-         const res = await api.get(
-            "/shop-owner/order-detail",
-            {
-               params: {
-                  data: JSON.stringify(formData),
-               },
-            }
-         );
+         const res = await api.get("/shop-owner/order-detail", {
+            params: {
+               data: JSON.stringify(formData),
+            },
+         });
          const data = await res.data;
          console.log(data);
          return {
@@ -107,3 +104,6 @@ export const getShopOrderTableSelector = (state) =>
 
 export const getShopOrderDetailsTableSelector = (state) =>
    state.shopOrderDetailsSlice.shopOrderDetailsTable;
+
+export const getListSelectedInOrderDetailsTableSelector = (state) =>
+   state.shopOrderDetailsSlice.shopOrderDetailsTable.listSelected;
