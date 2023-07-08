@@ -16,10 +16,8 @@ import { api } from "../../api/api";
 import { data } from "./../../component/chart/summary-chart/mock";
 
 let breadCrumbPath = [
-   breadCrumbs.DASH_BOARD,
-   breadCrumbs.FOOD,
-   breadCrumbs.BIRDS,
-   breadCrumbs.SUMMARY_ORDERS,
+   breadCrumbs.DASH_BOARD
+
 ];
 
 export default function DashBoard() {
