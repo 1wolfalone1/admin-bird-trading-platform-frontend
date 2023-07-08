@@ -43,7 +43,7 @@ const shopOrderDetailsSlice = createSlice({
       },
       resetState: (state, action) => {
          return initialState;
-      }
+      }  
    },
    extraReducers: (builder) =>
       builder
