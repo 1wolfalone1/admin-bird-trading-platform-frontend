@@ -65,7 +65,7 @@ export default function ReviewDetails() {
                         <Typography>
                            {" "}
                            <Link
-                              to={`/products/update-product/${reviewDetails.productId}`}
+                              to={`/order/order-details/${reviewDetails.orderId}`}
                            >
                               #{reviewDetails.orderDetailId}
                            </Link>
