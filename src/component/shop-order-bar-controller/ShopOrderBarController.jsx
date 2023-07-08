@@ -23,6 +23,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { modelStyle, orderStatus } from "./../../config/constant";
 import { api } from "../../api/api";
 import globalConfigSlice from "../../redux/globalConfigSlice";
+import { getListSelectedInOrderDetailsTableSelector } from "../../redux/shopOrderDetailsSlice";
 
 export default function ShopOrderBarController() {
    const [anchorEl, setAnchorEl] = React.useState(null);
@@ -34,6 +35,9 @@ export default function ShopOrderBarController() {
    const { listSelected, currentPage } = useSelector(getShopOrderTableSelector);
    const dispatch = useDispatch();
    const navigate = useNavigate();
+   const listSelectedOrderDetails = useSelector(
+      getListSelectedInOrderDetailsTableSelector
+   );
    const [disabledChangeStatus, setDisabledChangeStatus] = useState({
       0: false,
       1: false,
@@ -148,9 +152,16 @@ export default function ShopOrderBarController() {
       setModelConfirmChangeStatus(false);
    };
    const handleViewOrderDetails = () => {
-      console.log(listSelected)
-      navigate(`/order/order-details/${listSelected[0].id}`)
-   }
+      console.log(listSelected);
+      if (listSelected.length === 1) {
+         navigate(`/order/order-details/${listSelected[0].id}`);
+      } else {
+         console.log(listSelectedOrderDetails, " listSElected neeeeeeeeeeeee");
+         navigate(
+            `/order/order-details/${listSelectedOrderDetails[0].orderId}`
+         );
+      }
+   };
    return (
       <Grid2
          container
@@ -186,7 +197,10 @@ export default function ShopOrderBarController() {
                disabled={
                   listSelected &&
                   Array.isArray(listSelected) &&
-                  listSelected.length !== 1
+                  listSelected.length !== 1 &&
+                  listSelectedOrderDetails &&
+                  Array.isArray(listSelectedOrderDetails) &&
+                  listSelectedOrderDetails.length !== 1
                }
                onClick={handleViewOrderDetails}
             >

@@ -3,8 +3,16 @@ import React from "react";
 import theme from "../../style/theme";
 import clsx from "clsx";
 import { Button, Tab, Tabs } from "@mui/material";
+import { useSelector } from "react-redux";
+import { getReviewTableSelector } from "../../redux/reviewSlice";
+import { useNavigate } from 'react-router-dom';
 
 export default function ReviewBarController() {
+   const { listSelected } = useSelector(getReviewTableSelector);
+   const navigate = useNavigate()
+   const handleViewDetails = () => {
+      navigate(`/review-details/${listSelected[0]}`);
+   }
    return (
       <Grid2
          container
@@ -23,7 +31,9 @@ export default function ReviewBarController() {
             </Tabs>
          </Grid2>
          <Grid2 xs={6} sx={{ display: "flex", justifyContent: "end" }}>
-            <Button variant="outlined">View details</Button>
+            <Button disabled={listSelected.length !== 1} variant="outlined" onClick={handleViewDetails}>
+               View details
+            </Button>
          </Grid2>
       </Grid2>
    );

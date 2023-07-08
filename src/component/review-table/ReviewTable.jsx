@@ -40,17 +40,10 @@ export default function ReviewTable() {
          dispatch(reviewSlice.actions.resetState());
       };
    }, []);
-   const handleRowSelectionModelChange = (newRowSelectionModel, a) => {
-      console.log(newRowSelectionModel);
-      let newListSelected = [];
-      if (apiRef.current) {
-         newListSelected = newRowSelectionModel.map((rowId) =>
-            apiRef.current.getRow(rowId)
-         );
-      }
-      if (mode === "view") {
-         dispatch(reviewSlice.actions.changeListSelectedRows(newListSelected));
-      }
+   const handleRowSelectionModelChange = (newRowSelectionModel) => {
+      dispatch(
+         reviewSlice.actions.changeListSelectedRows(newRowSelectionModel)
+      );
    };
    const handleSortModelChange = React.useCallback((sortModel) => {
       // Here you save the data you need from the sort model

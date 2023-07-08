@@ -72,6 +72,11 @@ export const breadCrumbs = {
       url: "/reviews",
       id: 5,
    },
+   REVIEWS_DETAILS: {
+      name: "Reviews details",
+      url: "/reviews-details",
+      id: 111,
+   },
    REPORTS: {
       name: "Reports",
       url: "/reports",
