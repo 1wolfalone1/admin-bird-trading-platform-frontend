@@ -15,10 +15,7 @@ import StaticsPriceByCategory from "../../component/statics-price-category-pie-c
 import { api } from "../../api/api";
 import { data } from "./../../component/chart/summary-chart/mock";
 
-let breadCrumbPath = [
-   breadCrumbs.DASH_BOARD
-
-];
+let breadCrumbPath = [breadCrumbs.DASH_BOARD];
 
 export default function DashBoard() {
    useBreadCrumb(breadCrumbPath);
