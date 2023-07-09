@@ -18,12 +18,17 @@ export default function SideBar() {
    console.log(userInfo);
    const handleLogout = () => {
       try {
-         const token = localStorage.getItem("token");
-         console.log(token);
-         localStorage.removeItem("token");
-         localStorage.removeItem("userInfo");
-         dispatch(userInfoSlice.actions.resetState());
-         window.location.href = `${process.env.REACT_APP_REDIRECT_USER}get-token?token=${token}`; // Redirect to the desired page
+         if (role === 3) {
+            const token = localStorage.getItem("token");
+            console.log(token);
+            localStorage.removeItem("token");
+            localStorage.removeItem("userInfo");
+            dispatch(userInfoSlice.actions.resetState());
+            window.location.href = `${process.env.REACT_APP_REDIRECT_USER}get-token?token=${token}`;
+         } else {
+            window.location.href = `${process.env.REACT_APP_REDIRECT_USER}login`;
+         }
+         // Redirect to the desired page
       } catch (e) {
          const error = e.response.data;
          if (error.errorCode === "400") {
