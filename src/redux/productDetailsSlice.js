@@ -4,7 +4,7 @@ import { convertImageUrlToBase64, dataAsyncUrlToFile } from "../utils/myUtils";
 import {v4} from 'uuid';
 
 const productDetailsSlice = createSlice({
-   name: "productShopSlice",
+   name: "productDetailsSlice",
    initialState: {
       detailsState: {},
       updateState: {},
@@ -98,8 +98,7 @@ export const getListTypes = createAsyncThunk(
 );
 
 export default productDetailsSlice;
-export const productTableSelector = (state) =>
-   state.productShopSlice.productsTable;
+
 
 export const productDetailsSelector = state => state.productDetailsSlice
 export const getListVoucherSelector = (state) =>

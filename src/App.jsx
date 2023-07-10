@@ -21,6 +21,8 @@ import ShopViewOrderDetails from "./container/shop-view-order-details/ShopViewOr
 import PageNotFound from "./container/page-not-found/PageNotFound";
 import ReviewPage from "./container/review-page/ReviewPage";
 import ReviewDetails from "./container/review-details/ReviewDetails";
+import AdminProductsPage from "./container/admin-products-page/AdminProductsPage";
+import AdminOrderPage from "./container/admin-order-page/AdminOrderPage";
 
 function App() {
    return (
@@ -64,10 +66,11 @@ function App() {
                path="review-details/:reviewId"
                element={<ReviewDetails />}
             />
-            
          </Route>
-         <Route path="/admin" element={<LayoutContainer />}>
+         <Route path="/admin/" element={<LayoutContainer />}>
             <Route index element={<AdminDashboard />} />
+            <Route path="products" element={<AdminProductsPage />} />
+            <Route path="order" element={<AdminOrderPage />} />
          </Route>
       </Routes>
    );

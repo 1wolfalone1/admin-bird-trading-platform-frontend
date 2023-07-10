@@ -39,6 +39,7 @@ export default function GetToken() {
       try {
          const res = await api.get(`info?token=${token}`);
          const data = await res.data;
+         console.log(data, "dataaaaaaaaaaaaaaaaaaaaaaaa");
          localStorage.setItem("token", data.token.accessToken);
          dispatch(
             userInfoSlice.actions.changeUserInfo({
