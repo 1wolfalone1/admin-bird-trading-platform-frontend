@@ -37,7 +37,7 @@ export default function DashBoard() {
             res2.data,
             res3.data,
          ]);
-         console.log(data, data2, data3);
+         console.log(data, data2, data3, 'dataaaaaaaaaaaaaaaaaaaaaaaaaaaa');
          setPriceBarDataShop(data);
          setOrderBarDataShop(data2);
          setReviewBarDataSHop(data3);

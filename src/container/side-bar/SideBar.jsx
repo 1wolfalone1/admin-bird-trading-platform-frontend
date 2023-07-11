@@ -26,6 +26,9 @@ export default function SideBar() {
             dispatch(userInfoSlice.actions.resetState());
             window.location.href = `${process.env.REACT_APP_REDIRECT_USER}get-token?token=${token}`;
          } else {
+            localStorage.removeItem("token");
+            localStorage.removeItem("userInfo");
+            dispatch(userInfoSlice.actions.resetState());
             window.location.href = `${process.env.REACT_APP_REDIRECT_USER}login`;
          }
          // Redirect to the desired page
@@ -102,6 +105,8 @@ export default function SideBar() {
                      <MenuItem type={typeMenu.ADMIN_DASHBOARD} />
                      <MenuItem type={typeMenu.ADMIN_PRODUCTS} />
                      <MenuItem type={typeMenu.ADMIN_ORDER} />
+                     <MenuItem type={typeMenu.ADMIN_SHOP_OWNER} />
+                     <MenuItem type={typeMenu.ADMIN_USER} />
                      <MenuItem type={typeMenu.ADMIN_REPORT} />
                   </div>
                   <div className={s.controlAccount}>

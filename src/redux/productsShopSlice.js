@@ -11,6 +11,7 @@ const initialState = {
       rowModesModel: {},
       mode: "view",
       currentPage: 1,
+      isAdmin: false,
    },
    filter: {
       category: 1,
@@ -25,7 +26,7 @@ const initialState = {
       },
       pageNumber: 1,
    },
-}
+};
 const productShopSlice = createSlice({
    name: "productShopSlice",
    initialState: initialState,
@@ -50,7 +51,7 @@ const productShopSlice = createSlice({
       },
       resetState: (state, action) => {
          return initialState;
-      }
+      },
    },
    extraReducers: (builder) =>
       builder
@@ -72,11 +73,65 @@ const productShopSlice = createSlice({
             state.productsTable.totalProduct = 0;
             state.productsTable.isLoading = false;
             state.productsTable.currentPage = 1;
+         })
+         .addCase(
+            getProductTableAndPagingInAdmin.fulfilled,
+            (state, action) => {
+               const { data, page } = action.payload;
+               state.productsTable.data = data.lists;
+               state.productsTable.pageNumber = data.pageNumber;
+               state.productsTable.totalProduct = data.totalElement;
+               state.productsTable.isLoading = false;
+               state.productsTable.currentPage = page;
+               state.productsTable.isAdmin = true;
+            }
+         )
+         .addCase(getProductTableAndPagingInAdmin.pending, (state, action) => {
+            state.productsTable.isLoading = true;
+         })
+         .addCase(getProductTableAndPagingInAdmin.rejected, (state, action) => {
+            console.log("errrrroorrrrrrrrrrrrrrrrrr");
+            state.productsTable.data = [];
+            state.productsTable.pageNumber = 1;
+            state.productsTable.totalProduct = 0;
+            state.productsTable.isLoading = false;
+            state.productsTable.currentPage = 1;
+            state.productsTable.isAdmin = true;
          }),
 });
 
 export default productShopSlice;
 
+export const getProductTableAndPagingInAdmin = createAsyncThunk(
+   "productShopSlice/getProductTableAndPagingInAdmin",
+   async (page, { getState }) => {
+      const state = getState();
+      try {
+         const category = state.productShopSlice.productsTable.type.id;
+         const filter = state.productShopSlice.filter;
+         const formData = {
+            ...filter,
+            category,
+            pageNumber: page,
+         };
+         const res = await api.get(`/admin/products`, {
+            params: {
+               data: JSON.stringify(formData),
+            },
+         });
+         const data = res.data;
+
+         console.log(data, "dfsfdsfasdf dataaaaa");
+         return {
+            data: data,
+            page: page,
+         };
+      } catch (err) {
+         console.log(err);
+         throw err;
+      }
+   }
+);
 export const getProductTableAndPaging = createAsyncThunk(
    "productShop/getProductTableAndPaging",
    async (page, { getState }) => {
@@ -97,13 +152,12 @@ export const getProductTableAndPaging = createAsyncThunk(
          });
          const data = res.data;
 
-         console.log(data, "dfsfdsfasdf dataaaaa")
+         console.log(data, "dfsfdsfasdf dataaaaa");
          return {
             data: data,
             page: page,
          };
       } catch (err) {
-         
          console.log(err);
          throw err;
       }

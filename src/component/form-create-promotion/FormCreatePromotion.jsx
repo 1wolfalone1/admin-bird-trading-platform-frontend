@@ -49,8 +49,8 @@ const validationSchema = yup.object().shape({
    discountRate: yup
       .number()
       .typeError("Discount rate must be a number")
-      .min(0, "Invalid percent of promotion!")
-      .max(100, "Invalid percent of promotion!")
+      .min(1, "Invalid percent of promotion! Need between 1 and 100")
+      .max(100, "Invalid percent of promotion! Need between 1 and 100")
       .required("Discount rate is required"),
    description: yup
       .string()
@@ -72,7 +72,7 @@ export default function FormCreatePromotion({ closeModel }) {
       initialValues: {
          name: "",
          description: "",
-         discountRate: 0,
+         discountRate: 1,
          startDate: "",
          endDate: "",
       },
@@ -231,7 +231,7 @@ export default function FormCreatePromotion({ closeModel }) {
                <Grid2 xs={6}>
                   <DatePicker
                      format="DD/MM/YYYY"
-                     label={"End date"}
+                     label={"To date"}
                      value={form.values.endDate}
                      onChange={(value) => {
                         const endDate = value.toDate();
@@ -253,7 +253,6 @@ export default function FormCreatePromotion({ closeModel }) {
             <Box display={"flex"} gap={1} justifyContent={"end"}>
                <Button
                   sx={{ fontSize: "2rem" }}
-                  color={"table"}
                   variant="outlined"
                   onClick={() => closeModel()}
                >
