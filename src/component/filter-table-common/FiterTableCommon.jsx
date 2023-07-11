@@ -91,7 +91,36 @@ const CustomFilterPaymentMethod = ({ applyValue, item }) => {
          >
             <MenuItem value={"9"}>ALL</MenuItem>
             <MenuItem value={"PAYPAL"}>PAYPAL</MenuItem>
-            <MenuItem value={"DELIVERY"}>DELIVERY</MenuItem>
+            <MenuItem value={"DELIVERY"}>COD</MenuItem>
+         </Select>
+      </Box>
+   );
+};
+const CustomFilterTransactionStatus = ({ applyValue, item }) => {
+   const handleFilterChange = (event) => {
+      console.log(event.target.value, item, applyValue);
+      let newItem = { ...item, value: event.target.value };
+      applyValue(newItem);
+   };
+
+   return (
+      <Box>
+         <Typography
+            sx={{ padding: "0", fontSize: "1.6rem", lineHeight: "1.6rem" }}
+         >
+            value
+         </Typography>
+         <Select
+            defaultValue={""}
+            value={item.value}
+            onChange={handleFilterChange}
+            sx={{ width: "100%" }}
+            MenuProps={{ disableScrollLock: true }}
+         >
+            <MenuItem value={9}>ALL</MenuItem>
+            <MenuItem value={1}>PROCESSING</MenuItem>
+            <MenuItem value={2}>SUCCESS</MenuItem>
+            <MenuItem value={3}>REFUNDED</MenuItem>
          </Select>
       </Box>
    );
@@ -268,6 +297,13 @@ export const operatorSelectStatus = {
    InputComponent: CustomFilteraStatus,
    getValueAsString: (value) => value,
 };
+export const operatorAdminSelectTransaction = {
+   label: "select",
+   value: "=",
+   InputComponent: CustomFilterTransactionStatus,
+   getValueAsString: (value) => value,
+};
+
 export const operatorSelectPaymenMethod = {
    label: "select",
    value: "=",

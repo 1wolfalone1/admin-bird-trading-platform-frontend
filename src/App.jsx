@@ -25,6 +25,8 @@ import AdminProductsPage from "./container/admin-products-page/AdminProductsPage
 import AdminOrderPage from "./container/admin-order-page/AdminOrderPage";
 import AdminShopOwnerPage from "./container/admin-shop-owner-page/AdminShopOwnerPage";
 import AdminUserPage from "./container/admin-user-page/AdminUserPage";
+import AdminOrderTable from "./component/admin-order-table/AdminOrderTable";
+import AdminPackageTable from "./component/admin-package-table/AdminPackageTable";
 
 function App() {
    return (
@@ -72,7 +74,10 @@ function App() {
          <Route path="/admin/" element={<LayoutContainer />}>
             <Route index element={<AdminDashboard />} />
             <Route path="products" element={<AdminProductsPage />} />
-            <Route path="order" element={<AdminOrderPage />} />
+            <Route path="package-order/" element={<AdminOrderPage />}>
+               <Route path="order"  element={<AdminOrderTable />} />
+               <Route  index  element={<AdminPackageTable />} />
+            </Route>
             <Route path="user" element={<AdminUserPage />} />
             <Route path="shop-owner" element={<AdminShopOwnerPage />} />
          </Route>

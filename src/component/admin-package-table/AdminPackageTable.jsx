@@ -1,23 +1,25 @@
-import { DataGrid, GridToolbar, useGridApiRef } from "@mui/x-data-grid";
-import s from "./adminUserTable.module.scss";
 import React, { useEffect, useState } from "react";
+import s from "./adminPackageTable.module.scss";
+import { DataGrid, GridToolbar, useGridApiRef } from "@mui/x-data-grid";
 import { useDispatch, useSelector } from "react-redux";
-import adminUserSlice, {
-   getUserTablePagingAndFilter,
-   getUserTableSelector,
-} from "../../redux/adminUserSlice";
+import adminPackageSlice, {
+   getAdminPackageTableSelector,
+   getPackagePagingAndFilter,
+} from "../../redux/adminPackageSlice";
 import clsx from "clsx";
 import moment from "moment";
-import { Avatar, Box, Chip, Tooltip, Typography } from "@mui/material";
+import { Chip, Tooltip, Typography } from "@mui/material";
+import { formatNumber } from "../../utils/myUtils";
 import {
+   operatorAdminSelectTransaction,
    operatorDate,
    operatorIDEqual,
    operatorNameContain,
+   operatorPriceFrom,
    operatorSelectPaymenMethod,
-   operatorSelectStatusAdminUser,
 } from "../filter-table-common/FiterTableCommon";
 
-export default function AdminUserTable() {
+export default function AdminPackageTable() {
    const apiRef = useGridApiRef();
    const [paginationModel, setPaginationModel] = useState({
       pageSize: 10, // Default page size
@@ -29,10 +31,10 @@ export default function AdminUserTable() {
       rowModesModel,
       currentPage,
       isLoading,
-      totalUsers,
+      totalPackage,
       listSelected,
       mode,
-   } = useSelector(getUserTableSelector);
+   } = useSelector(getAdminPackageTableSelector);
    const handlePageChange = (page) => {
       setPaginationModel((prevPaginationModel) => ({
          ...prevPaginationModel,
@@ -41,25 +43,34 @@ export default function AdminUserTable() {
    };
    useEffect(() => {
       return () => {
-         dispatch(adminUserSlice.actions.resetState());
+         dispatch(adminPackageSlice.actions.resetState());
       };
    }, []);
    const handleRowSelectionModelChange = (newRowSelectionModel, a) => {
-      dispatch(
-         adminUserSlice.actions.changeListSelectedRows(newRowSelectionModel)
-      );
+      console.log(newRowSelectionModel);
+      let newListSelected = [];
+      if (apiRef.current) {
+         newListSelected = newRowSelectionModel.map((rowId) =>
+            apiRef.current.getRow(rowId)
+         );
+      }
+      if (mode === "view") {
+         dispatch(
+            adminPackageSlice.actions.changeListSelectedRows(newListSelected)
+         );
+      }
    };
    const handleSortModelChange = React.useCallback((sortModel) => {
       // Here you save the data you need from the sort model
       if (sortModel[0]) {
-         dispatch(adminUserSlice.actions.changeSortDirection(sortModel[0]));
+         dispatch(adminPackageSlice.actions.changeSortDirection(sortModel[0]));
          setPaginationModel({
             pageSize: 10, // Default page size
             page: 0,
          });
       } else {
          dispatch(
-            adminUserSlice.actions.changeSortDirection({
+            adminPackageSlice.actions.changeSortDirection({
                field: "",
                sort: "",
             })
@@ -84,7 +95,7 @@ export default function AdminUserTable() {
             operator: "",
          };
       }
-      dispatch(adminUserSlice.actions.changeOrderSearchInfo(filterObject));
+      dispatch(adminPackageSlice.actions.changeOrderSearchInfo(filterObject));
       setPaginationModel({
          pageSize: 10, // Default page size
          page: 0,
@@ -92,10 +103,10 @@ export default function AdminUserTable() {
    };
    const handleRowChange = (row) => {};
    useEffect(() => {
-      dispatch(getUserTablePagingAndFilter(paginationModel.page + 1));
+      dispatch(getPackagePagingAndFilter(paginationModel.page + 1));
    }, [paginationModel]);
    useEffect(() => {
-      dispatch(adminUserSlice.actions.changeTab(1));
+      dispatch(adminPackageSlice.actions.changeTab(1));
    }, []);
 
    return (
@@ -112,10 +123,10 @@ export default function AdminUserTable() {
             isRowSelectable={(params) => mode === "view"}
             onRowSelectionModelChange={handleRowSelectionModelChange}
             disableRowSelectionOnClick
-            rowSelectionModel={listSelected}
+            rowSelectionModel={listSelected.map((row) => row.id)}
             apiRef={apiRef}
             columns={columns}
-            rowCount={totalUsers}
+            rowCount={totalPackage}
             rowsPerPageOptions={10}
             page={currentPage - 1}
             rows={data}
@@ -141,37 +152,29 @@ export default function AdminUserTable() {
       </div>
    );
 }
+
 const columns = [
    {
       field: "id",
-      headerClassName: "super-app-theme--header",
       headerName: "ID",
-      width: 100,
+      width: 70,
+      headerClassName: "super-app-theme--header",
+      filterOperators: [operatorIDEqual],
+   },
+   {
+      field: "accountId",
+      headerName: "Account ID",
+      width: 120,
+      headerClassName: "super-app-theme--header",
       filterOperators: [operatorIDEqual],
    },
    {
       field: "fullName",
-      headerClassName: "super-app-theme--header",
       headerName: "Full Name",
-      filterOperators: [operatorNameContain],
-      width: 250,
-      renderCell: (params) => {
-         return (
-            <Tooltip title={params.value}>
-               <Box display="flex" alignItems={"center"} gap={1}>
-                  <Avatar src={params.row.avtUrl} />{" "}
-                  <Typography noWrap>{params.value}</Typography>
-               </Box>
-            </Tooltip>
-         );
-      },
-   },
-   {
-      field: "email",
+      width: 120,
       headerClassName: "super-app-theme--header",
-      headerName: "Email",
-      width: 250,
       filterOperators: [operatorNameContain],
+
       renderCell: (params) => {
          return (
             <Tooltip title={params.value}>
@@ -180,19 +183,19 @@ const columns = [
          );
       },
    },
-
    {
       field: "phoneNumber",
-      headerClassName: "super-app-theme--header",
       headerName: "Phone Number",
+      width: 140,
       filterOperators: [operatorNameContain],
-      width: 150,
+
+      headerClassName: "super-app-theme--header",
    },
    {
       field: "address",
-      headerClassName: "super-app-theme--header",
       headerName: "Address",
       width: 300,
+      headerClassName: "super-app-theme--header",
       filterOperators: [operatorNameContain],
       renderCell: (params) => {
          return (
@@ -203,26 +206,87 @@ const columns = [
       },
    },
    {
-      field: "status",
-      headerClassName: "super-app-theme--header",
-      headerName: "Status",
+      field: "paymentMethod",
+      headerName: "Payment Method",
       width: 150,
-      filterOperators: [operatorSelectStatusAdminUser],
+      headerClassName: "super-app-theme--header",
+      filterOperators: [operatorSelectPaymenMethod],
       renderCell: (params) => {
-         let theme = "shipping";
-         if (params.value === "NOT_VERIFY") {
-            theme = "template8";
-         } else if (params.value === "BANNED") {
-            theme = "error";
+         console.log(params.value);
+         let colorTheme = "success";
+         if (params.value === "PAYPAL") {
+            colorTheme = "paypal";
          }
-         return <Chip label={params.value} variant="outlined" color={theme} />;
+         if (params.value === "DELIVERY") {
+            colorTheme = "delivery";
+         }
+         return (
+            <Chip
+               color={colorTheme}
+               variant="filled"
+               label={params.value === "DELIVERY" ? "COD" : "PAYPAL"}
+            />
+         );
       },
    },
    {
-      field: "createdDate",
+      field: "payerEmail",
+      headerName: "Payer Email",
+      width: 180,
       headerClassName: "super-app-theme--header",
+
+      valueFormatter: ({ value }) => (value === "DELIVERY" ? "COD" : "PAYPAL"),
+      renderCell: (params) => {
+         let value = "Not have";
+         if (params.value) {
+            value = params.value;
+         }
+         return (
+            <Tooltip title={value}>
+               <Typography noWrap>{value}</Typography>
+            </Tooltip>
+         );
+      },
+   },
+   {
+      field: "transactionStatus",
+      headerName: "Transaction Status",
+      width: 160,
+      headerClassName: "super-app-theme--header",
+      filterOperators: [operatorAdminSelectTransaction],
+      renderCell: (params) => {
+         let value = params.value;
+         let theme = "success";
+         if (value === "PROCESSING") {
+            theme = "primary";
+         } else if (value === "REFUNDED") {
+            theme = "danger";
+         }
+         return <Chip label={value} color={theme} variant="outlined" />;
+      },
+   },
+   {
+      field: "totalPayment",
+      headerName: "Total Payment",
+      width: 140,
+      headerClassName: "super-app-theme--header",
+      filterOperators: [operatorPriceFrom],
+      valueFormatter: ({ value }) => formatNumber(value),
+   },
+
+   {
+      field: "createdDateTransaction",
       headerName: "Created Date",
-      width: 200,
+      width: 180,
+      headerClassName: "super-app-theme--header",
+      filterOperators: [operatorDate],
+      valueFormatter: (params) => moment(params.value).format("HH:mm DD/MM/YY"),
+   },
+   {
+      field: "lastedUpdateTransaction",
+      headerName: "Last Update",
+      width: 180,
+      headerClassName: "super-app-theme--header",
       filterOperators: [operatorDate],
       valueFormatter: (params) => moment(params.value).format("HH:mm DD/MM/YY"),
    },

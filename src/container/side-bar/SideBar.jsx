@@ -104,7 +104,7 @@ export default function SideBar() {
                   <div className={s.controlTasks}>
                      <MenuItem type={typeMenu.ADMIN_DASHBOARD} />
                      <MenuItem type={typeMenu.ADMIN_PRODUCTS} />
-                     <MenuItem type={typeMenu.ADMIN_ORDER} />
+                     <MenuItem type={typeMenu.ADMIN_PACKAGE} />
                      <MenuItem type={typeMenu.ADMIN_SHOP_OWNER} />
                      <MenuItem type={typeMenu.ADMIN_USER} />
                      <MenuItem type={typeMenu.ADMIN_REPORT} />
