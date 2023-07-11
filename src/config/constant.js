@@ -19,10 +19,20 @@ export const breadCrumbs = {
       url: "/admin/order",
       id: 3,
    },
+   ADMIN_SHOP_OWNER: {
+      name: "Shop Owners",
+      url: "/admin/shop-owner",
+      id: 4,
+   },
+   ADMIN_USER: {
+      name: "Users",
+      url: "/admin/user",
+      id: 5,
+   },
    ADMIN_REPORTS: {
       name: "Reports",
       url: "/admin/report",
-      id: 14,
+      id: 6,
    },
    SUMMARY_ORDERS: {
       name: "Summary order",

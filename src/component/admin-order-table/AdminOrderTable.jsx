@@ -268,7 +268,7 @@ const columns = [
       headerName: "Promotions",
       width: 200,
       type: "custom",
-      filterOperators: [operatorSelectPromotion],
+      filterable: false,
       valueFormatter: ({ value }) => {
          return value
             .map(
@@ -328,7 +328,7 @@ const columns = [
       type: "number",
       width: 200,
       filterOperators: [operatorDate],
-      valueFormatter: (params) => moment(params.value).format("DD/MM/YY HH:mm"),
+      valueFormatter: (params) => moment(params.value).format("HH:mm DD/MM/YY"),
    },
    {
       headerAlign: "center",
@@ -338,6 +338,6 @@ const columns = [
       type: "number",
       width: 200,
       filterOperators: [operatorDate],
-      valueFormatter: (params) => moment(params.value).format("DD/MM/YY HH:mm"),
+      valueFormatter: (params) => moment(params.value).format("HH:mm DD/MM/YY"),
    },
 ];

@@ -23,6 +23,7 @@ export default function GetToken() {
       const role = params.get("role");
       if (role == 2) {
          console.log("stafffffffffffffffffffffffffffffffffffffffffffffffff");
+         getStaffInfo(token);
       }
       if (!role) {
          console.log("shopownerrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
@@ -53,7 +54,24 @@ export default function GetToken() {
          console.log(err);
       }
    };
-   const getStaffInfo = () => {};
+   const getStaffInfo = async (token) => {
+      try {
+         const res = await api.get(`info?token=${token}`);
+         const data = await res.data;
+         localStorage.setItem("token", data.token.accessToken);
+         console.log(data, "dataaaaaaaaaaaaaaaaaaaaaaaa");
+         const role = userRole.SHOP_OWNER.code;
+         dispatch(
+            userInfoSlice.actions.changeUserInfo({
+               role: data.role,
+               info: data.userInfo,
+            })
+         );
+         navigate("/");
+      } catch (e) {
+         console.log(e);
+      }
+   };
    const getShopOwnerInfo = async () => {
       try {
          const res = await api.get("/shop-owner/profile");

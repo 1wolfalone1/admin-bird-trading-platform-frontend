@@ -9,7 +9,8 @@ import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { breadCrumbs } from "../config/constant";
-
+import StoreIcon from '@mui/icons-material/Store';
+import PeopleIcon from '@mui/icons-material/People';
 const commonStyle = {
    icon: {
       fontSize: '2.4rem'
@@ -87,6 +88,19 @@ export const typeMenu = {
       title: "Orders",
       id: 3,
       url: breadCrumbs.ADMIN_ORDER.url
+   },
+   ADMIN_SHOP_OWNER: {
+      Icon: <StoreIcon sx={commonStyle.icon} color="template6"/>,
+      title: "Shop Owners",
+      id: 4,
+      url: breadCrumbs.ADMIN_SHOP_OWNER.url
+   },
+      
+   ADMIN_USER: {
+      Icon: <PeopleIcon sx={commonStyle.icon} color="template6"/>,
+      title: "Users",
+      id: 5,
+      url: breadCrumbs.ADMIN_USER.url
    },
    ADMIN_REPORT: {
       Icon: <SummarizeIcon sx={commonStyle.icon} color="template6"/>,

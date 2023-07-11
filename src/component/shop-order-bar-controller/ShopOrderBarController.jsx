@@ -281,7 +281,7 @@ export default function ShopOrderBarController() {
                         sx={{ color: theme.palette.template4.main }}
                         variant="h4"
                      >
-                        Delete products?
+                        Change to shipped?
                      </Typography>
                   </Box>
                   <Box

@@ -3,11 +3,10 @@ import { breadCrumbs, userRole } from "../../config/constant";
 import useAuthenticate from "../../custom-hook/useAuthenticate";
 import useBreadCrumb from "../../custom-hook/useBreadCrumb";
 import { Box, Typography } from "@mui/material";
+import AdminUserPageController from "../../component/admin-user-page-controller/AdminUserPageController";
+import AdminUserTable from "../../component/admin-user-table/AdminUserTable";
 
-import AdminOrderTable from "../../component/admin-order-table/AdminOrderTable";
-import AdminOrderPageController from "../../component/admin-order-page-controller/AdminOrderPageController";
-
-const breadCrumbsPath = [breadCrumbs.ADMIN_ORDER];
+const breadCrumbsPath = [breadCrumbs.ADMIN_USER];
 const roles = [userRole.ADMIN];
 export default function AdminOrderPage() {
    useAuthenticate(roles);
@@ -16,12 +15,12 @@ export default function AdminOrderPage() {
       <Box width={"100%"}>
          <Box mt={4} mb={2}>
             <Typography variant="h4" color={"delivery.contrastText"}>
-               Admin order manager
+               Admin user manager
             </Typography>
          </Box>
-         <AdminOrderPageController />
+         <AdminUserPageController />
          <Box mt={2}>
-            <AdminOrderTable />
+            <AdminUserTable />
          </Box>
       </Box>
    );

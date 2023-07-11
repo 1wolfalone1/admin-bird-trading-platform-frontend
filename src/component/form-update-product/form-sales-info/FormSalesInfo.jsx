@@ -27,9 +27,10 @@ const validationSchema = yup.object().shape({
       .required("Price is required"),
    quantity: yup
       .number()
+      .integer()
       .typeError("Quantity must be a number")
       .positive("Quantity must be a positive number")
-      .max(1000,"Maximum weight is 1000")
+      .max(1000000,"Maximum weight is 1000000")
       .required("Quantity is required"),
 });
 const isOptionEqualToValue = (option, value) => {

@@ -23,6 +23,8 @@ import ReviewPage from "./container/review-page/ReviewPage";
 import ReviewDetails from "./container/review-details/ReviewDetails";
 import AdminProductsPage from "./container/admin-products-page/AdminProductsPage";
 import AdminOrderPage from "./container/admin-order-page/AdminOrderPage";
+import AdminShopOwnerPage from "./container/admin-shop-owner-page/AdminShopOwnerPage";
+import AdminUserPage from "./container/admin-user-page/AdminUserPage";
 
 function App() {
    return (
@@ -71,6 +73,8 @@ function App() {
             <Route index element={<AdminDashboard />} />
             <Route path="products" element={<AdminProductsPage />} />
             <Route path="order" element={<AdminOrderPage />} />
+            <Route path="user" element={<AdminUserPage />} />
+            <Route path="shop-owner" element={<AdminShopOwnerPage />} />
          </Route>
       </Routes>
    );

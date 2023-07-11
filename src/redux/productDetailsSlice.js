@@ -19,6 +19,7 @@ const productDetailsSlice = createSlice({
          detailsRef: null,
          salesRef: null,
       },
+      
    },
    reducers: {
       changeFormRef: (state, action) => {
