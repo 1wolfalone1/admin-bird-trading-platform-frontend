@@ -10,6 +10,7 @@ import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { breadCrumbs } from "../config/constant";
 import StoreIcon from '@mui/icons-material/Store';
+import WidgetsIcon from '@mui/icons-material/Widgets';
 import PeopleIcon from '@mui/icons-material/People';
 const commonStyle = {
    icon: {
@@ -82,6 +83,12 @@ export const typeMenu = {
       title: "Products",
       id: 2,
       url: breadCrumbs.ADMIN_PRODUCTS.url,
+   },
+   ADMIN_PACKAGE: {
+      Icon: <WidgetsIcon sx={commonStyle.icon} color="template6"/>,
+      title: "Packages order",
+      id: 7,
+      url: breadCrumbs.ADMIN_PACKAGE.url
    },
    ADMIN_ORDER: {
       Icon: <ReceiptIcon sx={commonStyle.icon} color="template6"/>,

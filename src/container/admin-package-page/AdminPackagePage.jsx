@@ -3,26 +3,24 @@ import { breadCrumbs, userRole } from "../../config/constant";
 import useAuthenticate from "../../custom-hook/useAuthenticate";
 import useBreadCrumb from "../../custom-hook/useBreadCrumb";
 import { Box, Typography } from "@mui/material";
+import AdminPackageTable from "../../component/admin-package-table/AdminPackageTable";
+import AdminPackagePageController from "../../component/admin-package-page-controller/AdminPackagePageController";
 
-import AdminOrderTable from "../../component/admin-order-table/AdminOrderTable";
-import AdminOrderPageController from "../../component/admin-order-page-controller/AdminOrderPageController";
-import { Outlet } from "react-router-dom";
-
-const breadCrumbsPath = [breadCrumbs.ADMIN_ORDER];
+const breadCrumbsPath = [breadCrumbs.ADMIN_USER];
 const roles = [userRole.ADMIN];
-export default function AdminOrderPage() {
+export default function AdminPackagePage() {
    useAuthenticate(roles);
    useBreadCrumb(breadCrumbsPath);
    return (
       <Box width={"100%"}>
          <Box mt={4} mb={2}>
             <Typography variant="h4" color={"delivery.contrastText"}>
-               Admin order manager
+               Admin package manager
             </Typography>
          </Box>
-         <AdminOrderPageController />
+         <AdminPackagePageController />
          <Box mt={2}>
-            <Outlet />
+            <AdminPackageTable />
          </Box>
       </Box>
    );

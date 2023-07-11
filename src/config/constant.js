@@ -34,6 +34,11 @@ export const breadCrumbs = {
       url: "/admin/report",
       id: 6,
    },
+   ADMIN_PACKAGE: {
+      name: "Package",
+      url: "/admin/package-order",
+      id: 7,
+   },
    SUMMARY_ORDERS: {
       name: "Summary order",
       url: "dashboard/summary-order",

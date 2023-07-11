@@ -17,6 +17,7 @@ import notificationSlice from "./notificationSlice";
 import reviewSlice from "./reviewSlice";
 import adminShopOwnerSlice from "./adminShopOwnerSlice";
 import adminUserSlice from "./adminUserSlice";
+import adminPackageSlice from "./adminPackageSlice";
 const persistConfig = {
    key: "root",
    version: 1,
@@ -35,7 +36,8 @@ const persistConfig = {
       "shopOrderDetailsSlice",
       "reviewSlice",
       "adminShopOwnerSlice",
-      "adminUserSlice"
+      "adminUserSlice",
+      "adminPackageSlice"
    ],
 };
 const reducer = combineReducers({
@@ -54,7 +56,8 @@ const reducer = combineReducers({
    notificationSlice: notificationSlice.reducer,
    reviewSlice: reviewSlice.reducer,
    adminShopOwnerSlice: adminShopOwnerSlice.reducer,
-   adminUserSlice: adminUserSlice.reducer
+   adminUserSlice: adminUserSlice.reducer,
+   adminPackageSlice: adminPackageSlice.reducer
 });
 // this ensures your redux state is saved to persisted storage whenever it changes
 // we pass this to the store

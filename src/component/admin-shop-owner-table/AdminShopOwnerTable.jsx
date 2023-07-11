@@ -8,7 +8,7 @@ import adminShopOwnerSlice, {
 import clsx from "clsx";
 import s from "./adminShopOwnerTable.module.scss";
 import moment from "moment";
-import { Tooltip, Typography } from "@mui/material";
+import { Avatar, Box, Tooltip, Typography } from "@mui/material";
 
 export default function AdminShopOwnerTable() {
    const apiRef = useGridApiRef();
@@ -146,6 +146,22 @@ const columns = [
       width: 100,
    },
    {
+      field: "shopName",
+      headerClassName: "super-app-theme--header",
+      headerName: "Shop Name",
+      width: 250,
+      renderCell: (params) => {
+         return (
+            <Tooltip title={params.value}>
+               <Box display="flex" alignItems={"center"} gap={1}>
+                  <Avatar src={params.row.avtUrl} />{" "}
+                  <Typography noWrap>{params.value}</Typography>
+               </Box>
+            </Tooltip>
+         );
+      },
+   },
+   {
       field: "email",
       headerClassName: "super-app-theme--header",
       headerName: "Email",
@@ -158,12 +174,7 @@ const columns = [
          );
       },
    },
-   {
-      field: "shopName",
-      headerClassName: "super-app-theme--header",
-      headerName: "Shop Name",
-      width: 200,
-   },
+
    {
       field: "shopPhone",
       headerClassName: "super-app-theme--header",
