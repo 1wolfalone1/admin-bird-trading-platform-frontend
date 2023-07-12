@@ -24,7 +24,6 @@ export default function AdminPackagePageController() {
                </Tabs>
             </Grid2>
             <Grid2 xs={6}>
-               
             </Grid2>
          </Grid2>
       </Box>

@@ -45,6 +45,10 @@ export default function AdminUserTable() {
       };
    }, []);
    const handleRowSelectionModelChange = (newRowSelectionModel, a) => {
+      const isChangeStatus = newRowSelectionModel.some(row => apiRef.current.getRow(row).status === 'NOT_VERIFY')
+      dispatch(
+         adminUserSlice.actions.changeCanChangeStatusUser(isChangeStatus)
+         );
       dispatch(
          adminUserSlice.actions.changeListSelectedRows(newRowSelectionModel)
       );
@@ -207,6 +211,7 @@ const columns = [
       headerClassName: "super-app-theme--header",
       headerName: "Status",
       width: 150,
+      sortable: false,
       filterOperators: [operatorSelectStatusAdminUser],
       renderCell: (params) => {
          let theme = "shipping";

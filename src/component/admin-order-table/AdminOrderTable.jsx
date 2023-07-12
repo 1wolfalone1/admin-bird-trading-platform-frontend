@@ -21,6 +21,7 @@ import {
 } from "../filter-table-common/FiterTableCommon";
 import { Chip, List, ListItem, Tooltip, Typography } from "@mui/material";
 import moment from "moment";
+import adminPackageSlice from "../../redux/adminPackageSlice";
 
 export default function ShopOrderDataGrid() {
    const apiRef = useGridApiRef();
@@ -57,6 +58,7 @@ export default function ShopOrderDataGrid() {
             apiRef.current.getRow(rowId)
          );
       }
+      console.log(newListSelected, 'newwwwwwwwww')
       if (mode === "view") {
          dispatch(
             shopOrderSlice.actions.changeListSelectedRows(newListSelected)
@@ -98,6 +100,7 @@ export default function ShopOrderDataGrid() {
             operator: "",
          };
       }
+
       dispatch(shopOrderSlice.actions.changeOrderSearchInfo(filterObject));
       setPaginationModel({
          pageSize: 10, // Default page size
@@ -109,7 +112,8 @@ export default function ShopOrderDataGrid() {
       dispatch(getOrderFilterPagingAdmin(paginationModel.page + 1));
    }, [paginationModel]);
    useEffect(() => {
-      dispatch(shopOrderSlice.actions.changeTab(1));
+      dispatch(adminPackageSlice.actions.changeTab(2))
+
    }, []);
 
    return (
@@ -176,6 +180,15 @@ const columns = [
       filterOperators: [operatorIDEqual],
    },
    {
+      field: "packageOrderId",
+      headerClassName: "super-app-theme--header",
+      headerAlign: "center",
+      headerName: "Package ID",
+      width: 100,
+      filterable: true,
+      filterOperators: [operatorIDEqual],
+   },
+   {
       field: "totalPrice",
       headerAlign: "center",
       headerName: "Total Price",
@@ -194,6 +207,8 @@ const columns = [
       headerName: "Status",
       type: "text",
       width: 120,
+      sortable: false,
+
       filterable: true,
       filterOperators: [operatorSelectStatus],
       valueFormatter: ({ value }) => {
@@ -241,6 +256,7 @@ const columns = [
       headerName: "Payment Method",
       type: "text",
       width: 160,
+      sortable: false,
       filterOperators: [operatorSelectPaymenMethod],
       valueFormatter: ({ value }) => (value === "DELIVERY" ? "COD" : "PAYPAL"),
       renderCell: (params) => {
@@ -269,6 +285,7 @@ const columns = [
       width: 200,
       type: "custom",
       filterable: false,
+      sortable: false,
       valueFormatter: ({ value }) => {
          return value
             .map(

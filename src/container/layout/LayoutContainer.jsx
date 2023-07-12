@@ -32,7 +32,7 @@ export default function LayoutContainer() {
       <ThemeProvider theme={theme}>
          <div
             style={{
-               backgroundColor: theme.palette.template5,
+               backgroundColor: '#c7e0db',
                minHeight: "100vh",
                display: "flex",
             }}

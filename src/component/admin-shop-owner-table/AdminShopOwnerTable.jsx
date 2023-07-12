@@ -8,7 +8,7 @@ import adminShopOwnerSlice, {
 import clsx from "clsx";
 import s from "./adminShopOwnerTable.module.scss";
 import moment from "moment";
-import { Avatar, Box, Tooltip, Typography } from "@mui/material";
+import { Avatar, Box, Chip, Tooltip, Typography } from "@mui/material";
 
 export default function AdminShopOwnerTable() {
    const apiRef = useGridApiRef();
@@ -199,6 +199,16 @@ const columns = [
       headerClassName: "super-app-theme--header",
       headerName: "Status",
       width: 150,
+      sortable: false,
+      renderCell: (params) => {
+         let value = params.value;
+         let theme = "success";
+         if (value === "BAN") {
+            value = "BANNED";
+            theme = "error";
+         }
+         return <Chip label={value} variant="outlined" color={theme} />;
+      },
    },
    {
       field: "createdDate",
