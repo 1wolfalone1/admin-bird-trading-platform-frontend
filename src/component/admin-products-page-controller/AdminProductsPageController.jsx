@@ -141,7 +141,7 @@ export default function AdminProductsPageController() {
                      Ban
                   </MenuItem>
                   <MenuItem onClick={handleActionInRow} value={1}>
-                     UnBan
+                     Unban
                   </MenuItem>
                </Menu>
             </Grid2>

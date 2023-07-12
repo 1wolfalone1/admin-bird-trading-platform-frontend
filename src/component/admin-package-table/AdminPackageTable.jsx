@@ -8,7 +8,7 @@ import adminPackageSlice, {
 } from "../../redux/adminPackageSlice";
 import clsx from "clsx";
 import moment from "moment";
-import { Chip, Tooltip, Typography } from "@mui/material";
+import { Box, Chip, Tooltip, Typography } from "@mui/material";
 import { formatNumber } from "../../utils/myUtils";
 import {
    operatorAdminSelectTransaction,
@@ -211,6 +211,8 @@ const columns = [
       width: 150,
       headerClassName: "super-app-theme--header",
       filterOperators: [operatorSelectPaymenMethod],
+      sortable: false,
+
       renderCell: (params) => {
          console.log(params.value);
          let colorTheme = "success";
@@ -251,6 +253,7 @@ const columns = [
    {
       field: "transactionStatus",
       headerName: "Transaction Status",
+      sortable: false,
       width: 160,
       headerClassName: "super-app-theme--header",
       filterOperators: [operatorAdminSelectTransaction],
@@ -262,7 +265,16 @@ const columns = [
          } else if (value === "REFUNDED") {
             theme = "danger";
          }
-         return <Chip label={value} color={theme} variant="outlined" />;
+         return (
+            <Box display={"flex"} gap={1}>
+               <Chip
+                  label={value + `(${params.row.statusOrders})`}
+                  color={theme}
+                  variant="outlined"
+               />
+               <Typography>{}</Typography>
+            </Box>
+         );
       },
    },
    {

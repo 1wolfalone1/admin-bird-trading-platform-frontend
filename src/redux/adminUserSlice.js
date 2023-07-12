@@ -24,6 +24,7 @@ const initialState = {
       },
       pageNumber: 1,
    },
+   canChangeStatus: false
 };
 const adminUserSlice = createSlice({
    name: "adminUserSlice",
@@ -44,6 +45,9 @@ const adminUserSlice = createSlice({
       resetState: (state, action) => {
          return initialState;
       },
+      changeCanChangeStatusUser: (state, action) => {
+         state.canChangeStatus = action.payload;
+      }
    },
    extraReducers: (builder) =>
       builder

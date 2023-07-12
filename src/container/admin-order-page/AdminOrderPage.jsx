@@ -8,7 +8,7 @@ import AdminOrderTable from "../../component/admin-order-table/AdminOrderTable";
 import AdminOrderPageController from "../../component/admin-order-page-controller/AdminOrderPageController";
 import { Outlet } from "react-router-dom";
 
-const breadCrumbsPath = [breadCrumbs.ADMIN_ORDER];
+const breadCrumbsPath = [breadCrumbs.ADMIN_PACKAGE];
 const roles = [userRole.ADMIN];
 export default function AdminOrderPage() {
    useAuthenticate(roles);

@@ -72,6 +72,10 @@ const theme = createTheme({
       delivered: {
          main: '#711970',
          contrastText: "#c1ffc0",
+      },
+      background: {
+         main: '#dff4f0',
+         contrastText: "#c1ffc0",
       }
    },
    typography: {
