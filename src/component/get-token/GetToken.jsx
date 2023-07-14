@@ -67,7 +67,7 @@ export default function GetToken() {
                info: data.userInfo,
             })
          );
-         navigate("/");
+         navigate("/order");
       } catch (e) {
          console.log(e);
       }

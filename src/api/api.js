@@ -11,6 +11,7 @@ export const api = axios.create({
    },
 });
 api.defaults.paramsSerializer = params => qs.stringify(params, {arrayFormat: 'repeat'})
+
 api.interceptors.request.use(
    (config) => {
       if (!config.headers.Authorization) {
@@ -23,4 +24,21 @@ api.interceptors.request.use(
       return config;
    },
    (error) => Promise.reject(error)
+);
+api.interceptors.response.use(
+   (response) => {
+      console.log(response);
+      // Edit response config
+      return response;
+   },
+   (error) => {
+      console.log(error);
+      if (error.response.status === 423) {
+         console.log('error 423')
+         window.location.href = "/handle-banned?auth=403";
+       
+      } else if (error.response.status === 406) {
+         window.location.href = "/login?auth=406";
+      }
+   }
 );
