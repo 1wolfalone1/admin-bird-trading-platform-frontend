@@ -27,6 +27,7 @@ import AdminShopOwnerPage from "./container/admin-shop-owner-page/AdminShopOwner
 import AdminUserPage from "./container/admin-user-page/AdminUserPage";
 import AdminOrderTable from "./component/admin-order-table/AdminOrderTable";
 import AdminPackageTable from "./component/admin-package-table/AdminPackageTable";
+import HandleBanned from "./component/handle-banned/HandleBanned";
 
 function App() {
    return (
@@ -69,6 +70,10 @@ function App() {
             <Route
                path="review-details/:reviewId"
                element={<ReviewDetails />}
+            />
+            <Route
+               path="handle-banned"
+               element={<HandleBanned />}
             />
          </Route>
          <Route path="/admin/" element={<LayoutContainer />}>

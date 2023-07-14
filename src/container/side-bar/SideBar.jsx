@@ -39,6 +39,7 @@ export default function SideBar() {
          console.log(e);
       }
    };
+   console.log(role, 'rrrrrroleeeeeeeeeeeeeeeeeeee')
    return (
       <div className={clsx(s.container, "box-shadow")}>
          <div className={s.adminInfo}>
@@ -64,16 +65,7 @@ export default function SideBar() {
             {role === 2 && (
                <>
                   <div className={s.controlTasks}>
-                     <MenuItem type={typeMenu.DASHBOARD} />
-                     <MenuItem type={typeMenu.PRODUCTS} />
                      <MenuItem type={typeMenu.ORDERS} />
-                     <MenuItem type={typeMenu.STAFF} />
-                     <MenuItem type={typeMenu.REVIEW} />
-                     <MenuItem type={typeMenu.REPORT} />
-                  </div>
-                  <div className={s.controlSetting}>
-                     <MenuItem type={typeMenu.SUPPORT} />
-                     <MenuItem type={typeMenu.SETTING} />
                   </div>
                   <div className={s.controlAccount}>
                      <MenuItem type={typeMenu.LOGOUT} logout={handleLogout} />
