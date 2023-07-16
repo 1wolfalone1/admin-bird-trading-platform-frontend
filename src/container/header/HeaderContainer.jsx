@@ -11,7 +11,11 @@ import PopupMessage from "../../component/message/PopupMessage";
 import NotiItemsPopper from "../../component/notification/NotiItemsPopper";
 const badgeStyle = {
    badge: {
-      "& .MuiBadge-badge": { fontSize: '1.2rem', height: '1.6rem', minWidth: '1.6rem' },
+      "& .MuiBadge-badge": {
+         fontSize: "1.2rem",
+         height: "1.6rem",
+         minWidth: "1.6rem",
+      },
    },
    icon: {
       fontSize: "3rem",
@@ -27,14 +31,14 @@ export default function HeaderContainer() {
             <div className={s.right}>
                <div className={s.logo}>
                   <img
-                     src="https://bird-trading-platform.s3.ap-southeast-1.amazonaws.com/assetImage/asset/logo%3Dlight.svg"
+                     src="https://bird-trading-platform.s3.ap-southeast-1.amazonaws.com/assetImage/asset/Beige_Vintage_Elegant_Illustration_Bird_Logo_4.png"
                      alt=""
                   />
                </div>
                <div className={s.shopName}>Bird Land 2nd</div>
             </div>
             <div className={s.left}>
-               <div style={{marginRight: '1rem'}}>
+               <div style={{ marginRight: "1rem" }}>
                   <SearchBar />
                </div>
                <div className={s.iconContainer}>
@@ -60,7 +64,7 @@ export default function HeaderContainer() {
                      </Badge>
                   </IconButton> */}
                   <NotiItemsPopper />
-                  <PopupMessage/>               
+                  <PopupMessage />
                </div>
             </div>
          </div>

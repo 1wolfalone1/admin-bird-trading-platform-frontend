@@ -16,7 +16,7 @@ export default function useAuthenticate(roles) {
 
       console.log(userRole, roles);
       const isExist = roles.find(role => role.code === userRole);
-      if(!isExist){
+      if(!isExist) {
          console.error('Unauthorized');
          navigate('/page-not-found')
       }
