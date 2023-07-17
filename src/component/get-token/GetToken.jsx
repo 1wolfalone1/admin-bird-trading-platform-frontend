@@ -23,16 +23,17 @@ export default function GetToken() {
       const role = params.get("role");
       if (role == 2) {
          console.log("stafffffffffffffffffffffffffffffffffffffffffffffffff");
+         localStorage.setItem("token", token);
          getStaffInfo(token);
       }
       if (!role) {
          console.log("shopownerrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr");
-
          localStorage.setItem("token", token);
          getShopOwnerInfo();
       }
       if (role == 4) {
          console.log("adminnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn");
+         localStorage.setItem("token", token);
          getAdminInfo(token);
       }
    };
