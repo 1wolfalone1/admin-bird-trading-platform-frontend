@@ -67,7 +67,7 @@ const NotiItemsPopper = () => {
   }
   
   //socketjs
-  const connect = (status) => {
+  const connect = (role) => {
     const url = process.env.REACT_APP_URL_WEBSOCKET;
     if (role === userRole.SHOP_OWNER.code || role === userRole.SHOP_STAFF.code) {
       let Sock = new SockJS(`${url}`);
