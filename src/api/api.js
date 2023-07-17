@@ -39,6 +39,8 @@ api.interceptors.response.use(
        
       } else if (error.response.status === 406) {
          window.location.href = "/login?auth=406";
+      } else if (error.response.status === 401) {
+         window.location.href = `${process.env.REACT_APP_REDIRECT_USER}login?error=6`;
       }
    }
 );
