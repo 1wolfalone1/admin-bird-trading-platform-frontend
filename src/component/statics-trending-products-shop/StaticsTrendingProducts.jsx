@@ -9,6 +9,7 @@ import { useState } from "react";
 import { api } from "../../api/api";
 
 export default function StaticsTrendingProducts() {
+   const [date, setDate] = useState();
    const [staticsTrending, setStaticTreding] =  useState(null);
    useEffect(() => {
       getStaticTrending();
@@ -38,6 +39,29 @@ export default function StaticsTrendingProducts() {
          opacity: 0.5,
       },
    };
+   const handleChange =  async (e, value) => {
+      const newDate = new Date(e);
+      const now = new Date();
+      if(now > newDate){
+         console.log(newDate ,Date.parse(newDate), ' asdfasdfasdfasfs')
+         try {
+            const response = await api.get('/shop-owner/line-chart', {
+               params: {
+                  date: Date.parse(newDate)
+               }
+            });
+            console.log(response)
+            const data = await response.data;
+            console.log(data);
+            setStaticTreding(data);
+         } catch (err) {
+            console.error(err);
+         }
+      } else {
+         console.log('das');
+
+      }
+   }
    return (
       <motion.div
          variants={animation}
@@ -47,8 +71,7 @@ export default function StaticsTrendingProducts() {
          className={clsx(s.container, "box-shadow")}
       >
          <div className={s.title}>
-            <span className={s.span}>Price trending from</span>
-            <DatePicker color="template5" />
+            <span className={s.span}>Revenue trending from 14 previous day</span>
             <span className={s.span}> to now</span>
          </div>
          <div className={s.chart}>
