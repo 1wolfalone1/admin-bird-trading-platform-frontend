@@ -9,7 +9,9 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useGridApiRef } from "@mui/x-data-grid";
 import s from "./shopStaffDataGrid.module.scss";
 import { Chip } from "@mui/material";
+import { userInfoSliceSelector } from "../../redux/userInfoSlice";
 export default function ShopStaffDataGrid() {
+   const {info} = useSelector(userInfoSliceSelector);
    const apiRef = useGridApiRef();
    const [paginationModel, setPaginationModel] = useState({
       pageSize: 10, // Default page size
@@ -81,7 +83,13 @@ const columns = [
       headerClassName: "super-app-theme--header",
 
       headerName: "ID",
-      width: 70,
+      width: 150,
+   },
+   {
+      field: "shopId",
+      headerClassName: "super-app-theme--header",
+      headerName: "Shop ID",
+      width: 100,
    },
    {
       field: "userName",

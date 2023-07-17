@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { api } from "../api/api";
+import userInfoSlice from './userInfoSlice';
 
 const shopStaffSlice = createSlice({
    name: "shopStaffSlice",
@@ -31,16 +32,16 @@ const shopStaffSlice = createSlice({
       })
       .addCase(getShopStaffs.pending, (state, action) => {
          state.isLoading = true;
-        
       })
       .addCase(getShopStaffs.rejected, (state, action) => {
-      
       }),
 });
 export const getShopStaffs = createAsyncThunk(
    "shopStaffSlice/getShopStaffs",
    async (page, {getState}) => {
+      const state = getState();
       try {
+         const shopId = state.userInfoSlice.info.id;
          const res = await api.get("shop-owner/staffs/pages/" + page);
          const data = await res.data;
          console.log(data);

@@ -12,12 +12,25 @@ import shopOrderDetailsSlice, {
 } from "../../redux/shopOrderDetailsSlice";
 import { DataGrid, GridToolbar, useGridApiRef } from "@mui/x-data-grid";
 import moment from "moment";
-import { operatorDate, operatorIDEqual, operatorPriceFrom, operatorRatingFrom, operatorTypeContain } from "../filter-table-common/FiterTableCommon";
+import {
+   operatorDate,
+   operatorIDEqual,
+   operatorPriceFrom,
+   operatorRatingFrom,
+   operatorTypeContain,
+} from "../filter-table-common/FiterTableCommon";
 import { formatNumber, formatQuantity } from "../../utils/myUtils";
 import { Box, Rating, Typography } from "@mui/material";
 
 export default function ShopOrderDetailsDataGrid() {
-   const { data, isLoading, totalOrdersDetails, listSelected, mode,currentPage } = useSelector(getShopOrderDetailsTableSelector);
+   const {
+      data,
+      isLoading,
+      totalOrdersDetails,
+      listSelected,
+      mode,
+      currentPage,
+   } = useSelector(getShopOrderDetailsTableSelector);
    const apiRef = useGridApiRef();
    const [paginationModel, setPaginationModel] = useState({
       pageSize: 10, // Default page size
@@ -45,16 +58,16 @@ export default function ShopOrderDetailsDataGrid() {
             apiRef.current.getRow(rowId)
          );
       }
-      if (mode === "view") {
-         dispatch(
-            shopOrderDetailsSlice.actions.changeListSelectedRows(newListSelected)
-         );
-      }
+      dispatch(
+         shopOrderDetailsSlice.actions.changeListSelectedRows(newListSelected)
+      );
    };
    const handleSortModelChange = React.useCallback((sortModel) => {
       // Here you save the data you need from the sort model
       if (sortModel[0]) {
-         dispatch(shopOrderDetailsSlice.actions.changeSortDirection(sortModel[0]));
+         dispatch(
+            shopOrderDetailsSlice.actions.changeSortDirection(sortModel[0])
+         );
          setPaginationModel({
             pageSize: 10, // Default page size
             page: 0,
@@ -74,8 +87,8 @@ export default function ShopOrderDetailsDataGrid() {
    }, []);
    useEffect(() => {
       return () => {
-         dispatch(shopOrderDetailsSlice.actions.resetState())
-      }
+         dispatch(shopOrderDetailsSlice.actions.resetState());
+      };
    }, []);
    const onFilterChange = (filterModel) => {
       console.log(filterModel);
@@ -92,7 +105,9 @@ export default function ShopOrderDetailsDataGrid() {
             operator: "",
          };
       }
-      dispatch(shopOrderDetailsSlice.actions.changeOrderSearchInfo(filterObject));
+      dispatch(
+         shopOrderDetailsSlice.actions.changeOrderSearchInfo(filterObject)
+      );
       setPaginationModel({
          pageSize: 10, // Default page size
          page: 0,
@@ -141,10 +156,6 @@ export default function ShopOrderDetailsDataGrid() {
       </div>
    );
 }
-
-
-
-
 
 const columns = [
    {
@@ -195,7 +206,7 @@ const columns = [
       filterOperators: [operatorPriceFrom],
       filterable: true,
    },
-  
+
    {
       field: "promotionRate",
       headerClassName: "super-app-theme--header",
@@ -225,8 +236,8 @@ const columns = [
       filterOperators: [operatorRatingFrom],
       renderCell: (params) => {
          return (
-            <Box display={'flex'} gap={'0.8rem'}>
-               <Rating readOnly value={Number(params.value)} precision={0.5}/>
+            <Box display={"flex"} gap={"0.8rem"}>
+               <Rating readOnly value={Number(params.value)} precision={0.5} />
             </Box>
          );
       },
@@ -238,7 +249,6 @@ const columns = [
       headerName: "Create Date",
       width: 200,
       filterOperators: [operatorDate],
-      valueFormatter: (params) =>
-      moment(params.value).format("DD/MM/YY HH:mm"),
+      valueFormatter: (params) => moment(params.value).format("DD/MM/YY HH:mm"),
    },
 ];

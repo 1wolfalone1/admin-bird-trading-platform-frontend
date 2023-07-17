@@ -15,12 +15,7 @@ import StaticsPriceByCategory from "../../component/statics-price-category-pie-c
 import { api } from "../../api/api";
 import { data } from "./../../component/chart/summary-chart/mock";
 
-let breadCrumbPath = [
-   breadCrumbs.DASH_BOARD,
-   breadCrumbs.FOOD,
-   breadCrumbs.BIRDS,
-   breadCrumbs.SUMMARY_ORDERS,
-];
+let breadCrumbPath = [breadCrumbs.DASH_BOARD];
 
 export default function DashBoard() {
    useBreadCrumb(breadCrumbPath);
@@ -42,7 +37,7 @@ export default function DashBoard() {
             res2.data,
             res3.data,
          ]);
-         console.log(data, data2, data3);
+         console.log(data, data2, data3, 'dataaaaaaaaaaaaaaaaaaaaaaaaaaaa');
          setPriceBarDataShop(data);
          setOrderBarDataShop(data2);
          setReviewBarDataSHop(data3);

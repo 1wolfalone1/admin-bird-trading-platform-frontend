@@ -62,6 +62,8 @@ const CustomFilteraStatus = ({ applyValue, item }) => {
             <MenuItem value={0}>PENDING</MenuItem>
             <MenuItem value={1}>PROCESSING</MenuItem>
             <MenuItem value={2}>SHIPPED</MenuItem>
+            <MenuItem value={3}>SHIPPING</MenuItem>
+            <MenuItem value={4}>DELIVERED</MenuItem>
          </Select>
       </Box>
    );
@@ -89,7 +91,65 @@ const CustomFilterPaymentMethod = ({ applyValue, item }) => {
          >
             <MenuItem value={"9"}>ALL</MenuItem>
             <MenuItem value={"PAYPAL"}>PAYPAL</MenuItem>
-            <MenuItem value={"DELIVERY"}>DELIVERY</MenuItem>
+            <MenuItem value={"DELIVERY"}>COD</MenuItem>
+         </Select>
+      </Box>
+   );
+};
+const CustomFilterTransactionStatus = ({ applyValue, item }) => {
+   const handleFilterChange = (event) => {
+      console.log(event.target.value, item, applyValue);
+      let newItem = { ...item, value: event.target.value };
+      applyValue(newItem);
+   };
+
+   return (
+      <Box>
+         <Typography
+            sx={{ padding: "0", fontSize: "1.6rem", lineHeight: "1.6rem" }}
+         >
+            value
+         </Typography>
+         <Select
+            defaultValue={""}
+            value={item.value}
+            onChange={handleFilterChange}
+            sx={{ width: "100%" }}
+            MenuProps={{ disableScrollLock: true }}
+         >
+            <MenuItem value={9}>ALL</MenuItem>
+            <MenuItem value={1}>PROCESSING</MenuItem>
+            <MenuItem value={2}>SUCCESS</MenuItem>
+            <MenuItem value={3}>REFUNDED</MenuItem>
+         </Select>
+      </Box>
+   );
+};
+const CustomFilterAdminUser = ({ applyValue, item }) => {
+   const handleFilterChange = (event) => {
+      console.log(event.target.value, item, applyValue);
+      let newItem = { ...item, value: event.target.value };
+      applyValue(newItem);
+   };
+
+   return (
+      <Box>
+         <Typography
+            sx={{ padding: "0", fontSize: "1.6rem", lineHeight: "1.6rem" }}
+         >
+            value
+         </Typography>
+         <Select
+            defaultValue={""}
+            value={item.value}
+            onChange={handleFilterChange}
+            sx={{ width: "100%" }}
+            MenuProps={{ disableScrollLock: true }}
+         >
+            <MenuItem value={"9"}>ALL</MenuItem>
+            <MenuItem value={1}>VERIFY</MenuItem>
+            <MenuItem value={-1}>NOT VERIFY</MenuItem>
+            <MenuItem value={-2}>BANNED</MenuItem>
          </Select>
       </Box>
    );
@@ -213,6 +273,12 @@ const CustomFilterRating = ({ applyValue, item }) => {
       </Box>
    );
 };
+export const operatorSelectStatusAdminUser = {
+   label: "select",
+   value: "=",
+   InputComponent: CustomFilterAdminUser,
+   getValueAsString: (value) => value,
+};
 export const operatorDate = {
    label: "date",
    value: "Range",
@@ -231,12 +297,20 @@ export const operatorSelectStatus = {
    InputComponent: CustomFilteraStatus,
    getValueAsString: (value) => value,
 };
+export const operatorAdminSelectTransaction = {
+   label: "select",
+   value: "=",
+   InputComponent: CustomFilterTransactionStatus,
+   getValueAsString: (value) => value,
+};
+
 export const operatorSelectPaymenMethod = {
    label: "select",
    value: "=",
    InputComponent: CustomFilterPaymentMethod,
    getValueAsString: (value) => value,
 };
+
 export const operatorPriceFrom = {
    label: ">=",
    value: ">=",

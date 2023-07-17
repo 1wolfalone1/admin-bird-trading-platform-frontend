@@ -327,7 +327,6 @@ export default function UpdateProductPage() {
                <>
                   <Button
                      variant="outlined"
-                     color="template7"
                      sx={{ fontSize: "2.4rem", width: "12rem" }}
                      onClick={() => {
                         basicForm?.resetForm();
@@ -342,7 +341,6 @@ export default function UpdateProductPage() {
                   </Button>
                   <Button
                      variant="outlined"
-                     color="template8"
                      sx={{ fontSize: "2.4rem", width: "12rem" }}
                      onClick={handleSubmit}
                   >
@@ -353,7 +351,6 @@ export default function UpdateProductPage() {
                <>
                   <Button
                      variant="outlined"
-                     color="template7"
                      sx={{ fontSize: "2.4rem", width: "12rem" }}
                      onClick={() => {
                         basicForm?.resetForm();
@@ -367,7 +364,6 @@ export default function UpdateProductPage() {
                   </Button>
                   <Button
                      variant="outlined"
-                     color="template8"
                      sx={{ fontSize: "2.4rem", width: "12rem" }}
                      onClick={handleSubmit}
                   >

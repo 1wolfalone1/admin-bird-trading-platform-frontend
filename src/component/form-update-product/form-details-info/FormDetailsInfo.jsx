@@ -145,7 +145,7 @@ export default function FormDetailsInfo() {
          productDetailsValidateSlice.actions.handleOnChangeDetailsForm(
             form.values
          )
-      );
+      )
       form.validateForm(form.values);
       dispatch(productDetailsValidateSlice.actions.setDetailsForm(form));
    }, [getForm]);

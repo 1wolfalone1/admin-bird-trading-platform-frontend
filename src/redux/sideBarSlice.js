@@ -9,7 +9,9 @@ import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { breadCrumbs } from "../config/constant";
-
+import StoreIcon from '@mui/icons-material/Store';
+import WidgetsIcon from '@mui/icons-material/Widgets';
+import PeopleIcon from '@mui/icons-material/People';
 const commonStyle = {
    icon: {
       fontSize: '2.4rem'
@@ -69,6 +71,49 @@ export const typeMenu = {
       id: 8,
       url: breadCrumbs.SUPPORT.url
 
+   },
+   ADMIN_DASHBOARD: {
+      Icon: <AnalyticsIcon sx={commonStyle.icon} color="template6"/>,
+      title: "Dashboard",
+      id: 1,
+      url: breadCrumbs.ADMIN_DASH_BOARD.url,
+   },
+   ADMIN_PRODUCTS: {
+      Icon: <InventoryIcon sx={commonStyle.icon} color="template6"/>,
+      title: "Products",
+      id: 2,
+      url: breadCrumbs.ADMIN_PRODUCTS.url,
+   },
+   ADMIN_PACKAGE: {
+      Icon: <WidgetsIcon sx={commonStyle.icon} color="template6"/>,
+      title: "Packages order",
+      id: 7,
+      url: breadCrumbs.ADMIN_PACKAGE.url
+   },
+   ADMIN_ORDER: {
+      Icon: <ReceiptIcon sx={commonStyle.icon} color="template6"/>,
+      title: "Orders",
+      id: 3,
+      url: breadCrumbs.ADMIN_ORDER.url
+   },
+   ADMIN_SHOP_OWNER: {
+      Icon: <StoreIcon sx={commonStyle.icon} color="template6"/>,
+      title: "Shop Owners",
+      id: 4,
+      url: breadCrumbs.ADMIN_SHOP_OWNER.url
+   },
+      
+   ADMIN_USER: {
+      Icon: <PeopleIcon sx={commonStyle.icon} color="template6"/>,
+      title: "Users",
+      id: 5,
+      url: breadCrumbs.ADMIN_USER.url
+   },
+   ADMIN_REPORT: {
+      Icon: <SummarizeIcon sx={commonStyle.icon} color="template6"/>,
+      title: "Reports",
+      id: 6,
+      url: breadCrumbs.ADMIN_REPORTS.url
    },
    LOGOUT: {
       Icon: <LogoutIcon sx={commonStyle.icon} color="template6"/>,

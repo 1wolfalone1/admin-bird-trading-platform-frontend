@@ -151,7 +151,7 @@ export default function ProductShopPageController() {
             ...acc,
             [id]: { mode: GridRowModes.View, ignoreModifications: true },
          };
-      }, {});
+      }, {})
       dispatch(productShopSlice.actions.changeRowsModeModel(newRowModeModel));
       dispatch(productShopSlice.actions.changeTableMode("view"));
       dispatch(productShopSlice.actions.changeListSelectedRows([]));

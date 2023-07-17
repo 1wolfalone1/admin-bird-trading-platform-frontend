@@ -23,6 +23,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { modelStyle, orderStatus } from "./../../config/constant";
 import { api } from "../../api/api";
 import globalConfigSlice from "../../redux/globalConfigSlice";
+import { getListSelectedInOrderDetailsTableSelector } from "../../redux/shopOrderDetailsSlice";
 
 export default function ShopOrderBarController() {
    const [anchorEl, setAnchorEl] = React.useState(null);
@@ -34,6 +35,9 @@ export default function ShopOrderBarController() {
    const { listSelected, currentPage } = useSelector(getShopOrderTableSelector);
    const dispatch = useDispatch();
    const navigate = useNavigate();
+   const listSelectedOrderDetails = useSelector(
+      getListSelectedInOrderDetailsTableSelector
+   );
    const [disabledChangeStatus, setDisabledChangeStatus] = useState({
       0: false,
       1: false,
@@ -57,7 +61,7 @@ export default function ShopOrderBarController() {
             2: true,
          });
       } else {
-         console.log(listSelected, 'list selecteddddddddddddddd')
+         console.log(listSelected, "list selecteddddddddddddddd");
          const isHasTwoStatus = listSelected.some(
             (row) => listSelected[0].orderStatus.id !== row.orderStatus.id
          );
@@ -147,6 +151,17 @@ export default function ShopOrderBarController() {
    const handleCloseModelConfirmStatus = () => {
       setModelConfirmChangeStatus(false);
    };
+   const handleViewOrderDetails = () => {
+      console.log(listSelected);
+      if (listSelected.length === 1) {
+         navigate(`/order/order-details/${listSelected[0].id}`);
+      } else {
+         console.log(listSelectedOrderDetails, " listSElected neeeeeeeeeeeee");
+         navigate(
+            `/order/order-details/${listSelectedOrderDetails[0].orderId}`
+         );
+      }
+   };
    return (
       <Grid2
          container
@@ -173,7 +188,24 @@ export default function ShopOrderBarController() {
                />
             </Tabs>
          </Grid2>
-         <Grid2 xs={6} sx={{ display: "flex", justifyContent: "flex-end" }}>
+         <Grid2
+            xs={6}
+            sx={{ display: "flex", justifyContent: "flex-end", gap: 1 }}
+         >
+            <Button
+               variant="outlined"
+               disabled={
+                  listSelected &&
+                  Array.isArray(listSelected) &&
+                  listSelected.length !== 1 &&
+                  listSelectedOrderDetails &&
+                  Array.isArray(listSelectedOrderDetails) &&
+                  listSelectedOrderDetails.length !== 1
+               }
+               onClick={handleViewOrderDetails}
+            >
+               View details
+            </Button>
             {tab === 1 ? (
                <>
                   <Button
@@ -249,7 +281,7 @@ export default function ShopOrderBarController() {
                         sx={{ color: theme.palette.template4.main }}
                         variant="h4"
                      >
-                        Delete products?
+                        Change to shipped?
                      </Typography>
                   </Box>
                   <Box
