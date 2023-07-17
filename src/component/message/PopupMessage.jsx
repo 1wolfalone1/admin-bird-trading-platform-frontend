@@ -65,10 +65,8 @@ const PopupMessage = () => {
   },[info])
 
   useEffect(() => {
-    if(newMessage) {
       handleMessageArrive(message, open, currentShopIDSelect);
       handleNewMessage(" ");
-    }
   }, [message]);
 
   useEffect(() => {
@@ -153,7 +151,6 @@ const PopupMessage = () => {
   };
   //This function use to handle message when user get an message
   const handleMessageArrive = (message, open, currentShopIDSelect) => {
-    if(newMessage) {
       dispatch(messageSlice.actions.increaseNumberUnread());
       const updateMessage = {
         ...message,
@@ -164,7 +161,7 @@ const PopupMessage = () => {
         const user = {
           userId: message.userID,
           channelId: 1,
-          userName: message.senderName,
+          userName: message?.userName,
           userAvatar: message?.userAvatar ? message.userAvatar : 'https://th.bing.com/th/id/OIP.Cl56H6WgxJ8npVqyhefTdQHaHa?pid=ImgDet&rs=1',
           unread: 1,
         }
@@ -182,9 +179,6 @@ const PopupMessage = () => {
       } else {
         setUnread(numberUnread);
       }
-      // check add one time
-      setNewMessage(false);
-    } 
   };
 
   //this function use to reset number unread message of button CHAT NOW
