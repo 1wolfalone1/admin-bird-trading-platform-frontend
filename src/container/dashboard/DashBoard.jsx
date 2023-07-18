@@ -53,7 +53,7 @@ export default function DashBoard() {
                   <SummaryTotalShop data={orderBarDataShop} type="order" />
                </Grid2>
                <Grid2 xs={4}>
-                  <SummaryTotalShop data={priceBarDataShop} type="price" />
+                  <SummaryTotalShop data={priceBarDataShop} type="revenue" />
                </Grid2>
                <Grid2 xs={4}>
                   <SummaryTotalShop data={reviewBarDataSHop} type="review" />
