@@ -116,10 +116,12 @@ export default function ProductShopPageController() {
             })
          );
       } catch (e) {
-         if(e.response.status === 409){
+         console.log(e);
+         const status = await e.response
+         if(status.status === 409){
             dispatch(
                globalConfigSlice.actions.changeSnackBarState({
-                  type: "error",
+                  typeStatus: "error",
                   message:
                      "You must complete all the orders listed for deleting products.",
                   open: true,
@@ -129,7 +131,7 @@ export default function ProductShopPageController() {
          } else {
             dispatch(
                globalConfigSlice.actions.changeSnackBarState({
-                  type: "error",
+                  typeStatus: "error",
                   message:
                      "Sorry, your action cannot be completed at the moment. Please try again.",
                   open: true,
