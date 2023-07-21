@@ -28,6 +28,7 @@ import AdminUserPage from "./container/admin-user-page/AdminUserPage";
 import AdminOrderTable from "./component/admin-order-table/AdminOrderTable";
 import AdminPackageTable from "./component/admin-package-table/AdminPackageTable";
 import HandleBanned from "./component/handle-banned/HandleBanned";
+import LogOrderStaff from "./component/log-order-staff/LogOrderStaff";
 
 function App() {
    return (
@@ -49,6 +50,7 @@ function App() {
             <Route path={breadCrumbs.STAFF.url} element={<ShopStaffPage />}>
                <Route index element={<ShopStaffDataGrid />} />
                <Route path={"create-staff"} element={<CreateShopStaff />} />
+               <Route path={"log-order"} element={<LogOrderStaff />} />
             </Route>
             <Route
                path={`${breadCrumbs.UPDATE_PRODUCT.url}/:id`}

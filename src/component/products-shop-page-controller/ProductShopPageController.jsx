@@ -116,15 +116,30 @@ export default function ProductShopPageController() {
             })
          );
       } catch (e) {
-         dispatch(
-            globalConfigSlice.actions.changeSnackBarState({
-               type: "error",
-               message:
-                  "Sorry, your action cannot be completed at the moment. Please try again.",
-               open: true,
-               title: "Error",
-            })
-         );
+         console.log(e);
+         const status = await e.response
+         if(status.status === 409){
+            dispatch(
+               globalConfigSlice.actions.changeSnackBarState({
+                  typeStatus: "error",
+                  message:
+                     "You must complete all the orders listed for deleting products.",
+                  open: true,
+                  title: "Error",
+               })
+            );
+         } else {
+            dispatch(
+               globalConfigSlice.actions.changeSnackBarState({
+                  typeStatus: "error",
+                  message:
+                     "Sorry, your action cannot be completed at the moment. Please try again.",
+                  open: true,
+                  title: "Error",
+               })
+            );
+         }
+         
          console.log(e);
       }
    };
