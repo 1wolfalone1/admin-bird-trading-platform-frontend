@@ -202,6 +202,7 @@ const columns = [
       valueFormatter: ({ value }) => {
          return value.status;
       },
+      sortable: false,
       renderCell: (params) => {
          let colorTheme = "primary";
          if (params.value.id === 0) {
@@ -246,6 +247,8 @@ const columns = [
       width: 160,
       filterOperators: [operatorSelectPaymenMethod],
       valueFormatter: ({ value }) => value === "DELIVERY" ? "COD" : "PAYPAL",
+      sortable: false,
+
       renderCell: (params) => {
          console.log(params.value);
          let colorTheme = "success";
@@ -271,6 +274,8 @@ const columns = [
       headerName: "Promotions",
       width: 200,
       type: "custom",
+      sortable: false,
+
       filterOperators: [operatorSelectPromotion],
       valueFormatter: ({ value }) => {
          return value
