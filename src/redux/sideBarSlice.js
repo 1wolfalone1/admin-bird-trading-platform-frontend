@@ -119,7 +119,7 @@ export const typeMenu = {
       Icon: <LogoutIcon sx={commonStyle.icon} color="template6"/>,
       title: "Logout",
       id: 9,
-
+      url: '/logout'
    },
 };
 
