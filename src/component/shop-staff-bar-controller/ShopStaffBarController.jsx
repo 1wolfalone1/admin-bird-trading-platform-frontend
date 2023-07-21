@@ -79,6 +79,11 @@ export default function ShopStaffBarController() {
                   value={2}
                   onClick={() => navigate("/staff/create-staff")}
                />
+               <Tab
+                  label={"Order change log"}
+                  value={3}
+                  onClick={() => navigate("/staff/log-order")}
+               />
             </Tabs>
          </Grid2>
          <Grid2 xs={6} sx={{ display: "flex", justifyContent: "end" }}>
