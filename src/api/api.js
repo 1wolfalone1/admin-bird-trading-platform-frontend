@@ -40,6 +40,7 @@ api.interceptors.response.use(
       } else if (error.response.status === 406) {
          window.location.href = "/login?auth=406";
       } else if (error.response.status === 401) {
+         console.log(error.response)
          window.location.href = `${process.env.REACT_APP_REDIRECT_USER}login?error=6`;
       } else {
          throw error;

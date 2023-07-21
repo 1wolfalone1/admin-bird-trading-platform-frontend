@@ -217,6 +217,7 @@ export default function UpdateProductPage() {
             };
          } else if (status === "UPDATE") {
             listVoucherId = salesForm.values.voucher?.map((voucher) => voucher);
+            console.log(salesForm, ' sales form updated', listVoucherId);
             productData = {
                ...productData,
                salesForm: {
@@ -224,7 +225,7 @@ export default function UpdateProductPage() {
                   quantity: +salesForm.values.quantity,
                   voucher: listVoucherId,
                },
-            };
+            }
          }
          dispatch(productDetailsValidateSlice.actions.changeErrorFormSales(1));
       } else {
@@ -239,7 +240,6 @@ export default function UpdateProductPage() {
          };
       }
       formData.append("data", objectToBlob(productData), productData);
-      console.log(JSON.stringify(productData), count);
       if (count === 0) {
          if (status === "UPDATE") {
             handleUpdateProduct(formData);
@@ -252,14 +252,12 @@ export default function UpdateProductPage() {
       try {
          dispatch(globalConfigSlice.actions.changeBackDropState(true));
 
-         console.log(formData);
          const res = await api.put(`/shop-owner/products`, formData, {
             headers: {
                "Content-type": "multipart/form-data",
             },
          });
          const data = await res.data;
-         console.log(data, "dataaaaaaaaaaaaaaaaaaaaaaaa");
          dispatch(globalConfigSlice.actions.changeBackDropState(false));
          setCreateStatus({
             isOpen: true,
