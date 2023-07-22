@@ -184,6 +184,10 @@ const columns = [
       flex: 2,
       headerClassName: "super-app-theme--header",
       filterOperators: [operatorSelectStatus],
+      sortable: false,
+
+      filterable: true,
+      filterOperators: [operatorSelectStatus],
       valueFormatter: ({ value }) => {
          return value.status;
       },
@@ -201,9 +205,13 @@ const columns = [
          if (params.value.id === 4) {
             colorTheme = "delivered";
          }
-         console.log(params);
+
          return (
-            <Chip color={colorTheme} variant="filled" label={params.value} />
+            <Chip
+               color={colorTheme}
+               variant="filled"
+               label={params.value.status}
+            />
          );
       },
    },
