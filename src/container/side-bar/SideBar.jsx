@@ -19,11 +19,11 @@ export default function SideBar() {
    const handleLogout = () => {
       try {
          if (role === 3) {
-            const token = localStorage.getItem("token");
+            dispatch(userInfoSlice.actions.resetState());
+            let token = localStorage.getItem("token");
             console.log(token);
             localStorage.removeItem("token");
             localStorage.removeItem("userInfo");
-            dispatch(userInfoSlice.actions.resetState());
             window.location.href = `${process.env.REACT_APP_REDIRECT_USER}get-token?token=${token}`;
          } else {
             localStorage.removeItem("token");
