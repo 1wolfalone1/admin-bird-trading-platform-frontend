@@ -5,6 +5,7 @@ import useBreadCrumb from "../../custom-hook/useBreadCrumb";
 import { Box, Typography } from "@mui/material";
 import AdminProductsPageController from "../../component/admin-products-page-controller/AdminProductsPageController";
 import AdminProductsTable from "../../component/admin-product-table/AdminProductsTable";
+import AdminPromotionTable from "../../component/admin-promotion-table/AdminPromotionTable";
 
 const breadCrumbsPath = [breadCrumbs.ADMIN_PRODUCTS];
 const roles = [userRole.ADMIN];
@@ -20,7 +21,7 @@ export default function AdminProductsPage() {
          </Box>
          <AdminProductsPageController />
          <Box mt={2}>
-            <AdminProductsTable />
+            <AdminPromotionTable />
          </Box>
       </Box>
    );
