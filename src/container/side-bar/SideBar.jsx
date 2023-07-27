@@ -17,10 +17,11 @@ export default function SideBar() {
    const dispatch = useDispatch();
    console.log(userInfo);
    const handleLogout = () => {
+      let token = localStorage.getItem("token");
       try {
          if (role === 3) {
             dispatch(userInfoSlice.actions.resetState());
-            let token = localStorage.getItem("token");
+
             console.log(token);
             localStorage.removeItem("token");
             localStorage.removeItem("userInfo");
@@ -33,13 +34,14 @@ export default function SideBar() {
          }
          // Redirect to the desired page
       } catch (e) {
+         window.location.href = `${process.env.REACT_APP_REDIRECT_USER}get-token?token=${token}`;
          const error = e.response.data;
          if (error.errorCode === "400") {
          }
          console.log(e);
       }
    };
-   console.log(role, 'rrrrrroleeeeeeeeeeeeeeeeeeee')
+   console.log(role, "rrrrrroleeeeeeeeeeeeeeeeeeee");
    return (
       <div className={clsx(s.container, "box-shadow")}>
          <div className={s.adminInfo}>
