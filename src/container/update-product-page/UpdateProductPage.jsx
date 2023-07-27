@@ -288,12 +288,13 @@ export default function UpdateProductPage() {
          const data = await res.data;
          console.log(data);
          dispatch(globalConfigSlice.actions.changeBackDropState(false));
-         navigate('/products')
          setCreateStatus({
             isOpen: true,
             status: true,
             message: "Successfully created product!",
          });
+         navigate('/products')
+        
     
       } catch (e) {
          console.log(e);
