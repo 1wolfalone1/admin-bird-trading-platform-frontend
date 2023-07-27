@@ -155,7 +155,7 @@ export default function FormSalesInfo() {
                            renderInput={(params) => (
                               <TextField
                                  {...params}
-                                 label="Select tags"
+                                 label="Select voucher"
                                  variant="outlined"
                               />
                            )}
