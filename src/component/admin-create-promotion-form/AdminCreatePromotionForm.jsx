@@ -45,7 +45,7 @@ const getCurrent = () => {
    return today;
 };
 const validationSchema = yup.object().shape({
-   name: yup.string("").max("Maximum length of name is 255 characters").required("Name is required!"),
+   name: yup.string("").max(255, "Maximum length of name is 255 characters").required("Name is required!"),
 
    discount: yup
       .number()
