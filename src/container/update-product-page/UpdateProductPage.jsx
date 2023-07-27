@@ -29,7 +29,7 @@ import { objectToBlob } from "../../utils/myUtils";
 import axios from "axios";
 import { api } from "../../api/api";
 import globalConfigSlice from "../../redux/globalConfigSlice";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 let breadCrumbCreatePath = [breadCrumbs.PRODUCTS, breadCrumbs.CREATE_PRODUCTS];
 let breadCrumbUpdatePath = [breadCrumbs.PRODUCTS, breadCrumbs.UPDATE_PRODUCT];
 export default function UpdateProductPage() {
@@ -49,6 +49,7 @@ export default function UpdateProductPage() {
    const salesForm = useSelector(getSalesFormSelector);
    const [getForm, setGetForm] = useState(0);
    const location = useLocation();
+   const navigate = useNavigate();
    const listImageRemove = useSelector(getListImageRemoveSelector);
    const deleteVideo = useSelector(getDeleteVideoSelector);
    const [createStatus, setCreateStatus] = useState({
@@ -292,6 +293,7 @@ export default function UpdateProductPage() {
             status: true,
             message: "Successfully created product!",
          });
+         navigate('/products')
       } catch (e) {
          console.log(e);
          setCreateStatus({
