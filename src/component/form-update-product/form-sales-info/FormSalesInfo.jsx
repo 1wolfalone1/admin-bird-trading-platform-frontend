@@ -136,7 +136,8 @@ export default function FormSalesInfo() {
                   {listVouchers !== undefined && listVouchers.length !== 0 && (
                      <>
                         <Autocomplete
-                           id="tag"
+                           id="voucher"
+                           name="voucher"
                            multiple
                            isOptionEqualToValue={isOptionEqualToValue}
                            value={form.values.voucher}
