@@ -29,6 +29,7 @@ import AdminOrderTable from "./component/admin-order-table/AdminOrderTable";
 import AdminPackageTable from "./component/admin-package-table/AdminPackageTable";
 import HandleBanned from "./component/handle-banned/HandleBanned";
 import LogOrderStaff from "./component/log-order-staff/LogOrderStaff";
+import AdminPromotion from "./container/admin-promotion/AdminPromotion";
 
 function App() {
    return (
@@ -73,20 +74,18 @@ function App() {
                path="review-details/:reviewId"
                element={<ReviewDetails />}
             />
-            <Route
-               path="handle-banned"
-               element={<HandleBanned />}
-            />
+            <Route path="handle-banned" element={<HandleBanned />} />
          </Route>
          <Route path="/admin/" element={<LayoutContainer />}>
             <Route index element={<AdminDashboard />} />
             <Route path="products" element={<AdminProductsPage />} />
             <Route path="package-order/" element={<AdminOrderPage />}>
-               <Route path="order"  element={<AdminOrderTable />} />
-               <Route  index  element={<AdminPackageTable />} />
+               <Route path="order" element={<AdminOrderTable />} />
+               <Route index element={<AdminPackageTable />} />
             </Route>
             <Route path="user" element={<AdminUserPage />} />
             <Route path="shop-owner" element={<AdminShopOwnerPage />} />
+            <Route path="promotion" element={<AdminPromotion />} />
          </Route>
       </Routes>
    );
