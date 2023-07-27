@@ -86,7 +86,7 @@ export const getListTypes = createAsyncThunk(
          if (type === 1) {
             res = await api.get("/types/birds");
          } else if (type === 2) {
-            res = await api.get("/types/food");
+            res = await api.get("/types/foods");
          } else {
             res = await api.get("/types/accessories");
          }

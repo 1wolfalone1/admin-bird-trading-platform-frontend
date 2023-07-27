@@ -29,6 +29,11 @@ export const breadCrumbs = {
       url: "/admin/user",
       id: 5,
    },
+   ADMIN_PROMOTION: {
+      name: "Promotion",
+      url: "/admin/promotion",
+      id: 100,
+   },
    ADMIN_REPORTS: {
       name: "Reports",
       url: "/admin/report",

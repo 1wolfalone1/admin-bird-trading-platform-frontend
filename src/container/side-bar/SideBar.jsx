@@ -101,7 +101,7 @@ export default function SideBar() {
                      <MenuItem type={typeMenu.ADMIN_PACKAGE} />
                      <MenuItem type={typeMenu.ADMIN_SHOP_OWNER} />
                      <MenuItem type={typeMenu.ADMIN_USER} />
-                     <MenuItem type={typeMenu.ADMIN_REPORT} />
+                     <MenuItem type={typeMenu.ADMIN_PROMOTION} />
                   </div>
                   <div className={s.controlAccount}>
                      <MenuItem type={typeMenu.LOGOUT} logout={handleLogout} />
