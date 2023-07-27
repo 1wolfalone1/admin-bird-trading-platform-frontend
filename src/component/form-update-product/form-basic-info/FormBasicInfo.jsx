@@ -30,7 +30,10 @@ import productDetailsValidateSlice, {
 } from "../../../redux/productDetailsValidateSlice";
 
 const validationSchema = yup.object({
-   name: yup.string("").max("Maximum length of name is 255 characters").required("Name is required!"),
+   name: yup
+      .string("")
+      .max(255, "Maximum length of name is 255 characters")
+      .required("Name is required!"),
 
    category: yup
       .number()
