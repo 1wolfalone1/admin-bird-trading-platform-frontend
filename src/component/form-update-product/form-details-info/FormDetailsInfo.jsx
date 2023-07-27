@@ -99,8 +99,6 @@ export default function FormDetailsInfo() {
       validateOnBlur: true,
       validationOnMount: true,
    });
- 
-  
 
    const handleNewTag = async () => {
       if (newTag) {
@@ -131,9 +129,9 @@ export default function FormDetailsInfo() {
    }, [responseTag, JSON.stringify(listTags)]);
    useEffect(() => {
       dispatch(getListTags());
-      dispatch(getListTypes(category));
    }, []);
    useEffect(() => {
+      dispatch(getListTypes(category));
       form.setValues(form.initialValues, false);
    }, [category]);
    const isOptionEqualToValue = (option, value) => {
@@ -154,6 +152,7 @@ export default function FormDetailsInfo() {
          form.setValues(detailsForm.data)
       }
    }, [detailsForm]);
+
    return (
       <form className={s.container}>
          <h2>Details information</h2>
