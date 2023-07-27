@@ -42,7 +42,7 @@ export default function HeaderContainer() {
                   <SearchBar />
                </div>
                <div className={s.iconContainer}>
-                  <IconButton>
+                  {/* <IconButton>
                      <Badge
                         badgeContent={4}
                         color="primary"
@@ -50,7 +50,7 @@ export default function HeaderContainer() {
                      >
                         <EmailIcon sx={badgeStyle.icon} color="template6" />
                      </Badge>
-                  </IconButton>
+                  </IconButton> */}
                   {/* <IconButton>
                      <Badge
                         badgeContent={4}
