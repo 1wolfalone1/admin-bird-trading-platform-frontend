@@ -17,7 +17,10 @@ import globalConfigSlice from "../../redux/globalConfigSlice";
 import LoadingButton from "@mui/lab/LoadingButton";
 import shopStaffSlice from "../../redux/shopStaffSlice";
 const validationSchema = yup.object({
-   userName: yup.string("").required("Username is required!"),
+   userName: yup
+      .string("")
+      .max(20, "Maximum username is 20 characters")
+      .required("Username is required!"),
    password: yup
       .string("")
       .min(8, "The password should consist of more than eight characters.")
@@ -32,7 +35,7 @@ export default function CreateShopStaff() {
    const [error, setError] = useState("");
    const [loadingButton, setLoadingButton] = useState(false);
    const dispatch = useDispatch();
-	useEffect(() => {
+   useEffect(() => {
       dispatch(shopStaffSlice.actions.changeTab(2));
    }, []);
    const form = useFormik({

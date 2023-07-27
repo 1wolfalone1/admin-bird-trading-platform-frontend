@@ -154,6 +154,34 @@ const CustomFilterAdminUser = ({ applyValue, item }) => {
       </Box>
    );
 };
+const CustomFilterAdminPromotionType = ({ applyValue, item }) => {
+   const handleFilterChange = (event) => {
+      console.log(event.target.value, item, applyValue);
+      let newItem = { ...item, value: event.target.value };
+      applyValue(newItem);
+   };
+
+   return (
+      <Box>
+         <Typography
+            sx={{ padding: "0", fontSize: "1.6rem", lineHeight: "1.6rem" }}
+         >
+            value
+         </Typography>
+         <Select
+            defaultValue={"9"}
+            value={item.value}
+            onChange={handleFilterChange}
+            sx={{ width: "100%" }}
+            MenuProps={{ disableScrollLock: true }}
+         >
+            <MenuItem value={9}>ALL</MenuItem>
+            <MenuItem value={1}>Discount</MenuItem>
+            <MenuItem value={2}>Shipping</MenuItem>
+         </Select>
+      </Box>
+   );
+};
 const CustomFilterPromotionSelection = ({ applyValue, item }) => {
    const { listVouchers } = useSelector(productDetailsSelector);
    const dispatch = useDispatch();
@@ -310,7 +338,12 @@ export const operatorSelectPaymenMethod = {
    InputComponent: CustomFilterPaymentMethod,
    getValueAsString: (value) => value,
 };
-
+export const operatorAdminPromotionType= {
+   label: "select",
+   value: "=",
+   InputComponent: CustomFilterAdminPromotionType,
+   getValueAsString: (value) => value,
+};
 export const operatorPriceFrom = {
    label: ">=",
    value: ">=",
