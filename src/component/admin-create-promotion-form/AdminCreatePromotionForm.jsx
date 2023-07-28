@@ -110,10 +110,16 @@ export default function AdminCreatePromotionForm({ closeModel }) {
    });
    const handleSubmit = async () => {
       console.log('start date ', Date.parse(form.values.startDate))
-      console.log('end date ', Date.parse(form.values.endDate))
+      
       try {
          const staDate = new Date(form?.values?.startDate);
          const endDate = new Date(form?.values?.endDate);
+         // Assuming endDate is a string or a Date object from the form values
+         // Set the time to 23:59
+        
+         endDate.setHours(23);
+         endDate.setMinutes(59);
+         console.log('end date ', Date.parse(endDate))
          const formData = {
             ...form.values,
             startDate: staDate.getTime(),
