@@ -76,14 +76,23 @@ const NotiItemsPopper = () => {
       stompClient.connect({}, onConnected, onError);
     }
   };
-  console.log('here is an id', info.id)
+  console.log('3 !== info?.role', 3 !== info?.role);
   const onConnected = () => {
     try {
-      stompClient.subscribe(
-        `/notification/${info?.id}/shop`,
-        onPrivateNotification,
-        onError
-      );
+      if(3 !== info?.role){
+        stompClient.subscribe(
+          `/notification/${info?.id}/admin`,
+          onPrivateNotification,
+          onError
+        )
+      }else{
+        stompClient.subscribe(
+          `/notification/${info?.id}/shop`,
+          onPrivateNotification,
+          onError
+        )
+      }
+      ;
     } catch (error) {
       console.log(error);
     }
@@ -143,7 +152,6 @@ const NotiItemsPopper = () => {
     }
   };
 
-
   return (
     <div className={clsx(s.container)}>
         <IconButton
@@ -190,7 +198,7 @@ const NotiItemsPopper = () => {
                   <div className={clsx(s.hrCustom)}></div>
                   {notiList?.map((noti, index) => {
                     return(
-                      <NotiItemInPoper noti={noti} key={noti.id} index={index}/>
+                      <NotiItemInPoper noti={noti} key={noti?.id} index={index}/>
                     );
                    }
                   )}                 

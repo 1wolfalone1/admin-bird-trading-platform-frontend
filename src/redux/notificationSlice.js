@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import React from "react";
 import { api } from "../api/api";
+import { userRole } from "../config/constant";
 
 const notificationSlice = createSlice({
   name: "notificationSlice",
@@ -61,11 +62,18 @@ export const getListNotification = createAsyncThunk(
     const userInfo = state.userInfoSlice.info;
     // const pageNumber = state.notificationSlice.notification.currentPageNumber;
     try {
-      const res = await api.get(`/shop-owner/${userInfo?.id}/notifications`, {
-        params: { pagenumber: pageNumber },
-      });
-      const data = res.data;
-      return data;
+      if( 3 !== userInfo?.role){
+        const data = {
+          lists: []
+        }
+        return data;
+      }else{
+        const res = await api.get(`/shop-owner/${userInfo?.id}/notifications`, {
+          params: { pagenumber: pageNumber },
+        });
+        const data = res.data;
+        return data;
+      }
       //   dispatch(getListUserSuccess(res.data));
     } catch (error) {
       console.log(error);
@@ -80,9 +88,14 @@ export const getUnreadNotification = createAsyncThunk(
     const state = getState();
     const userInfo = state.userInfoSlice.info;
     try {
-      const res = await api.get(`/shop-owner/${userInfo?.id}/notifications/unread`);
-      const data = res.data;
-      return data;
+      if( 3 !== userInfo?.role){
+        return 0;
+      }else{
+        const res = await api.get(`/shop-owner/${userInfo?.id}/notifications/unread`);
+        const data = res.data;
+        return data;
+      }
+      
       //   dispatch(getListUserSuccess(res.data));
     } catch (error) {
       console.log(error);

@@ -3,6 +3,7 @@ import { userList } from "../component/message/message-username/userListData";
 
 import { DatasetLinked } from "@mui/icons-material";
 import { api } from "../api/api";
+import { userRole } from "../config/constant";
 
 const messageSlice = createSlice({
     name: 'messageSlice',
@@ -319,10 +320,14 @@ export const getTotalUnread = createAsyncThunk(
     const state = getState();
     const userInfo = state.userInfoSlice.info;
     try{
-      console.log('here is info', userInfo)
-      const res = await api.get(`/shop-owner/${userInfo?.id}/messages/unread`);
-      const data = res.data;
-      return data;
+      if(  3 !== userInfo?.role){
+        console.log('heheh co vaoaf', userRole[userInfo?.role].code)
+        return 0;
+      }else{
+        const res = await api.get(`/shop-owner/${userInfo?.id}/messages/unread`);
+        const data = res.data;
+        return data;
+      }     
     }catch(error){
       console.log(error);
       throw error;
