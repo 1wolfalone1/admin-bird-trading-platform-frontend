@@ -31,7 +31,7 @@ export default function AdminPromotionTable() {
       rowModesModel,
       currentPage,
       isLoading,
-      totalUsers,
+      totalElement,
       listSelected,
       mode,
    } = useSelector(getAdminPromotionTableSelector);
@@ -114,7 +114,7 @@ export default function AdminPromotionTable() {
             rowSelectionModel={listSelected}
             apiRef={apiRef}
             columns={columns}
-            rowCount={totalUsers}
+            rowCount={totalElement}
             rowsPerPageOptions={10}
             page={currentPage - 1}
             rows={data}
