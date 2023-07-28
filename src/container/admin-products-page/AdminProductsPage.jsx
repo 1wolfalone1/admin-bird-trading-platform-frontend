@@ -21,7 +21,7 @@ export default function AdminProductsPage() {
          </Box>
          <AdminProductsPageController />
          <Box mt={2}>
-            <AdminPromotionTable />
+            <AdminProductsTable />
          </Box>
       </Box>
    );
