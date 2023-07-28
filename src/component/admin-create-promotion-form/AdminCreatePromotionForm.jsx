@@ -21,6 +21,7 @@ import { api } from "../../api/api";
 import { DatePicker } from "@mui/x-date-pickers";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { styleFormUpdate } from "../form-update-product/FormUpdateProduct";
+import moment from "moment";
 
 const QuillWrapper = ({ field, form, ...props }) => {
    const { name } = field;
@@ -50,7 +51,7 @@ const validationSchema = yup.object().shape({
    discount: yup
       .number()
       .typeError("Discount rate must be a number")
-      .min(1, "Invalid quantity of promotion! Need between $1 and $100,000")
+      .min(0, "Invalid quantity of promotion! Need between $1 and $100,000")
       .max(
          100000,
          "Invalid quantity of promotion! Need between $1 and $100,000"
@@ -108,11 +109,15 @@ export default function AdminCreatePromotionForm({ closeModel }) {
       },
    });
    const handleSubmit = async () => {
+      console.log('start date ', Date.parse(form.values.startDate))
+      console.log('end date ', form.values.endDate)
       try {
+         const staDate = new Date(form?.values?.startDate);
+         const endDate = new Date(form?.values?.endDate);
          const formData = {
             ...form.values,
-            startDate: Date.parse(form.values.startDate),
-            endDate: Date.parse(form.values.endDate),
+            startDate: staDate.getTime(),
+            endDate:endDate.getTime(),
          };
          const res = await api.post("/admin/promotion", formData);
          const data = await res.data;
@@ -312,7 +317,7 @@ export default function AdminCreatePromotionForm({ closeModel }) {
                            console.log(value);
                            form.setFieldValue(
                               "startDate",
-                              new Date(Date.parse(value))
+                              value
                            );
                         }}
                      />
